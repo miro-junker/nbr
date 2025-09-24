@@ -1,0 +1,13 @@
+{
+  "name": "nbr-server",
+  "version": "0.0.1",
+  "type": "module",
+  "description": "Server for NoBrakes project",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "ws": "^8.15.0"
+  }
+}
