@@ -17,59 +17,38 @@
       logEl.textContent += message + "\n";
     }
 
-    // Connect to WebSocket
-    const ws = new WebSocket("ws://nobrakes.cz:81?role=sensor");
+    const ws = new WebSocket("wss://nobrakes.cz/?role=sensor");
 
-    ws.onopen = () => {
-      log("✅ Connected to ws://nobrakes.cz:81?role=sensor");
-    };
+    ws.onopen = () => log("✅ Connected to WSS server");
+    ws.onclose = () => log("❌ Connection closed");
+    ws.onerror = (err) => { log("⚠️ WebSocket error"); console.error(err); };
+    ws.onmessage = (event) => log("📩 Message: " + event.data);
 
-    ws.onclose = () => {
-      log("❌ Connection closed");
-    };
-
-    ws.onerror = (err) => {
-      log("⚠️ WebSocket error");
-      console.error(err);
-    };
-
-    ws.onmessage = (event) => {
-      log("📩 Message from server: " + event.data);
-    };
-
-    // Function to send tilt data
     function sendTilt(alpha, beta, gamma) {
-      if (ws.readyState === WebSocket.OPEN) {
+      if(ws.readyState === WebSocket.OPEN){
         const data = { alpha, beta, gamma };
         ws.send(JSON.stringify(data));
-        log(`➡️ Sent tilt: ${JSON.stringify(data)}`);
+        log("➡️ Sent tilt: " + JSON.stringify(data));
       }
     }
 
-    // Handle device orientation
     function handleOrientation(event) {
-      const { alpha, beta, gamma } = event;
-      sendTilt(alpha, beta, gamma);
+      sendTilt(event.alpha, event.beta, event.gamma);
     }
 
-    // Start button triggers permission request if needed
     startBtn.addEventListener("click", () => {
       if (typeof DeviceOrientationEvent.requestPermission === "function") {
-        // iOS 13+ devices
         DeviceOrientationEvent.requestPermission()
-          .then(permissionState => {
-            if (permissionState === "granted") {
+          .then(state => {
+            if(state === "granted"){
               window.addEventListener("deviceorientation", handleOrientation);
-              log("📱 DeviceOrientation permission granted, sending tilt data...");
-            } else {
-              log("⚠️ Permission denied for DeviceOrientation");
-            }
+              log("📱 Tilt sensor enabled");
+            } else log("⚠️ Permission denied");
           })
-          .catch(err => log("⚠️ Error requesting permission: " + err));
+          .catch(console.error);
       } else {
-        // Android or older iOS
         window.addEventListener("deviceorientation", handleOrientation);
-        log("📱 DeviceOrientation supported, sending tilt data...");
+        log("📱 Tilt sensor enabled");
       }
       startBtn.disabled = true;
     });
