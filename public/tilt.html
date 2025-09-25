@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Phone Tilt Sensor</title>
+</head>
+<body>
+  <h1>Phone Tilt Sensor</h1>
+  <button id="startBtn">Start Sending Tilt Data</button>
+  <pre id="log"></pre>
+
+  <script>
+    const logEl = document.getElementById("log");
+    const startBtn = document.getElementById("startBtn");
+
+    function log(message) {
+      logEl.textContent += message + "\n";
+    }
+
+    // Connect to WebSocket
+    const ws = new WebSocket("ws://nobrakes.cz:81?role=sensor");
+
+    ws.onopen = () => {
+      log("✅ Connected to ws://nobrakes.cz:81?role=sensor");
+    };
+
+    ws.onclose = () => {
+      log("❌ Connection closed");
+    };
+
+    ws.onerror = (err) => {
+      log("⚠️ WebSocket error");
+      console.error(err);
+    };
+
+    ws.onmessage = (event) => {
+      log("📩 Message from server: " + event.data);
+    };
+
+    // Function to send tilt data
+    function sendTilt(alpha, beta, gamma) {
+      if (ws.readyState === WebSocket.OPEN) {
+        const data = { alpha, beta, gamma };
+        ws.send(JSON.stringify(data));
+        log(`➡️ Sent tilt: ${JSON.stringify(data)}`);
+      }
+    }
+
+    // Handle device orientation
+    function handleOrientation(event) {
+      const { alpha, beta, gamma } = event;
+      sendTilt(alpha, beta, gamma);
+    }
+
+    // Start button triggers permission request if needed
+    startBtn.addEventListener("click", () => {
+      if (typeof DeviceOrientationEvent.requestPermission === "function") {
+        // iOS 13+ devices
+        DeviceOrientationEvent.requestPermission()
+          .then(permissionState => {
+            if (permissionState === "granted") {
+              window.addEventListener("deviceorientation", handleOrientation);
+              log("📱 DeviceOrientation permission granted, sending tilt data...");
+            } else {
+              log("⚠️ Permission denied for DeviceOrientation");
+            }
+          })
+          .catch(err => log("⚠️ Error requesting permission: " + err));
+      } else {
+        // Android or older iOS
+        window.addEventListener("deviceorientation", handleOrientation);
+        log("📱 DeviceOrientation supported, sending tilt data...");
+      }
+      startBtn.disabled = true;
+    });
+  </script>
+</body>
+</html>
