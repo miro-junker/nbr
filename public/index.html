@@ -1,50 +1,57 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
-<title>Gyro → WebSocket</title>
+  <meta charset="UTF-8">
+  <title>Phone Tilt Sensor</title>
 </head>
 <body>
-<script>
-const WS_URL = "wss://nobrakes.cz?role=sensor";
-const ws = new WebSocket(WS_URL);
+  <h1>Phone Tilt Sensor</h1>
+  <button id="startBtn">Start Sending Tilt Data</button>
+  <pre id="log"></pre>
 
+  <script>
+    const logEl = document.getElementById("log");
+    const startBtn = document.getElementById("startBtn");
 
-let desiredHz = 120;
-let sampleInterval = 1000 / desiredHz;
-let lastSent = 0;
+    function log(message) {
+      logEl.textContent += message + "\n";
+    }
 
+    const ws = new WebSocket("wss://nobrakes.cz/?role=sensor");
 
-async function requestPermissionsIfNeeded(){
-if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function'){
-try {
-const r = await DeviceMotionEvent.requestPermission();
-if (r !== 'granted') throw new Error('Permission denied');
-} catch(e){ console.error(e); }
-}
-}
+    ws.onopen = () => log("✅ Connected to WSS server");
+    ws.onclose = () => log("❌ Connection closed");
+    ws.onerror = (err) => { log("⚠️ WebSocket error"); console.error(err); };
+    ws.onmessage = (event) => log("📩 Message: " + event.data);
 
+    function sendTilt(alpha, beta, gamma) {
+      if(ws.readyState === WebSocket.OPEN){
+        const data = { alpha, beta, gamma };
+        ws.send(JSON.stringify(data));
+        log("➡️ Sent tilt: " + JSON.stringify(data));
+      }
+    }
 
-(async function(){
-await requestPermissionsIfNeeded();
+    function handleOrientation(event) {
+      sendTilt(event.alpha, event.beta, event.gamma);
+    }
 
-
-window.addEventListener('deviceorientation', (ev)=>{
-const now = Date.now();
-if (now - lastSent < sampleInterval) return;
-lastSent = now;
-const payload = {
-t: now,
-alpha: ev.alpha, // z-axis
-beta: ev.beta, // x-axis
-gamma: ev.gamma // y-axis
-};
-if (ws.readyState === WebSocket.OPEN) {
-ws.send(JSON.stringify(payload));
-}
-}, true);
-})();
-</script>
+    startBtn.addEventListener("click", () => {
+      if (typeof DeviceOrientationEvent.requestPermission === "function") {
+        DeviceOrientationEvent.requestPermission()
+          .then(state => {
+            if(state === "granted"){
+              window.addEventListener("deviceorientation", handleOrientation);
+              log("📱 Tilt sensor enabled");
+            } else log("⚠️ Permission denied");
+          })
+          .catch(console.error);
+      } else {
+        window.addEventListener("deviceorientation", handleOrientation);
+        log("📱 Tilt sensor enabled");
+      }
+      startBtn.disabled = true;
+    });
+  </script>
 </body>
 </html>
