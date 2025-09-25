@@ -2,6 +2,7 @@ import { WebSocketServer, WebSocket } from "ws";
 
 
 function createWsServer(port) {
+  console.log("Creating websocket server")
   const wss = new WebSocketServer({ port });
 
   let controllerSocket = null;
@@ -10,6 +11,7 @@ function createWsServer(port) {
   wss.on("connection", (ws, req) => {
     const url = new URL(req.url, `http://${req.headers.host}`);
     const role = url.searchParams.get("role");
+    console.log("New websocket connection", role)
 
     if (role === "sensor") {
       controllerSocket = ws;
