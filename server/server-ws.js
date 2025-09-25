@@ -26,7 +26,7 @@ function createWsServer(port) {
       });
 
       ws.on("close", () => {
-        console.log("controller disconnected");
+        console.log("sensor disconnected");
         controllerSocket = null;
       });
     }
