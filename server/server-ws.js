@@ -1,9 +1,10 @@
 import { WebSocketServer, WebSocket } from "ws";
 
-
-function createWsServer(port) {
-  console.log("Creating websocket server")
-  const wss = new WebSocketServer({ port });
+function createWsServer({ port, server }) {
+  // If `server` is provided, attach to it; otherwise use standalone port
+  const wss = server
+    ? new WebSocketServer({ server })
+    : new WebSocketServer({ port });
 
   let controllerSocket = null;
   let displaySocket = null;
@@ -11,13 +12,13 @@ function createWsServer(port) {
   wss.on("connection", (ws, req) => {
     const url = new URL(req.url, `http://${req.headers.host}`);
     const role = url.searchParams.get("role");
-    console.log("New websocket connection", role)
+    console.log("New websocket connection", role);
 
     if (role === "sensor") {
       controllerSocket = ws;
       console.log("Sensor connected");
 
-      // Forward controller messages to display (if connected)
+      // Forward sensor messages to display (if connected)
       ws.on("message", (msg) => {
         console.log(`    Sensor message: ${msg}`);
         if (displaySocket && displaySocket.readyState === WebSocket.OPEN) {
@@ -26,7 +27,7 @@ function createWsServer(port) {
       });
 
       ws.on("close", () => {
-        console.log("sensor disconnected");
+        console.log("Sensor disconnected");
         controllerSocket = null;
       });
     }
@@ -44,6 +45,5 @@ function createWsServer(port) {
 
   return wss;
 }
-
 
 export default createWsServer;
