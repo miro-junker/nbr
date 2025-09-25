@@ -10,14 +10,14 @@
 
   <script>
     const logEl = document.getElementById("log");
-    const ws = new WebSocket("ws://nobrakes.cz:81?role=display");
+    const ws = new WebSocket("wss://nobrakes.cz?role=display");
 
     function log(message) {
       logEl.textContent += message + "\n";
     }
 
     ws.onopen = () => {
-      log("✅ Connected to ws://nobrakes.cz:81");
+      log("✅ Connected to wss://nobrakes.cz");
     };
 
     ws.onmessage = (event) => {

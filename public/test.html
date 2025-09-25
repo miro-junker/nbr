@@ -11,7 +11,7 @@
 
   <script>
     const logEl = document.getElementById("log");
-    const ws = new WebSocket("ws://nobrakes.cz:81?role=sensor");
+    const ws = new WebSocket("wss://nobrakes.cz?role=sensor");
 
     function log(message) {
       logEl.textContent += message + "\n";
