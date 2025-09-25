@@ -4,7 +4,10 @@ import https from "https";
 import http from "http";
 import fs from "fs";
 import { fileURLToPath } from "url";
+import { exec } from "child_process";
 import createWsServer from "./server/server-ws.js";
+
+const DEPLOY_TOKEN_ENABLED = false
 
 // Resolve __dirname
 const __filename = fileURLToPath(import.meta.url);
@@ -18,13 +21,35 @@ const sslOptions = {
 
 // Create Express app
 const app = express();
+
+// Serve static files
 app.use(express.static(path.join(__dirname, "public")));
+
+// --- /deploy endpoint ---
+app.all("/deploy", (req, res) => {
+  const token = req.headers["x-deploy-token"];
+  if (DEPLOY_TOKEN_ENABLED && token !== process.env.DEPLOY_TOKEN) {
+    return res.status(403).send("Forbidden");
+  }
+
+  exec("./deploy/deploy.sh", (error, stdout, stderr) => {
+    if (error) {
+      console.error(`Deploy error: ${error}`);
+      return res.status(500).send("Deploy failed");
+    }
+    console.log(`Deploy stdout: ${stdout}`);
+    console.error(`Deploy stderr: ${stderr}`);
+    res.send("Deploy started");
+  });
+});
+
+// Catch-all 404 handler
 app.use((req, res) => res.status(404).send("404 Not Found"));
 
 // Redirect HTTP → HTTPS
 const redirectApp = express();
 redirectApp.use((req, res) => {
-  const host = req.headers.host.replace(/:\d+$/, ""); // remove port if present
+  const host = req.headers.host.replace(/:\d+$/, "");
   res.redirect(`https://${host}${req.url}`);
 });
 
@@ -40,7 +65,7 @@ httpsServer.listen(443, () => {
   console.log("HTTPS server running on port 443");
 });
 
-// --- Integrate WebSocket server from server-ws.js ---
-const wss = createWsServer({ server: httpsServer }); // pass the HTTPS server
+// --- Integrate WebSocket server ---
+const wss = createWsServer({ server: httpsServer });
 
 export { httpsServer, wss };
