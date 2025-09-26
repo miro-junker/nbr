@@ -11,8 +11,15 @@ chmod 777 "$LOGDIR"
 touch "$LOGFILE"
 chmod 666 "$LOGFILE"
 
+# Move to project directory
+cd "$PROJECT_DIR" || exit
+
+# Get current commit info BEFORE pulling new code
+START_COMMIT=$(git rev-parse --short HEAD)
+START_COMMIT_MSG=$(git show -s --format=%s "$START_COMMIT")
+
 # Write a line at the very beginning of the deploy
-echo "$(date +"%Y-%m-%d %H:%M:%S") Deploy started" >> "$LOGFILE"
+echo "$(date +"%Y-%m-%d %H:%M:%S") | Deploy started | commit $START_COMMIT: $START_COMMIT_MSG" >> "$LOGFILE"
 sync
 
 # Run macOS notification asynchronously, only if the OS is Darwin
@@ -20,19 +27,16 @@ if [[ "$(uname)" == "Darwin" ]]; then
     osascript -e 'display notification "Deploy script was called" with title "Deploy Notification"' &
 fi
 
-# Move to project directory
-cd "$PROJECT_DIR" || exit
-
 # Pull latest code
 git pull origin main > /dev/null 2>&1
 
-# Get commit info
-CURRENT_COMMIT=$(git rev-parse --short HEAD)
-COMMIT_MSG=$(git log -1 --pretty=%s)
+# Get updated commit info AFTER pulling new code
+END_COMMIT=$(git rev-parse --short HEAD)
+END_COMMIT_MSG=$(git show -s --format=%s "$END_COMMIT")
 DATE=$(date +"%Y-%m-%d %H:%M:%S")
 
 # Write final log line before restarting the app
-echo "$DATE | commit $CURRENT_COMMIT: $COMMIT_MSG" >> "$LOGFILE"
+echo "$DATE | Deploy finished | commit $END_COMMIT: $END_COMMIT_MSG" >> "$LOGFILE"
 sync
 
 # Start/restart the app
