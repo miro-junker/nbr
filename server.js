@@ -30,7 +30,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.all("/deploy", (req, res) => {
   console.log(`Deploy attempt at ${new Date()}`);
 
-  // Token check (disabled for now)
+  // Token check
   if (DEPLOY_TOKEN_ENABLED) {
     const token = req.headers["x-deploy-token"];
     if (token !== DEPLOY_TOKEN_SECRET) {
@@ -38,19 +38,21 @@ app.all("/deploy", (req, res) => {
     }
   }
 
-  // Run deploy.sh
-  exec("./scripts/deploy.sh", (error, stdout, stderr) => {
-    console.log("Deploy stdout:", stdout);
-    console.error("Deploy stderr:", stderr);
+  // Send HTTP response immediately
+  res.send("Deploy started");
 
+  // Run deploy.sh in background
+  const child = exec("./scripts/deploy.sh", (error, stdout, stderr) => {
     if (error) {
       console.error(`Deploy failed: ${error}`);
-      return res.status(500).send(`Deploy failed: ${error.message}`);
     }
-
-    res.send("Deploy succeeded");
+    console.log("Deploy stdout:", stdout);
+    console.error("Deploy stderr:", stderr);
   });
+
+  child.unref(); // detach child so server doesn't wait
 });
+
 
 
 // Catch-all 404 handler

@@ -1,6 +1,7 @@
 #!/bin/bash
 
-osascript -e 'display notification "Deploy script was called" with title "Deploy Notification"'
+# TODO: notification temporarily disabled
+# osascript -e 'display notification "Deploy script was called" with title "Deploy Notification"'
 
 # Log file
 LOGFILE="$HOME/codallo/nbr/logs/deploy.log"
