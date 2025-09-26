@@ -34,7 +34,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // --- /deploy endpoint ---
 app.all("/deploy", (req, res) => {
-  console.log(`Deploy attempt at ${new Date()}`);
+  console.log(`Deploy attempt at ${new Date().toLocaleString()}`);
 
   // Token check
   if (DEPLOY_TOKEN_ENABLED) {
