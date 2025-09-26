@@ -1,9 +1,5 @@
 #!/bin/zsh
 
-
-# Clear the log file
-#> /Users/cdl_srv/.pm2/logs/nbr-game-out.log
-
 # Clear terminal
 clear
 

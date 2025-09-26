@@ -1,7 +1,10 @@
 # NoBrakes game
 
 ## Install:
-npm i
+npm ci
 
 ## Run server:
-node server.js
+./run.sh
+
+## Clean up unnecessary data:
+./scripts/cleanup.sh

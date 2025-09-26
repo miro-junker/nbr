@@ -6,7 +6,7 @@ function createWsServer({ port, server }) {
     ? new WebSocketServer({ server })
     : new WebSocketServer({ port });
 
-  let controllerSocket = null;
+  let sensorSocket = null;
   let displaySocket = null;
 
   wss.on("connection", (ws, req) => {
@@ -15,7 +15,7 @@ function createWsServer({ port, server }) {
     console.log("New websocket connection", role);
 
     if (role === "sensor") {
-      controllerSocket = ws;
+      sensorSocket = ws;
       console.log("Sensor connected");
 
       // Forward sensor messages to display (if connected)
@@ -28,7 +28,7 @@ function createWsServer({ port, server }) {
 
       ws.on("close", () => {
         console.log("Sensor disconnected");
-        controllerSocket = null;
+        sensorSocket = null;
       });
     }
 
