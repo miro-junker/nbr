@@ -1,22 +1,27 @@
 #!/bin/bash
-cd ~/codallo/nbr || exit
 
-echo "Pulling latest code..."
-git pull origin main
+# Log file
+LOGFILE="$HOME/codallo/nbr/logs/deploy.log"
+mkdir -p "$(dirname "$LOGFILE")"
 
-# Define your app name
+cd "$HOME/codallo/nbr" || exit
+
+# Pull latest code
+git_output=$(git pull origin main)
+
+# Get commit info (even if unchanged)
+CURRENT_COMMIT=$(git rev-parse --short HEAD)
+COMMIT_MSG=$(git log -1 --pretty=%s)
+DATE=$(date +"%Y-%m-%d %H:%M:%S")
+
+# PM2 app
 APP_NAME="nbr-game"
-
-# Restart or start the app
 if pm2 list | grep -q "$APP_NAME"; then
-    echo "Restarting PM2 app: $APP_NAME"
-    pm2 restart "$APP_NAME"
+    pm2 restart "$APP_NAME" --update-env --no-daemon > /dev/null 2>&1
 else
-    echo "Starting PM2 app: $APP_NAME"
-    pm2 start server.js --name "$APP_NAME"
+    pm2 start server.js --name "$APP_NAME" --update-env --no-daemon > /dev/null 2>&1
 fi
+pm2 save > /dev/null 2>&1
 
-# Save PM2 process list for auto-start on reboot
-pm2 save
-
-echo "Deploy finished."
+# Always write a single-line log
+echo "$DATE | $CURRENT_COMMIT | $COMMIT_MSG | $git_output" >> "$LOGFILE"

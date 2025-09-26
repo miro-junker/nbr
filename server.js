@@ -7,7 +7,7 @@ import { fileURLToPath } from "url";
 import { exec } from "child_process";
 import createWsServer from "./server/server-ws.js";
 
-const DEPLOY_TOKEN_ENABLED = true
+const DEPLOY_TOKEN_ENABLED = false
 const DEPLOY_TOKEN_SECRET = 'hardcoded-supersecret-nbrtoken'
 
 // Resolve __dirname
@@ -29,6 +29,7 @@ app.use(express.static(path.join(__dirname, "public")));
 // --- /deploy endpoint ---
 app.all("/deploy", (req, res) => {
   const token = req.headers["x-deploy-token"];
+  console.log(`Deploy attempt at ${new Date()}`);
   if (DEPLOY_TOKEN_ENABLED && token !== DEPLOY_TOKEN_SECRET) {
     return res.status(403).send("Forbidden");
   }
@@ -50,7 +51,11 @@ app.use((req, res) => res.status(404).send("404 Not Found"));
 // Redirect HTTP → HTTPS
 const redirectApp = express();
 redirectApp.use((req, res) => {
-  const host = req.headers.host.replace(/:\d+$/, "");
+  const hostHeader = req.headers.host;
+  if (!hostHeader) {
+    return res.status(400).send("Bad Request: missing Host header");
+  }
+  const host = hostHeader.replace(/:\d+$/, "");
   res.redirect(`https://${host}${req.url}`);
 });
 
