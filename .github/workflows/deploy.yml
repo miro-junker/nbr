@@ -14,10 +14,11 @@ jobs:
         run: |
           echo "Triggering deploy..."
           mkdir -p tmp
-          RESPONSE=$(curl -s -S -o logs/curl-response.txt -w "%{http_code}" -X POST -L https://nobrakes.cz/deploy || echo "000")
+          RESPONSE=$(curl -s -S -o tmp/response.txt -w "%{http_code}" -X POST -L https://nobrakes.cz/deploy || echo "000")
+          
           echo "HTTP status: $RESPONSE"
           echo "Response body:"
-          cat logs/curl-response.txt || echo "(no response)"
+          cat tmp/response.txt || echo "(no response)"
           
           if [ "$RESPONSE" -ne 200 ]; then
             echo "Deploy failed!"
@@ -25,4 +26,3 @@ jobs:
           fi
 
           echo "Deploy succeeded!"
-
