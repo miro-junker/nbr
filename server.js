@@ -32,7 +32,7 @@ app.all("/deploy", (req, res) => {
     return res.status(403).send("Forbidden");
   }
 
-  exec("./deploy/deploy.sh", (error, stdout, stderr) => {
+  exec("./scripts/deploy.sh", (error, stdout, stderr) => {
     if (error) {
       console.error(`Deploy error: ${error}`);
       return res.status(500).send("Deploy failed");
