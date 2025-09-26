@@ -13,11 +13,12 @@ jobs:
       - name: Trigger deployment
         run: |
           echo "Triggering deploy..."
-          RESPONSE=$(curl -s -o response.txt -w "%{http_code}" -X POST -L -k https://nobrakes.cz/deploy || true)
+          mkdir -p tmp
+          RESPONSE=$(curl -s -S -o logs/curl-response.txt -w "%{http_code}" -X POST -L https://nobrakes.cz/deploy || echo "000")
           echo "HTTP status: $RESPONSE"
           echo "Response body:"
-          cat response.txt
-
+          cat logs/curl-response.txt || echo "(no response)"
+          
           if [ "$RESPONSE" -ne 200 ]; then
             echo "Deploy failed!"
             exit 1
