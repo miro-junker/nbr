@@ -13,7 +13,7 @@ jobs:
       - name: Trigger deployment
         run: |
           echo "Triggering deploy..."
-          RESPONSE=$(curl -s -o response.txt -w "%{http_code}" -X POST http://nobrakes.cz/deploy)
+          RESPONSE=$(curl -s -o response.txt -w "%{http_code}" -X POST https://nobrakes.cz/deploy)
           echo "HTTP status: $RESPONSE"
           echo "Response body:"
           cat response.txt
@@ -24,3 +24,4 @@ jobs:
           fi
 
           echo "Deploy succeeded!"
+
