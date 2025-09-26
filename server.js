@@ -7,7 +7,8 @@ import { fileURLToPath } from "url";
 import { exec } from "child_process";
 import createWsServer from "./server/server-ws.js";
 
-const DEPLOY_TOKEN_ENABLED = false
+const DEPLOY_TOKEN_ENABLED = true
+const DEPLOY_TOKEN_SECRET = 'hardcoded-supersecret-nbrtoken'
 
 // Resolve __dirname
 const __filename = fileURLToPath(import.meta.url);
@@ -28,7 +29,7 @@ app.use(express.static(path.join(__dirname, "public")));
 // --- /deploy endpoint ---
 app.all("/deploy", (req, res) => {
   const token = req.headers["x-deploy-token"];
-  if (DEPLOY_TOKEN_ENABLED && token !== process.env.DEPLOY_TOKEN) {
+  if (DEPLOY_TOKEN_ENABLED && token !== DEPLOY_TOKEN_SECRET) {
     return res.status(403).send("Forbidden");
   }
 
