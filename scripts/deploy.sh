@@ -12,7 +12,7 @@ touch "$LOGFILE"
 chmod 666 "$LOGFILE"
 
 # Write a line at the very beginning of the deploy
-echo "=== Deploy started at $(date +"%Y-%m-%d %H:%M:%S") ===" >> "$LOGFILE"
+echo "$(date +"%Y-%m-%d %H:%M:%S") Deploy started" >> "$LOGFILE"
 sync
 
 # Run macOS notification asynchronously, only if the OS is Darwin
@@ -32,7 +32,7 @@ COMMIT_MSG=$(git log -1 --pretty=%s)
 DATE=$(date +"%Y-%m-%d %H:%M:%S")
 
 # Write final log line before restarting the app
-echo "$DATE | $CURRENT_COMMIT | commit: $COMMIT_MSG" >> "$LOGFILE"
+echo "$DATE | commit $CURRENT_COMMIT: $COMMIT_MSG" >> "$LOGFILE"
 sync
 
 # Start/restart the app
