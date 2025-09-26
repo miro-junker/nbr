@@ -24,15 +24,16 @@ fi
 cd "$PROJECT_DIR" || exit
 
 # Pull latest code
-git_output=$(git pull origin main)
+git pull origin main > /dev/null 2>&1
 
 # Get commit info
 CURRENT_COMMIT=$(git rev-parse --short HEAD)
 COMMIT_MSG=$(git log -1 --pretty=%s)
 DATE=$(date +"%Y-%m-%d %H:%M:%S")
 
-# Write final log line
-echo "$DATE | $CURRENT_COMMIT | $COMMIT_MSG | $git_output" >> "$LOGFILE"
+# Write final log line before restarting the app
+echo "$DATE | $CURRENT_COMMIT | commit: $COMMIT_MSG" >> "$LOGFILE"
+sync
 
 # Start/restart the app
 APP_NAME="nbr-game"
@@ -42,5 +43,3 @@ else
     pm2 start server.js --name "$APP_NAME" --update-env > /dev/null 2>&1
 fi
 pm2 save > /dev/null 2>&1
-
-sync
