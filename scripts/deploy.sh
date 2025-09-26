@@ -1,7 +1,9 @@
 #!/bin/bash
 
-# TODO: notification temporarily disabled
-# osascript -e 'display notification "Deploy script was called" with title "Deploy Notification"'
+# Run macOS notification asynchronously, only if the OS is Darwin (macOS)
+if [[ "$(uname)" == "Darwin" ]]; then
+    osascript -e 'display notification "Deploy script was called" with title "Deploy Notification"' &
+fi
 
 # Log file
 LOGFILE="$HOME/codallo/nbr/logs/deploy.log"
