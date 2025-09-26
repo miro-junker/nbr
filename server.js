@@ -28,22 +28,30 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // --- /deploy endpoint ---
 app.all("/deploy", (req, res) => {
-  const token = req.headers["x-deploy-token"];
   console.log(`Deploy attempt at ${new Date()}`);
-  if (DEPLOY_TOKEN_ENABLED && token !== DEPLOY_TOKEN_SECRET) {
-    return res.status(403).send("Forbidden");
+
+  // Token check (disabled for now)
+  if (DEPLOY_TOKEN_ENABLED) {
+    const token = req.headers["x-deploy-token"];
+    if (token !== DEPLOY_TOKEN_SECRET) {
+      return res.status(403).send("Forbidden");
+    }
   }
 
+  // Run deploy.sh
   exec("./scripts/deploy.sh", (error, stdout, stderr) => {
+    console.log("Deploy stdout:", stdout);
+    console.error("Deploy stderr:", stderr);
+
     if (error) {
-      console.error(`Deploy error: ${error}`);
-      return res.status(500).send("Deploy failed");
+      console.error(`Deploy failed: ${error}`);
+      return res.status(500).send(`Deploy failed: ${error.message}`);
     }
-    console.log(`Deploy stdout: ${stdout}`);
-    console.error(`Deploy stderr: ${stderr}`);
-    res.send("Deploy started");
+
+    res.send("Deploy succeeded");
   });
 });
+
 
 // Catch-all 404 handler
 app.use((req, res) => res.status(404).send("404 Not Found"));

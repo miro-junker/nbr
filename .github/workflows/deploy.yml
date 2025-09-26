@@ -12,5 +12,15 @@ jobs:
     steps:
       - name: Trigger deployment
         run: |
-          curl -X POST http://nobrakes.cz/deploy \
-               -H "x-deploy-token: hardcoded-supersecret-nbrtoken"
+          echo "Triggering deploy..."
+          RESPONSE=$(curl -s -o response.txt -w "%{http_code}" -X POST http://nobrakes.cz/deploy)
+          echo "HTTP status: $RESPONSE"
+          echo "Response body:"
+          cat response.txt
+
+          if [ "$RESPONSE" -ne 200 ]; then
+            echo "Deploy failed!"
+            exit 1
+          fi
+
+          echo "Deploy succeeded!"
