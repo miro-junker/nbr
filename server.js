@@ -6,9 +6,13 @@ import fs from "fs";
 import { fileURLToPath } from "url";
 import { exec } from "child_process";
 import createWsServer from "./server/server-ws.js";
+import "dotenv/config"; // Load .env automatically
 
-const DEPLOY_TOKEN_ENABLED = false
-const DEPLOY_TOKEN_SECRET = 'hardcoded-supersecret-nbrtoken'
+// Read configuration from environment variables
+const DEPLOY_TOKEN_ENABLED = process.env.DEPLOY_TOKEN_ENABLED === "true";
+const DEPLOY_TOKEN_SECRET = process.env.DEPLOY_TOKEN_SECRET;
+const SSL_KEY_PATH = process.env.SSL_KEY_PATH || "ssl/letsencrypt/privkey.pem";
+const SSL_CERT_PATH = process.env.SSL_CERT_PATH || "ssl/letsencrypt/fullchain.pem";
 
 // Resolve __dirname
 const __filename = fileURLToPath(import.meta.url);
@@ -16,8 +20,8 @@ const __dirname = path.dirname(__filename);
 
 // Paths to SSL certificate & key
 const sslOptions = {
-  key: fs.readFileSync("ssl/letsencrypt/privkey.pem"),
-  cert: fs.readFileSync("ssl/letsencrypt/fullchain.pem"),
+  key: fs.readFileSync(SSL_KEY_PATH),
+  cert: fs.readFileSync(SSL_CERT_PATH),
 };
 
 // Create Express app
@@ -41,7 +45,7 @@ app.all("/deploy", (req, res) => {
   // Send HTTP response immediately
   res.send("Deploy started");
 
-  // Run deploy.sh in background
+  // Run deploy.sh asynchronously in background
   const child = exec("./scripts/deploy.sh", (error, stdout, stderr) => {
     if (error) {
       console.error(`Deploy failed: ${error}`);
@@ -52,8 +56,6 @@ app.all("/deploy", (req, res) => {
 
   child.unref(); // detach child so server doesn't wait
 });
-
-
 
 // Catch-all 404 handler
 app.use((req, res) => res.status(404).send("404 Not Found"));

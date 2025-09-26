@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# Load .env variables
+set -o allexport
+[ -f "$(dirname "$0")/../.env" ] && source "$(dirname "$0")/../.env"
+set +o allexport
+
+# Default app name if not set in .env
+APP_NAME="${APP_NAME:-nbr-game}"
+
 # Determine project root and log file path
 PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 LOGDIR="$PROJECT_DIR/logs"
@@ -24,7 +32,7 @@ sync
 
 # Run macOS notification asynchronously, only if the OS is Darwin
 if [[ "$(uname)" == "Darwin" ]]; then
-    osascript -e 'display notification "Deploy script was called" with title "Deploy Notification"' &
+    osascript -e 'display notification "CI/CD auto-deploy" with title "Deployment in progress..."' &
 fi
 
 # Measure git pull duration
@@ -43,7 +51,6 @@ echo "$DATE | Deploy finished | commit $END_COMMIT: $END_COMMIT_MSG (took ${PULL
 sync
 
 # Start/restart the app
-APP_NAME="nbr-game"
 if pm2 list | grep -q "$APP_NAME"; then
     pm2 restart "$APP_NAME" --update-env > /dev/null 2>&1
 else
