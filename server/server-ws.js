@@ -20,7 +20,7 @@ function createWsServer({ port, server }) {
 
       // Forward sensor messages to display (if connected)
       ws.on("message", (msg) => {
-        console.log(`    Sensor message: ${msg}`);
+        // console.log(`    Sensor message: ${msg}`);
         if (displaySocket && displaySocket.readyState === WebSocket.OPEN) {
           displaySocket.send(msg);
         }
