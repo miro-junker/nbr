@@ -27,16 +27,19 @@ if [[ "$(uname)" == "Darwin" ]]; then
     osascript -e 'display notification "Deploy script was called" with title "Deploy Notification"' &
 fi
 
-# Pull latest code
+# Measure git pull duration
+PULL_START=$(date +%s)
 git pull origin main > /dev/null 2>&1
+PULL_END=$(date +%s)
+PULL_DURATION=$((PULL_END - PULL_START))  # seconds
 
 # Get updated commit info AFTER pulling new code
 END_COMMIT=$(git rev-parse --short HEAD)
 END_COMMIT_MSG=$(git show -s --format=%s "$END_COMMIT")
 DATE=$(date +"%Y-%m-%d %H:%M:%S")
 
-# Write final log line before restarting the app
-echo "$DATE | Deploy finished | commit $END_COMMIT: $END_COMMIT_MSG" >> "$LOGFILE"
+# Write final log line including pull duration
+echo "$DATE | Deploy finished | commit $END_COMMIT: $END_COMMIT_MSG (took ${PULL_DURATION}s)" >> "$LOGFILE"
 sync
 
 # Start/restart the app
