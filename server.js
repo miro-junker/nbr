@@ -13,6 +13,8 @@ const DEPLOY_TOKEN_ENABLED = process.env.DEPLOY_TOKEN_ENABLED === "true";
 const DEPLOY_TOKEN_SECRET = process.env.DEPLOY_TOKEN_SECRET;
 const SSL_KEY_PATH = process.env.SSL_KEY_PATH || "ssl/letsencrypt/privkey.pem";
 const SSL_CERT_PATH = process.env.SSL_CERT_PATH || "ssl/letsencrypt/fullchain.pem";
+const HTTP_PORT = parseInt(process.env.HTTP_PORT, 10) || 80;
+const HTTPS_PORT = parseInt(process.env.HTTPS_PORT, 10) || 443;
 
 // Resolve __dirname
 const __filename = fileURLToPath(import.meta.url);
@@ -71,16 +73,16 @@ redirectApp.use((req, res) => {
   res.redirect(`https://${host}${req.url}`);
 });
 
-// Start HTTP server on port 80
+// Start HTTP server
 const httpServer = http.createServer(redirectApp);
-httpServer.listen(80, () => {
-  console.log("HTTP server running on port 80 (redirects to HTTPS)");
+httpServer.listen(HTTP_PORT, () => {
+  console.log(`HTTP server running on port ${HTTP_PORT} (redirects to HTTPS)`);
 });
 
-// Start HTTPS server on port 443
+// Start HTTPS server
 const httpsServer = https.createServer(sslOptions, app);
-httpsServer.listen(443, () => {
-  console.log("HTTPS server running on port 443");
+httpsServer.listen(HTTPS_PORT, () => {
+  console.log(`HTTPS server running on port ${HTTPS_PORT}`);
 });
 
 // --- Integrate WebSocket server ---
