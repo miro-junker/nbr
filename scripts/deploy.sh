@@ -19,7 +19,7 @@ START_COMMIT=$(git rev-parse --short HEAD)
 START_COMMIT_MSG=$(git show -s --format=%s "$START_COMMIT")
 
 # Write a line at the very beginning of the deploy
-echo "$(date +"%Y-%m-%d %H:%M:%S") | Deploy started | commit $START_COMMIT: $START_COMMIT_MSG" >> "$LOGFILE"
+echo "$(date +"%Y-%m-%d %H:%M:%S") | Deploy started  | commit $START_COMMIT: $START_COMMIT_MSG" >> "$LOGFILE"
 sync
 
 # Run macOS notification asynchronously, only if the OS is Darwin
