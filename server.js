@@ -39,6 +39,7 @@ app.all("/deploy", (req, res) => {
   // Token check
   if (DEPLOY_TOKEN_ENABLED) {
     const token = req.headers["x-deploy-token"];
+    console.log(`Provided token: ${token}`, DEPLOY_TOKEN_ENABLED);
     if (token !== DEPLOY_TOKEN_SECRET) {
       return res.status(403).send("Forbidden");
     }
