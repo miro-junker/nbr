@@ -32,7 +32,7 @@ sync
 
 # Run macOS notification asynchronously, only if the OS is Darwin
 if [[ "$(uname)" == "Darwin" ]]; then
-    osascript -e 'display notification "CI/CD auto-deploy" with title "Deployment in progress..."' &
+    osascript -e 'display notification "Deployment in progress..." with title "CI/CD auto-deploy"' &
 fi
 
 # Measure git pull duration
