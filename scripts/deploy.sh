@@ -1,5 +1,7 @@
 #!/bin/bash
 
+osascript -e 'display notification "Deploy script was called" with title "Deploy Notification"'
+
 # Log file
 LOGFILE="$HOME/codallo/nbr/logs/deploy.log"
 mkdir -p "$(dirname "$LOGFILE")"
@@ -17,9 +19,9 @@ DATE=$(date +"%Y-%m-%d %H:%M:%S")
 # PM2 app
 APP_NAME="nbr-game"
 if pm2 list | grep -q "$APP_NAME"; then
-    pm2 restart "$APP_NAME" --update-env --no-daemon > /dev/null 2>&1
+    pm2 restart "$APP_NAME" --update-env > /dev/null 2>&1
 else
-    pm2 start server.js --name "$APP_NAME" --update-env --no-daemon > /dev/null 2>&1
+    pm2 start server.js --name "$APP_NAME" --update-env > /dev/null 2>&1
 fi
 pm2 save > /dev/null 2>&1
 
