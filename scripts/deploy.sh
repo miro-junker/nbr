@@ -31,7 +31,10 @@ CURRENT_COMMIT=$(git rev-parse --short HEAD)
 COMMIT_MSG=$(git log -1 --pretty=%s)
 DATE=$(date +"%Y-%m-%d %H:%M:%S")
 
-# PM2 app
+# Write final log line
+echo "$DATE | $CURRENT_COMMIT | $COMMIT_MSG | $git_output" >> "$LOGFILE"
+
+# Start/restart the app
 APP_NAME="nbr-game"
 if pm2 list | grep -q "$APP_NAME"; then
     pm2 restart "$APP_NAME" --update-env > /dev/null 2>&1
@@ -40,6 +43,4 @@ else
 fi
 pm2 save > /dev/null 2>&1
 
-# Write final log line
-echo "$DATE | $CURRENT_COMMIT | $COMMIT_MSG | $git_output" >> "$LOGFILE"
 sync
