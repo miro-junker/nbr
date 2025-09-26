@@ -1,6 +1,6 @@
 {
   "name": "nbr-server",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "type": "module",
   "description": "Server for NoBrakes project",
   "main": "server.js",
