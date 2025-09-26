@@ -11,10 +11,23 @@ jobs:
 
     steps:
       - name: Trigger deployment
+        env:
+          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}  # may be empty
         run: |
           echo "Triggering deploy..."
           mkdir -p tmp
-          RESPONSE=$(curl -s -S -o tmp/response.txt -w "%{http_code}" -X POST -L https://nobrakes.cz/deploy || echo "000")
+          
+          # Build optional header
+          CURL_HEADER=""
+          if [ -n "$DEPLOY_TOKEN" ]; then
+            CURL_HEADER="-H \"x-deploy-token: $DEPLOY_TOKEN\""
+            echo "Using deploy token"
+          else
+            echo "No deploy token configured"
+          fi
+          
+          # Run curl with optional header
+          RESPONSE=$(eval curl -s -S -o tmp/response.txt -w "%{http_code}" -X POST -L $CURL_HEADER https://nobrakes.cz/deploy || echo "000")
           
           echo "HTTP status: $RESPONSE"
           echo "Response body:"
