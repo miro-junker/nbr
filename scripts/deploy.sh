@@ -1,24 +1,27 @@
 #!/bin/bash
 
-# Run macOS notification asynchronously, only if the OS is Darwin (macOS)
+# Determine project root and log file path
+PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+LOGDIR="$PROJECT_DIR/logs"
+LOGFILE="$LOGDIR/deploy.log"
+
+# Create logs directory if it doesn't exist and set permissions
+mkdir -p "$LOGDIR"
+chmod 777 "$LOGDIR"
+touch "$LOGFILE"
+chmod 666 "$LOGFILE"
+
+# Write a line at the very beginning of the deploy
+echo "=== Deploy started at $(date +"%Y-%m-%d %H:%M:%S") ===" >> "$LOGFILE"
+sync
+
+# Run macOS notification asynchronously, only if the OS is Darwin
 if [[ "$(uname)" == "Darwin" ]]; then
     osascript -e 'display notification "Deploy script was called" with title "Deploy Notification"' &
 fi
 
-# Relative log file path
-LOGDIR="./logs"
-LOGFILE="$LOGDIR/deploy.log"
-
-# Create logs directory if it doesn't exist, give full access
-mkdir -p "$LOGDIR"
-chmod 777 "$LOGDIR"
-
-# Ensure the log file exists and is world-writable
-touch "$LOGFILE"
-chmod 666 "$LOGFILE"
-
 # Move to project directory
-cd "$HOME/codallo/nbr" || exit
+cd "$PROJECT_DIR" || exit
 
 # Pull latest code
 git_output=$(git pull origin main)
@@ -37,6 +40,6 @@ else
 fi
 pm2 save > /dev/null 2>&1
 
-# Always write a single-line log and flush immediately
+# Write final log line
 echo "$DATE | $CURRENT_COMMIT | $COMMIT_MSG | $git_output" >> "$LOGFILE"
 sync
