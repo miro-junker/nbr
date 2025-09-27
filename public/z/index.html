@@ -61,7 +61,7 @@
 
   let ws;
   const WS_URL = "wss://nobrakes.cz/?role=sensor";
-  const RECONNECT_INTERVAL = 2000; // Try reconnect every 2 seconds
+  const RECONNECT_INTERVAL = 200; // Try reconnect every 2 seconds
   let reconnectTimeout;
 
   function connectWebSocket() {
