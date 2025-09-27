@@ -73,9 +73,9 @@
     function sendTilt(alpha, beta, gamma) {
       const now = Date.now();
       if (ws.readyState === WebSocket.OPEN && now - lastSent >= MIN_INTERVAL) {
-        const data = { alpha, beta, gamma };
+        const data = { type: 'tilt', alpha, beta, gamma };
         ws.send(JSON.stringify(data));
-        log("➡️ Sent tilt: " + JSON.stringify(data));
+        // log("➡️ Sent tilt: " + JSON.stringify(data));
         lastSent = now;
       }
     }
@@ -90,13 +90,13 @@
           .then(state => {
             if(state === "granted"){
               window.addEventListener("deviceorientation", handleOrientation);
-              log("📱 Tilt sensor enabled");
+              log("📱 Joystick mode enabled");
             } else log("⚠️ Permission denied");
           })
           .catch(console.error);
       } else {
         window.addEventListener("deviceorientation", handleOrientation);
-        log("📱 Tilt sensor enabled");
+        log("📱 Joystick mode enabled");
       }
       startBtn.disabled = true;
     });
