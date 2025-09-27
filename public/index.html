@@ -3,6 +3,47 @@
 <head>
   <meta charset="UTF-8">
   <title>Phone Tilt Sensor</title>
+  <!-- Make page scale correctly on mobile -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 1.5em;
+      margin-bottom: 20px;
+    }
+
+    button {
+      font-size: 1.2em;
+      padding: 15px 25px;
+      border: none;
+      border-radius: 8px;
+      background: #007bff;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      background: #999;
+      cursor: not-allowed;
+    }
+
+    pre {
+      text-align: left;
+      font-size: 0.9em;
+      margin-top: 20px;
+      background: #f4f4f4;
+      padding: 10px;
+      border-radius: 6px;
+      max-height: 40vh;
+      overflow-y: auto;
+    }
+  </style>
 </head>
 <body>
   <h1>NoBrakes smartphone controller</h1>
@@ -25,7 +66,7 @@
     ws.onmessage = (event) => log("📩 Message: " + event.data);
 
     // Configurable rate limit (messages per second)
-    const SEND_RATE = 2; // change this to whatever you like
+    const SEND_RATE = 2;
     const MIN_INTERVAL = 1000 / SEND_RATE; // ms between sends
     let lastSent = 0;
 
