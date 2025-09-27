@@ -1,5 +1,5 @@
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, useGLTF } from '@react-three/drei';
+import { OrbitControls, useGLTF, Environment } from '@react-three/drei';
 import { Suspense } from 'react';
 
 function Model({ path }: { path: string }) {
@@ -10,12 +10,12 @@ function Model({ path }: { path: string }) {
 export default function App() {
   return (
     <div className="container mt-5">
-      <h1 className="mb-3">My 3D App</h1>
-      <Canvas style={{ height: '500px', background: '#eee' }}>
-        <ambientLight />
-        <pointLight position={[10, 10, 10]} />
+      <Canvas style={{ height: '100vh', background: '#eee' }}>
+        <ambientLight intensity={0.5} />
+        <directionalLight position={[5, 10, 5]} intensity={1} />
         <Suspense fallback={null}>
           <Model path="/3d/plane.gltf" />
+          <Environment preset="dawn" background /> {/* realistic environment: dawn/park,  */}
         </Suspense>
         <OrbitControls />
       </Canvas>
