@@ -1,14 +1,10 @@
-// App.tsx
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
+import { OrbitControls, useGLTF } from '@react-three/drei';
+import { Suspense } from 'react';
 
-function Box() {
-  return (
-    <mesh rotation={[0.4, 0.2, 0]}>
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color="orange" />
-    </mesh>
-  );
+function Model({ path }: { path: string }) {
+  const gltf = useGLTF(path);
+  return <primitive object={gltf.scene} scale={1} />;
 }
 
 export default function App() {
@@ -18,7 +14,9 @@ export default function App() {
       <Canvas style={{ height: '500px', background: '#eee' }}>
         <ambientLight />
         <pointLight position={[10, 10, 10]} />
-        <Box />
+        <Suspense fallback={null}>
+          <Model path="/3d/plane.gltf" />
+        </Suspense>
         <OrbitControls />
       </Canvas>
     </div>
