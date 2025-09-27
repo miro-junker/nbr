@@ -17,8 +17,8 @@ export default function App() {
         <ambientLight intensity={0.5} />
         <directionalLight position={[5, 10, 5]} intensity={1} />
         <Suspense fallback={null}>
-          <Model path="/display/3d/plane.gltf" />
-          <Environment files="/display/3d/hdri_1k.hdr" background /> {/* realistic environment: dawn/park,  */}
+          <Model path="3d/plane.gltf" />
+          <Environment files="3d/hdri_1k.hdr" background /> {/* realistic environment: dawn/park,  */}
         </Suspense>
         <OrbitControls />
       </Canvas>
