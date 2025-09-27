@@ -11,6 +11,10 @@ function normalize(value: number, min: number, max: number) {
   return ((value - min) / (max - min)) * 100;
 }
 
+// Configurable smooth animation
+const SMOOTH_ENABLED = false; // set to false to disable smooth animation
+const SMOOTH_MS = 100; // duration in milliseconds
+
 interface TiltVisualizerProps extends TiltPacket {}
 
 export const TiltVisualizer: React.FC<TiltVisualizerProps> = ({
@@ -21,6 +25,10 @@ export const TiltVisualizer: React.FC<TiltVisualizerProps> = ({
   const alphaPercent = normalize(a, 0, 360);
   const betaPercent = normalize(b, -180, 180);
   const gammaPercent = normalize(c, -90, 90);
+
+  const smoothStyle = SMOOTH_ENABLED
+    ? { transition: `height ${SMOOTH_MS}ms ease-in-out` }
+    : { transition: "none" };
 
   return (
     <>
@@ -33,28 +41,29 @@ export const TiltVisualizer: React.FC<TiltVisualizerProps> = ({
             display: flex;
             flex-direction: row;
             gap: 6px;
-            width: 60px;   /* fixed bar width */
-            height: calc(100vh - 2rem); /* max height for 100% */
+            width: 60px;   
+            height: calc(100vh - 2rem);
             z-index: 200;
+            align-items: flex-end;
           }
 
           .tilt-bar {
             width: 33%;
             border-radius: 4px;
-            transition: height 0.1s ease-in-out;
             background: gray;
+            bottom: 0;
           }
 
           .tilt-alpha {
-            background-color: #ef4444; /* red */
+            background-color: #ef4444; 
           }
 
           .tilt-beta {
-            background-color: #22c55e; /* green */
+            background-color: #22c55e; 
           }
 
           .tilt-gamma {
-            background-color: #3b82f6; /* blue */
+            background-color: #3b82f6; 
           }
         `}
       </style>
@@ -62,15 +71,15 @@ export const TiltVisualizer: React.FC<TiltVisualizerProps> = ({
       <div className="tilt-container">
         <div
           className="tilt-bar tilt-alpha"
-          style={{ height: `${alphaPercent}%` }}
+          style={{ height: `${alphaPercent}%`, ...smoothStyle }}
         />
         <div
           className="tilt-bar tilt-beta"
-          style={{ height: `${betaPercent}%` }}
+          style={{ height: `${betaPercent}%`, ...smoothStyle }}
         />
         <div
           className="tilt-bar tilt-gamma"
-          style={{ height: `${gammaPercent}%` }}
+          style={{ height: `${gammaPercent}%`, ...smoothStyle }}
         />
       </div>
     </>
