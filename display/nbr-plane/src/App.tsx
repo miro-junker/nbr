@@ -10,7 +10,7 @@ function Model({ path }: { path: string }) {
 export default function App() {
   return (
     <div className="container mt-5">
-      <Canvas style={{ height: '100vh', background: '#eee' }}>
+      <Canvas style={{ height: '100vh' }} camera={{ position: [0, 4, -20], fov: 50 }}>
         <ambientLight intensity={0.5} />
         <directionalLight position={[5, 10, 5]} intensity={1} />
         <Suspense fallback={null}>
