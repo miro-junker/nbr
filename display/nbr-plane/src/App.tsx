@@ -1,6 +1,7 @@
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useGLTF, Environment } from '@react-three/drei';
 import { Suspense } from 'react';
+import { useWebSocket } from './hooks/useWebsocket';
 
 function Model({ path }: { path: string }) {
   const gltf = useGLTF(path);
@@ -8,6 +9,8 @@ function Model({ path }: { path: string }) {
 }
 
 export default function App() {
+  useWebSocket();
+  
   return (
     <div className="container mt-5">
       <Canvas style={{ height: '100vh' }} camera={{ position: [0, 4, -20], fov: 50 }}>
