@@ -4,4 +4,6 @@ logs
 ssl
 .env
 
+public/display
+
 .DS_Store
