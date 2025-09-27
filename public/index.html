@@ -24,11 +24,18 @@
     ws.onerror = (err) => { log("⚠️ WebSocket error"); console.error(err); };
     ws.onmessage = (event) => log("📩 Message: " + event.data);
 
+    // Configurable rate limit (messages per second)
+    const SEND_RATE = 2; // change this to whatever you like
+    const MIN_INTERVAL = 1000 / SEND_RATE; // ms between sends
+    let lastSent = 0;
+
     function sendTilt(alpha, beta, gamma) {
-      if(ws.readyState === WebSocket.OPEN){
+      const now = Date.now();
+      if (ws.readyState === WebSocket.OPEN && now - lastSent >= MIN_INTERVAL) {
         const data = { alpha, beta, gamma };
         ws.send(JSON.stringify(data));
         log("➡️ Sent tilt: " + JSON.stringify(data));
+        lastSent = now;
       }
     }
 
