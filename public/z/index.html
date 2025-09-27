@@ -66,7 +66,7 @@
     ws.onmessage = (event) => log("📩 Message: " + event.data);
 
     // Configurable rate limit (messages per second)
-    const SEND_RATE = 2;
+    const SEND_RATE = 60; // Hz
     const MIN_INTERVAL = 1000 / SEND_RATE; // ms between sends
     let lastSent = 0;
 
