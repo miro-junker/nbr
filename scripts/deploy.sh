@@ -35,9 +35,10 @@ if [[ "$(uname)" == "Darwin" ]]; then
     osascript -e 'display notification "Deployment in progress..." with title "CI/CD auto-deploy"' &
 fi
 
+echo "***** Pulling latest code... *****"
 # Measure updating duration
 PULL_START=$(date +%s)
-git pull origin main > /dev/null 2>&1
+git pull origin main
 PULL_END=$(date +%s)
 PULL_DURATION=$((PULL_END - PULL_START))  # seconds
 
@@ -47,6 +48,7 @@ END_COMMIT_MSG=$(git show -s --format=%s "$END_COMMIT")
 DATE=$(date +"%Y-%m-%d %H:%M:%S")
 
 # Build frontend
+echo "***** Building the frontend *****"
 ./scripts/build.sh
 
 # Write final log line
@@ -54,9 +56,10 @@ echo "$DATE | Deploy finished | commit $END_COMMIT: $END_COMMIT_MSG (took ${PULL
 sync
 
 # Start/restart the app
+echo "***** Restarting the node server with PM2... *****"
 if pm2 list | grep -q "$APP_NAME"; then
-    pm2 restart "$APP_NAME" --update-env > /dev/null 2>&1
+    pm2 restart "$APP_NAME" --update-env
 else
-    pm2 start server.js --name "$APP_NAME" --update-env > /dev/null 2>&1
+    pm2 start server.js --name "$APP_NAME" --update-env
 fi
 pm2 save > /dev/null 2>&1
