@@ -46,60 +46,78 @@
   </style>
 </head>
 <body>
+  
   <h1>NoBrakes smartphone controller</h1>
   <button id="startBtn">Start the game!</button>
   <pre id="log"></pre>
 
-  <script>
-    const logEl = document.getElementById("log");
-    const startBtn = document.getElementById("startBtn");
+<script>
+  const logEl = document.getElementById("log");
+  const startBtn = document.getElementById("startBtn");
 
-    function log(message) {
-      logEl.textContent += message + "\n";
-    }
+  function log(message) {
+    logEl.textContent += message + "\n";
+  }
 
-    const ws = new WebSocket("wss://nobrakes.cz/?role=sensor");
+  let ws;
+  const WS_URL = "wss://nobrakes.cz/?role=sensor";
+
+  function connectWebSocket() {
+    ws = new WebSocket(WS_URL);
 
     ws.onopen = () => log("✅ Connected to WSS server");
     ws.onclose = () => log("❌ Connection closed");
     ws.onerror = (err) => { log("⚠️ WebSocket error"); console.error(err); };
     ws.onmessage = (event) => log("📩 Message: " + event.data);
+  }
 
-    // Configurable rate limit (messages per second)
-    const SEND_RATE = 60; // Hz
-    const MIN_INTERVAL = 1000 / SEND_RATE; // ms between sends
-    let lastSent = 0;
+  // Initially connect
+  connectWebSocket();
 
-    function sendTilt(alpha, beta, gamma) {
-      const now = Date.now();
-      if (ws.readyState === WebSocket.OPEN && now - lastSent >= MIN_INTERVAL) {
-        const data = { type: 'tilt', a: alpha, b: beta, c: gamma };
-        ws.send(JSON.stringify(data));
-        // log("➡️ Sent tilt: " + JSON.stringify(data));
-        lastSent = now;
+  // Reconnect when page becomes visible again
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") {
+      if (!ws || ws.readyState === WebSocket.CLOSED) {
+        log("🔄 Reconnecting WebSocket...");
+        connectWebSocket();
       }
     }
+  });
 
-    function handleOrientation(event) {
-      sendTilt(event.alpha, event.beta, event.gamma);
+  // Configurable rate limit (messages per second)
+  const SEND_RATE = 60; // Hz
+  const MIN_INTERVAL = 1000 / SEND_RATE; // ms between sends
+  let lastSent = 0;
+
+  function sendTilt(alpha, beta, gamma) {
+    const now = Date.now();
+    if (ws && ws.readyState === WebSocket.OPEN && now - lastSent >= MIN_INTERVAL) {
+      const data = { type: 'tilt', a: alpha, b: beta, c: gamma };
+      ws.send(JSON.stringify(data));
+      lastSent = now;
     }
+  }
 
-    startBtn.addEventListener("click", () => {
-      if (typeof DeviceOrientationEvent.requestPermission === "function") {
-        DeviceOrientationEvent.requestPermission()
-          .then(state => {
-            if(state === "granted"){
-              window.addEventListener("deviceorientation", handleOrientation);
-              log("📱 Joystick mode enabled");
-            } else log("⚠️ Permission denied");
-          })
-          .catch(console.error);
-      } else {
-        window.addEventListener("deviceorientation", handleOrientation);
-        log("📱 Joystick mode enabled");
-      }
-      startBtn.disabled = true;
-    });
-  </script>
+  function handleOrientation(event) {
+    sendTilt(event.alpha, event.beta, event.gamma);
+  }
+
+  startBtn.addEventListener("click", () => {
+    if (typeof DeviceOrientationEvent.requestPermission === "function") {
+      DeviceOrientationEvent.requestPermission()
+        .then(state => {
+          if(state === "granted"){
+            window.addEventListener("deviceorientation", handleOrientation);
+            log("📱 Joystick mode enabled");
+          } else log("⚠️ Permission denied");
+        })
+        .catch(console.error);
+    } else {
+      window.addEventListener("deviceorientation", handleOrientation);
+      log("📱 Joystick mode enabled");
+    }
+    startBtn.disabled = true;
+  });
+</script>
 </body>
 </html>
