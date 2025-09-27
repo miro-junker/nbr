@@ -73,7 +73,7 @@
     function sendTilt(alpha, beta, gamma) {
       const now = Date.now();
       if (ws.readyState === WebSocket.OPEN && now - lastSent >= MIN_INTERVAL) {
-        const data = { type: 'tilt', alpha, beta, gamma };
+        const data = { type: 'tilt', a: alpha, b: beta, c: gamma };
         ws.send(JSON.stringify(data));
         // log("➡️ Sent tilt: " + JSON.stringify(data));
         lastSent = now;

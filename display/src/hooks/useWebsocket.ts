@@ -24,7 +24,6 @@ export function useWebSocket() {
         const parsed = JSON.parse(message);
         if (parsed.type === 'tilt') {
           setLastMessage(parsed);
-          console.log('msg', parsed);
         }
       } catch (err) {
         console.warn('⚠️ Received non-JSON message:', message);

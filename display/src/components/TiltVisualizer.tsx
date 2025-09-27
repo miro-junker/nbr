@@ -1,26 +1,26 @@
 import React from "react";
 
-type TiltData = {
+type TiltPacket = {
   type: "tilt";
-  alpha: number;
-  beta: number;
-  gamma: number;
+  a: number;
+  b: number;
+  c: number;
 };
 
 function normalize(value: number, min: number, max: number) {
   return ((value - min) / (max - min)) * 100;
 }
 
-interface TiltVisualizerProps extends TiltData {}
+interface TiltVisualizerProps extends TiltPacket {}
 
 export const TiltVisualizer: React.FC<TiltVisualizerProps> = ({
-  alpha,
-  beta,
-  gamma,
+  a,
+  b,
+  c,
 }) => {
-  const alphaPercent = normalize(alpha, 0, 360);
-  const betaPercent = normalize(beta, -180, 180);
-  const gammaPercent = normalize(gamma, -90, 90);
+  const alphaPercent = normalize(a, 0, 360);
+  const betaPercent = normalize(b, -180, 180);
+  const gammaPercent = normalize(c, -90, 90);
 
   return (
     <>
