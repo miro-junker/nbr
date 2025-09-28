@@ -1,8 +1,9 @@
 node_modules
 logs
 
-ssl
 .env
+ssl/*
+!ssl/.gitkeep
 
 public/display
 
