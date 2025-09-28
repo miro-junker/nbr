@@ -6,7 +6,7 @@ const RECONNECT_DELAY = 500; // ms
 export function useWebSocket() {
   const [lastMessage, setLastMessage] = useState<any>(null);
   const wsRef = useRef<WebSocket | null>(null);
-  const reconnectTimeoutRef = useRef<typeof setTimeout | null>(null);
+  const reconnectTimeoutRef = useRef<number | null>(null);
 
   const connect = () => {
     // Avoid opening multiple connections
