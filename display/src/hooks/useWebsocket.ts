@@ -1,22 +1,22 @@
 import { useEffect, useState, useRef } from 'react';
 
 const URL_WS = 'wss://nobrakes.cz/?role=display';
+const RECONNECT_DELAY = 500; // ms
 
 export function useWebSocket() {
   const [lastMessage, setLastMessage] = useState<any>(null);
   const wsRef = useRef<WebSocket | null>(null);
-  const connectedRef = useRef(false); // track if connection was established
+  const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  useEffect(() => {
-    // If already connected, skip creating a new WebSocket
-    if (connectedRef.current) return;
+  const connect = () => {
+    // Avoid opening multiple connections
+    if (wsRef.current) return;
 
     const ws = new WebSocket(URL_WS);
     wsRef.current = ws;
 
     ws.onopen = () => {
       console.log('WebSocket connected');
-      connectedRef.current = true;
     };
 
     const processMessage = (message: string) => {
@@ -40,22 +40,46 @@ export function useWebSocket() {
     };
 
     ws.onclose = () => {
-      console.log('WebSocket disconnected');
+      console.log('WebSocket disconnected, scheduling reconnect...');
       wsRef.current = null;
-      connectedRef.current = false;
+      scheduleReconnect();
     };
 
     ws.onerror = (err) => {
       console.error('WebSocket error:', err);
+      ws.close(); // triggers onclose and reconnect
+    };
+  };
+
+  const scheduleReconnect = (delay = RECONNECT_DELAY) => {
+    if (reconnectTimeoutRef.current) return;
+    reconnectTimeoutRef.current = setTimeout(() => {
+      reconnectTimeoutRef.current = null;
+      connect();
+    }, delay);
+  };
+
+  useEffect(() => {
+    connect();
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible' && !wsRef.current) {
+        console.log('Page visible, reconnecting WebSocket immediately...');
+        connect();
+      }
     };
 
-    // Cleanup: close only if this was the active connection
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
     return () => {
-      if (wsRef.current === ws) {
-        ws.close();
+      if (wsRef.current) {
+        wsRef.current.close();
         wsRef.current = null;
-        connectedRef.current = false;
       }
+      if (reconnectTimeoutRef.current) {
+        clearTimeout(reconnectTimeoutRef.current);
+      }
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, []);
 
