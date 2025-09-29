@@ -3,12 +3,10 @@ import { OrbitControls, Environment } from '@react-three/drei';
 import { Suspense } from 'react';
 import { useWebSocket } from './hooks/useWebsocket';
 import { Plane, TiltVisualizer } from './components/index.ts';
-import { useCameraAngle } from './hooks/index.ts';
 
 
 export default function App() {
   const { lastMessage } = useWebSocket();
-  useCameraAngle(lastMessage);
 
   
   return (
