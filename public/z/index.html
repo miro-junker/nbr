@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Phone Tilt Sensor</title>
-  <!-- Make page scale correctly on mobile -->
+  <title>Update Flight controller</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -61,7 +60,7 @@
 
   let ws;
   const WS_URL = "wss://nobrakes.cz/?role=sensor";
-  const RECONNECT_INTERVAL = 200; // Try reconnect every 2 seconds
+  const RECONNECT_INTERVAL = 200; // Try reconnect every 200 ms
   let reconnectTimeout;
 
   function connectWebSocket() {
@@ -109,7 +108,7 @@
   });
 
   // Configurable rate limit (messages per second)
-  const SEND_RATE = 60; // Hz
+  const SEND_RATE = 1; // Hz
   const MIN_INTERVAL = 1000 / SEND_RATE; // ms between sends
   let lastSent = 0;
 
