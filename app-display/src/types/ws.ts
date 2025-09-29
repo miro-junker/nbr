@@ -1,10 +1,10 @@
-export type TiltMessage = {
+export type TiltPacket = {
   type: "tilt";
   a: number;
   b: number;
   c: number;
 };
 
-export type WebSocketMessage =
-  | TiltMessage
+export type WebSocketPacket =
+  | TiltPacket
 ;

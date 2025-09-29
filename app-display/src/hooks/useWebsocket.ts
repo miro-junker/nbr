@@ -1,10 +1,12 @@
 import { useEffect, useState, useRef } from 'react';
+import { getSteeringValues } from '../utils/sensor';
+import type { TSteering } from '../types/steering';
 
 const URL_WS = 'wss://nobrakes.cz/?role=display';
 const RECONNECT_DELAY = 500; // ms
 
 export function useWebSocket() {
-  const [lastMessage, setLastMessage] = useState<any>(null);
+  const [steering, setSteering] = useState<TSteering>({ horizontal: 0 });
   const wsRef = useRef<WebSocket | null>(null);
   const reconnectTimeoutRef = useRef<number | null>(null);
 
@@ -23,7 +25,10 @@ export function useWebSocket() {
       try {
         const parsed = JSON.parse(message);
         if (parsed.type === 'tilt') {
-          setLastMessage(parsed);
+          setSteering({
+            ...getSteeringValues(parsed),
+            ...parsed
+          });
         }
       } catch (err) {
         console.warn('⚠️ Received non-JSON message:', message);
@@ -91,5 +96,5 @@ export function useWebSocket() {
     }
   };
 
-  return { lastMessage, sendMessage };
+  return { steering, sendMessage };
 }
