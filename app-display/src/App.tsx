@@ -1,13 +1,13 @@
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment } from '@react-three/drei';
 import { Suspense } from 'react';
-import { useWebSocket } from './hooks/useWebsocket';
+import { useWebSocket, useMessage } from './hooks';
 import { Plane, TiltVisualizer } from './components/index.ts';
 
 
 export default function App() {
   const { lastMessage } = useWebSocket();
-
+  useMessage(lastMessage)
   
   return (
     <div className="container mt-5">
