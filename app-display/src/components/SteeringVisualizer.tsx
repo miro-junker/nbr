@@ -82,7 +82,7 @@ export const SteeringVisualizer: React.FC<any> = ({
           }
 
           .steering-x {
-            height: 20px;
+            height: 10px;
             display: flex;
             position: fixed;
             bottom: 2rem;
@@ -112,12 +112,12 @@ export const SteeringVisualizer: React.FC<any> = ({
 
           .x-center {
             background: yellow;
-            width: 40px;
-            height: 40px;
+            width: 20px;
+            height: 20px;
             position: absolute;
-            left: calc(50% - 20px);
-            border-radius: 20px;
-            top: -10px;
+            left: calc(50% - 10px);
+            border-radius: 10px;
+            top: -5px;
           }
         `}
       </style>
