@@ -2,7 +2,7 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment } from '@react-three/drei';
 import { Suspense } from 'react';
 import { useWebSocket } from './hooks';
-import { Plane, SteeringVisualizer } from './components/index.ts';
+import { Plane, SteeringVisualizer, Parachute } from './components/index.ts';
 
 
 export default function App() {
@@ -20,6 +20,11 @@ export default function App() {
             turnY={0}
             posX={0}
             posY={0}
+          />
+          <Parachute
+            positionX={10}
+            positionY={0}
+            positionZ={40}
           />
           <Environment files="3d/hdri_1k.hdr" background />
         </Suspense>
