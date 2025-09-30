@@ -1,8 +1,12 @@
-import { Model3D } from './Model3D.tsx';
+import { useGLTF } from '@react-three/drei';
 
-
-export function Plane() {
-  return <Model3D path="3d/plane.gltf" scale={1} />;
+interface Props {
+  turnHorizontal: number
+  turnVertical: number
 }
 
+export function Plane({ turnHorizontal, turnVertical }: Props) {
+  const gltf = useGLTF("3d/plane.gltf");
 
+  return <primitive object={gltf.scene} scale={1} rotation={[turnVertical, 0, turnHorizontal]} />;
+}
