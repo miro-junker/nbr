@@ -10,6 +10,8 @@ interface IGame {
 }
 
 function Game({ steering }: IGame) {
+    const refPlane = useRef(null)
+    const refParachute = useRef(null)
     const gameStateRef = useRef({
         planePositionX: 0,
         planeRotationX: 0,
@@ -28,15 +30,17 @@ function Game({ steering }: IGame) {
     return (
         <>
             <Plane
+                ref={refPlane}
                 turnX={steering.horizontal}
                 turnY={0}
                 posX={0}
                 posY={0}
             />
             <Parachute
+                ref={refParachute}
                 positionX={10}
                 positionY={0}
-                positionZ={gameStateRef.current.parachutePositionZ}
+                positionZ={40}
             />
             <Environment files="3d/hdri_1k.hdr" background />
         </>
