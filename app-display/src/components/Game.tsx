@@ -17,18 +17,26 @@ export function Game({ steering }: IGame) {
     const refGameState = useRef<TGameState>(initGameState);
 
     useFrame((state, delta) => {
-        // console.log("frame", state, delta);
+        const newPlaneRotationX = refGameState.current.planeRotationX + steering.horizontal * delta;
+        refPlane.current?.rotation.set(0, 0, newPlaneRotationX)
+
         const newParachuteZ = refGameState.current.parachutePos[2] - delta * 2;
         const newParachutePos: TPos = [20, 0, newParachuteZ]
-        refGameState.current.parachutePos = newParachutePos
         refParachute.current?.position.set(20, 0, newParachuteZ)
+        
+        refGameState.current = {
+            ...refGameState.current,
+            parachutePos: newParachutePos,
+            planeRotationX: newPlaneRotationX,
+        }
+        
     })
 
     return (
         <>
             <Plane
                 ref={refPlane}
-                turnX={steering.horizontal}
+                turnX={0}
                 turnY={0}
                 posX={0}
                 posY={0}

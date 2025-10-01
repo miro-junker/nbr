@@ -1,8 +1,8 @@
 export type TPos = [number, number, number]
 
 export type TGameState = {
-    planePosX: 0,
-    planeRotationX: 0,
+    planePosX: number,
+    planeRotationX: number,
     parachutePos: TPos
 }
 
