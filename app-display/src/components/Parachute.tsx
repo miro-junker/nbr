@@ -4,22 +4,17 @@ import * as THREE from 'three';
 
 
 interface Props {
-    positionX: number
-    positionY: number
-    positionZ: number
+    position: [number, number, number]
 }
 
 
 export const Parachute = forwardRef<THREE.Group, Props>((props: Props, ref) =>{
     const gltf = useGLTF("3d/parachute.gltf");
 
-    const { positionX, positionY, positionZ } = props
-
-
     return (
         <group
             ref={ref}
-            position={[positionX, positionY, positionZ]}
+            position={props.position}
             rotation={[0,0,0]}
             scale={1}
         >
