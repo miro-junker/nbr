@@ -5,7 +5,7 @@ import { Plane, Parachute } from '.';
 import * as THREE from 'three';
 import { initGameState } from '../physics/state';
 import type { TSteering, TGameState, TPos } from '../types';
-import { getPlaneRotation } from '../physics/plane';
+import { getPlaneRotation, getPlanePositionX } from '../physics/plane';
 
 
 interface IGame {
@@ -18,17 +18,20 @@ export function Game({ steering }: IGame) {
     const refGameState = useRef<TGameState>(initGameState);
 
     useFrame((state, delta) => {
-        const newPlaneRotationX = getPlaneRotation(refGameState.current, steering, delta); ;
+        const newPlaneRotationX = getPlaneRotation(refGameState.current, steering, delta);
         refPlane.current?.rotation.set(0, 0, newPlaneRotationX)
+
+        const newPlanePosX = getPlanePositionX(refGameState.current, newPlaneRotationX, delta);
+        refPlane.current?.position.set(-newPlanePosX, 0, 0)
 
         const newParachuteZ = refGameState.current.parachutePos[2] - delta * 2;
         const newParachutePos: TPos = [20, 0, newParachuteZ]
         refParachute.current?.position.set(20, 0, newParachuteZ)
         
         refGameState.current = {
-            ...refGameState.current,
             parachutePos: newParachutePos,
             planeRotationX: newPlaneRotationX,
+            planePosX: newPlanePosX,
         }
         
     })
