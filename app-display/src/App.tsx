@@ -1,8 +1,9 @@
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Environment } from '@react-three/drei';
+import { OrbitControls } from '@react-three/drei';
 import { Suspense } from 'react';
 import { useWebSocket } from './hooks';
-import { Plane, SteeringVisualizer, Parachute } from './components/index.ts';
+import { SteeringVisualizer } from './components/index.ts';
+import Game from './components/Game.tsx';
 
 
 export default function App() {
@@ -15,18 +16,7 @@ export default function App() {
         <ambientLight intensity={0.5} />
         <directionalLight position={[5, 10, 5]} intensity={1} />
         <Suspense fallback={null}>
-          <Plane
-            turnX={steering.horizontal}
-            turnY={0}
-            posX={0}
-            posY={0}
-          />
-          <Parachute
-            positionX={10}
-            positionY={0}
-            positionZ={40}
-          />
-          <Environment files="3d/hdri_1k.hdr" background />
+          <Game steering={steering} />
         </Suspense>
         <OrbitControls />
       </Canvas>

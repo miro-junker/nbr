@@ -1,5 +1,4 @@
 import React from "react";
-import type { TiltPacket, TSteering } from "../types/ws";
 
 
 function normalize(value: number, min: number, max: number) {

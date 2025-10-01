@@ -19,10 +19,10 @@ export function Parachute(props: Props) {
         scale={1}
     >
         <primitive
-        object={gltf.scene}
-        rotation={[1.65, 3.15, 0]}
-        position={[0, -1, 0]}
-        scale={0.2}
+            object={gltf.scene}
+            rotation={[1.65, 3.15, 0]}
+            position={[0, -1, 0]}
+            scale={0.2}
         />
     </group>
   );
