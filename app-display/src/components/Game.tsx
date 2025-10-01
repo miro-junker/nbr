@@ -3,6 +3,7 @@ import { useFrame } from '@react-three/fiber';
 import { Environment } from '@react-three/drei';
 import { Plane, Parachute } from '.';
 import type { TSteering } from '../types/steering';
+import * as THREE from 'three';
 
 
 interface IGame {
@@ -10,9 +11,9 @@ interface IGame {
 }
 
 function Game({ steering }: IGame) {
-    const refPlane = useRef(null)
-    const refParachute = useRef(null)
-    const gameStateRef = useRef({
+    const refPlane = useRef<THREE.Object3D>(null)
+    const refParachute = useRef<THREE.Group>(null)
+    const refGameState = useRef({
         planePositionX: 0,
         planeRotationX: 0,
         parachutePositionX: 10,
@@ -20,10 +21,12 @@ function Game({ steering }: IGame) {
     });
 
     useFrame((state, delta) => {
-      // console.log("frame", state, delta);
-      const newParachuteZ = gameStateRef.current.parachutePositionZ - delta * 5;
-      console.log("parachuteZ", gameStateRef.current.parachutePositionZ)
-      gameStateRef.current.parachutePositionZ = newParachuteZ
+        // console.log("frame", state, delta);
+        const newParachuteZ = refGameState.current.parachutePositionZ - delta * 5;
+        console.log("parachuteZ", refGameState.current.parachutePositionZ)
+        refGameState.current.parachutePositionZ = newParachuteZ
+        refParachute.current?.position.set(20, 0, newParachuteZ)
+      
 
     })
 
