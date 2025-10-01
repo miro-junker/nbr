@@ -1,4 +1,4 @@
-import type { TiltPacket } from "../types/ws";
+import type { TiltPacket } from "../types";
 
 
 function getSteeringHorizontal(angle: number): number {

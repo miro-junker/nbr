@@ -2,9 +2,10 @@ import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Environment } from '@react-three/drei';
 import { Plane, Parachute } from '.';
-import type { TSteering } from '../types/steering';
 import * as THREE from 'three';
-import { initGameState, type TGameState, type TPos } from '../physics/state';
+import { initGameState } from '../physics/state';
+import type { TSteering, TGameState, TPos } from '../types';
+import { getPlaneRotation } from '../physics/plane';
 
 
 interface IGame {
@@ -17,7 +18,7 @@ export function Game({ steering }: IGame) {
     const refGameState = useRef<TGameState>(initGameState);
 
     useFrame((state, delta) => {
-        const newPlaneRotationX = refGameState.current.planeRotationX + steering.horizontal * delta;
+        const newPlaneRotationX = getPlaneRotation(refGameState.current, steering, delta); ;
         refPlane.current?.rotation.set(0, 0, newPlaneRotationX)
 
         const newParachuteZ = refGameState.current.parachutePos[2] - delta * 2;

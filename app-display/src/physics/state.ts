@@ -1,10 +1,5 @@
-export type TPos = [number, number, number]
+import type { TGameState } from '../types';
 
-export type TGameState = {
-    planePosX: number,
-    planeRotationX: number,
-    parachutePos: TPos
-}
 
 export const initGameState: TGameState = {
     planePosX: 0,
