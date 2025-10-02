@@ -3,7 +3,7 @@ import { getSteeringValues } from '../utils/sensor';
 import type { TSteering } from '../types/steering';
 
 const URL_WS = 'wss://nobrakes.cz/?role=display';
-const RECONNECT_DELAY = 500; // ms
+const RECONNECT_DELAY = 250; // ms
 
 export function useWebSocket() {
   const [steering, setSteering] = useState<TSteering>({ horizontal: 0 });
