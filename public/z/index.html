@@ -17,6 +17,15 @@
       margin-bottom: 20px;
     }
 
+    input {
+      font-size: 1.1em;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      width: 250px;
+    }
+
     button {
       font-size: 1.2em;
       padding: 15px 25px;
@@ -47,12 +56,19 @@
 <body>
   
   <h1>Update Flight controller</h1>
+
+  <!-- Nickname input -->
+  <input id="nickname" type="text" placeholder="Pilot's nickname" />
+
+  <br>
+
   <button id="startBtn">Start the game!</button>
   <pre id="log"></pre>
 
 <script>
   const logEl = document.getElementById("log");
   const startBtn = document.getElementById("startBtn");
+  const nicknameInput = document.getElementById("nickname");
 
   function log(message) {
     logEl.textContent += message + "\n";
@@ -126,6 +142,19 @@
   }
 
   startBtn.addEventListener("click", () => {
+    const nickname = nicknameInput.value.trim();
+    if (!nickname) {
+      log("⚠️ Please enter a nickname first");
+      return;
+    }
+
+    // Send login message first
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      ws.send(JSON.stringify({ type: "login", pilot: nickname }));
+      log("🚀 Registering pilot as: " + nickname);
+    }
+
+    // Then request motion access
     if (typeof DeviceOrientationEvent.requestPermission === "function") {
       DeviceOrientationEvent.requestPermission()
         .then(state => {
@@ -140,6 +169,7 @@
       log("📱 Joystick mode enabled");
     }
     startBtn.disabled = true;
+    nicknameInput.disabled = true;
   });
 
   // Initial connection
