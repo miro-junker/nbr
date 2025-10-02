@@ -62,6 +62,8 @@
   <pre id="log"></pre>
 
 <script>
+  const DEBUG = true;
+
   const logEl = document.getElementById("log");
   const startBtn = document.getElementById("startBtn");
   const nicknameInput = document.getElementById("nickname");
@@ -139,7 +141,7 @@
 
   startBtn.addEventListener("click", () => {
     const nickname = nicknameInput.value.trim();
-    if (!nickname) {
+    if (!DEBUG && !nickname) {
       log("⚠️ Enter your callsign first, pilot!");
       return;
     }
@@ -156,13 +158,13 @@
         .then(state => {
           if(state === "granted"){
             window.addEventListener("deviceorientation", handleOrientation);
-            log("🎮 Joystick engaged — you're cleared for takeoff!");
+            log("🎮 Joystick mode — you're cleared for takeoff!");
           } else log("⛔ Control access denied");
         })
         .catch(console.error);
     } else {
       window.addEventListener("deviceorientation", handleOrientation);
-      log("🎮 Joystick engaged — you're cleared for takeoff!");
+      log("🎮 Joystick mode — you're cleared for takeoff!");
     }
     startBtn.disabled = true;
     nicknameInput.disabled = true;
