@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { getSteeringValues } from '../utils/sensor';
 import type { TSteering } from '../types/steering';
-import { WS_URL, WS_RECONNECT_DELAY } from '../config/server';
+import { WS_URL, WS_RECONNECT_DELAY } from '../config/main';
 import type { TAppState } from '../types/appState';
 
 

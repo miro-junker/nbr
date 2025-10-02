@@ -71,7 +71,8 @@ export function Game({ refSteering }: IGame) {
             <Environment
                 files="3d/hdri_1k.hdr"
                 backgroundRotation={[0, 0.5*Math.PI, 0]} // rotate around Y axis
-                background />
+                background
+            />
         </>
     )
 }

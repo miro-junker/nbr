@@ -16,7 +16,7 @@ export default function App() {
   const refSteering = useRef<TSteering>(initialSteering)
   useWebSocket(refSteering, setAppState);
 
-  if (DEBUG || appState.loggedIn === false) return <LoginScreen />
+  if (!DEBUG && appState.loggedIn === false) return <LoginScreen />
   
   return (
     <div className="container mt-5">
