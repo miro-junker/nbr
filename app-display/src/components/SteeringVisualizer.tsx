@@ -1,5 +1,5 @@
-import React from "react";
-
+import React, { useEffect, useState } from "react";
+import type { TSteering } from "../types/steering";
 
 function normalize(value: number, min: number, max: number) {
   return ((value - min) / (max - min)) * 100;
@@ -11,20 +11,34 @@ function normalizeGamma(value: number) {
   return ((clamped + 90) / 180) * 100;
 }
 
-
 // Configurable smooth animation
-const SMOOTH_ENABLED = true; // set to false to disable smooth animation
-const SMOOTH_MS = 100; // duration in milliseconds
+const SMOOTH_ENABLED = true;
+const SMOOTH_MS = 100;
 const DEBUG = false;
 
+export const SteeringVisualizer: React.FC<{
+  refSteering: React.RefObject<TSteering>;
+}> = ({ refSteering }) => {
+  const [data, setData] = useState<TSteering>(null);
 
-export const SteeringVisualizer: React.FC<any> = ({
-  a,
-  b,
-  c,
-  horizontal,
-}) => {
-  if (typeof horizontal !== "number") return null;
+  useEffect(() => {
+    let animationFrameId: number;
+
+    const update = () => {
+      if (refSteering.current) {
+        // copy so React detects changes
+        setData({ ...refSteering.current });
+      }
+      animationFrameId = requestAnimationFrame(update);
+    };
+
+    animationFrameId = requestAnimationFrame(update);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [refSteering]);
+
+  if (!data || typeof data.horizontal !== "number") return null;
+
+  const { a = 0, b = 0, c = 0, horizontal = 0 } = data;
 
   const alphaPercent = normalize(a, 0, 360);
   const betaPercent = normalize(b, -180, 180);
@@ -34,15 +48,15 @@ export const SteeringVisualizer: React.FC<any> = ({
     ? { transition: `height ${SMOOTH_MS}ms ease-in-out` }
     : { transition: "none" };
 
-    let left = 0;
-    let right = 0;
-    if (horizontal < 0) {
-      left = horizontal * -100;
-      right = 0;
-    } else {
-      left = 0;
-      right = horizontal * 100;
-    }
+  let left = 0;
+  let right = 0;
+  if (horizontal < 0) {
+    left = horizontal * -100;
+    right = 0;
+  } else {
+    left = 0;
+    right = horizontal * 100;
+  }
 
   return (
     <>
@@ -68,17 +82,9 @@ export const SteeringVisualizer: React.FC<any> = ({
             bottom: 0;
           }
 
-          .tilt-alpha {
-            background-color: #ef4444; 
-          }
-
-          .tilt-beta {
-            background-color: #22c55e; 
-          }
-
-          .tilt-gamma {
-            background-color: #3b82f6; 
-          }
+          .tilt-alpha { background-color: #ef4444; }
+          .tilt-beta { background-color: #22c55e; }
+          .tilt-gamma { background-color: #3b82f6; }
 
           .steering-x {
             height: 10px;
@@ -139,17 +145,29 @@ export const SteeringVisualizer: React.FC<any> = ({
       )}
 
       {DEBUG && (
-        <div style={{ position: "fixed", top: 10, left: 10, fontSize: 24, zIndex: 200 }}>
-          <div style={{ color: 'red' }}>α: {a?.toFixed(1)}°</div>
-          <div style={{ color: 'green' }}>β: {b?.toFixed(1)}°</div>
-          <div style={{ color: 'blue' }}>γ: {c?.toFixed(1)}°</div>
+        <div
+          style={{
+            position: "fixed",
+            top: 10,
+            left: 10,
+            fontSize: 24,
+            zIndex: 200,
+          }}
+        >
+          <div style={{ color: "red" }}>α: {a?.toFixed(1)}°</div>
+          <div style={{ color: "green" }}>β: {b?.toFixed(1)}°</div>
+          <div style={{ color: "blue" }}>γ: {c?.toFixed(1)}°</div>
         </div>
       )}
 
-      <div className='steering-x'>
-        <div className='steering-x-box steering-x-box--left'><div className='steering-x-bar' style={{ width: `${left}%`}} /></div>
-        <div className='steering-x-box'><div className='steering-x-bar' style={{ width: `${right}%`}} /></div>
-        <div className='x-center' />
+      <div className="steering-x">
+        <div className="steering-x-box steering-x-box--left">
+          <div className="steering-x-bar" style={{ width: `${left}%` }} />
+        </div>
+        <div className="steering-x-box">
+          <div className="steering-x-bar" style={{ width: `${right}%` }} />
+        </div>
+        <div className="x-center" />
       </div>
     </>
   );
