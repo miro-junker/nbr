@@ -1,27 +1,30 @@
 import { useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
-import { Suspense } from 'react';
+import { Suspense, useRef } from 'react';
 import { useWebSocket } from './hooks';
 import { LoginScreen, SteeringVisualizer } from './components';
 import { Game } from './components/Game';
 import { initialAppState } from './state/appState';
+import { initialSteering } from './physics/steering';
+import type { TSteering } from './types';
 
 
 export default function App() {
-  const { steering } = useWebSocket();
   const [appState, setAppState] = useState(initialAppState)
+  const refSteering = useRef<TSteering>(initialSteering)
+  useWebSocket(refSteering);
 
   if (appState.loggedIn === false) return <LoginScreen />
   
   return (
     <div className="container mt-5">
-      <SteeringVisualizer {...steering} />
+      <SteeringVisualizer refSteering={refSteering} />
       <Canvas style={{ height: '100vh' }} camera={{ position: [0, 4, -20], fov: 50 }}>
         <ambientLight intensity={0.5} />
         <directionalLight position={[5, 10, 5]} intensity={1} />
         <Suspense fallback={null}>
-          <Game steering={steering} />
+          <Game refSteering={refSteering} />
         </Suspense>
         <OrbitControls />
       </Canvas>

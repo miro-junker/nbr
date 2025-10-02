@@ -9,10 +9,10 @@ import { getPlaneRotation, getPlanePositionX } from '../physics/plane';
 
 
 interface IGame {
-    steering: TSteering
+    refSteering: React.RefObject<TSteering>
 }
 
-export function Game({ steering }: IGame) {
+export function Game({ refSteering }: IGame) {
     const refPlane = useRef<THREE.Object3D>(null)
     const refParachute = useRef<THREE.Group>(null)
     const refGameState = useRef<TGameState>(initGameState);
@@ -22,7 +22,7 @@ export function Game({ steering }: IGame) {
 
     useFrame((state, delta) => {
         // Plane updates
-        const newPlaneRotationX = getPlaneRotation(refGameState.current, steering, delta);
+        const newPlaneRotationX = getPlaneRotation(refGameState.current, refSteering.current, delta);
         refPlane.current?.rotation.set(0, 0, newPlaneRotationX)
 
         const newPlanePosX = getPlanePositionX(refGameState.current, newPlaneRotationX, delta);

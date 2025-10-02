@@ -1,48 +1,75 @@
-import React from "react";
-
+import React, { useEffect, useRef } from "react";
+import type { TSteering } from "../types/steering";
 
 function normalize(value: number, min: number, max: number) {
   return ((value - min) / (max - min)) * 100;
 }
 
 function normalizeGamma(value: number) {
-  // Clamp the value to stay within -90…90
   const clamped = Math.max(-90, Math.min(90, value));
   return ((clamped + 90) / 180) * 100;
 }
 
-
-// Configurable smooth animation
-const SMOOTH_ENABLED = true; // set to false to disable smooth animation
-const SMOOTH_MS = 100; // duration in milliseconds
+const SMOOTH_ENABLED = true;
+const SMOOTH_MS = 100;
 const DEBUG = false;
 
+export const SteeringVisualizer: React.FC<{
+  refSteering: React.RefObject<TSteering>;
+}> = ({ refSteering }) => {
+  // refs for DOM elements
+  const alphaRef = useRef<HTMLDivElement>(null);
+  const betaRef = useRef<HTMLDivElement>(null);
+  const gammaRef = useRef<HTMLDivElement>(null);
+  const leftRef = useRef<HTMLDivElement>(null);
+  const rightRef = useRef<HTMLDivElement>(null);
 
-export const SteeringVisualizer: React.FC<any> = ({
-  a,
-  b,
-  c,
-  horizontal,
-}) => {
-  if (typeof horizontal !== "number") return null;
+  const debugAlphaRef = useRef<HTMLDivElement>(null);
+  const debugBetaRef = useRef<HTMLDivElement>(null);
+  const debugGammaRef = useRef<HTMLDivElement>(null);
 
-  const alphaPercent = normalize(a, 0, 360);
-  const betaPercent = normalize(b, -180, 180);
-  const gammaPercent = normalizeGamma(c);
+  useEffect(() => {
+    let frameId: number;
+
+    const update = () => {
+      const s = refSteering.current;
+      if (s) {
+        const { a = 0, b = 0, c = 0, horizontal = 0 } = s;
+
+        // update debug values
+        if (DEBUG) {
+          if (debugAlphaRef.current) debugAlphaRef.current.textContent = `α: ${a.toFixed(1)}°`;
+          if (debugBetaRef.current) debugBetaRef.current.textContent = `β: ${b.toFixed(1)}°`;
+          if (debugGammaRef.current) debugGammaRef.current.textContent = `γ: ${c.toFixed(1)}°`;
+        }
+
+        // update bars
+        if (alphaRef.current)
+          alphaRef.current.style.height = `${normalize(a, 0, 360)}%`;
+        if (betaRef.current)
+          betaRef.current.style.height = `${normalize(b, -180, 180)}%`;
+        if (gammaRef.current)
+          gammaRef.current.style.height = `${normalizeGamma(c)}%`;
+
+        // steering left/right
+        if (horizontal < 0) {
+          if (leftRef.current) leftRef.current.style.width = `${-horizontal * 100}%`;
+          if (rightRef.current) rightRef.current.style.width = "0%";
+        } else {
+          if (leftRef.current) leftRef.current.style.width = "0%";
+          if (rightRef.current) rightRef.current.style.width = `${horizontal * 100}%`;
+        }
+      }
+      frameId = requestAnimationFrame(update);
+    };
+
+    frameId = requestAnimationFrame(update);
+    return () => cancelAnimationFrame(frameId);
+  }, [refSteering]);
 
   const smoothStyle = SMOOTH_ENABLED
     ? { transition: `height ${SMOOTH_MS}ms ease-in-out` }
     : { transition: "none" };
-
-    let left = 0;
-    let right = 0;
-    if (horizontal < 0) {
-      left = horizontal * -100;
-      right = 0;
-    } else {
-      left = 0;
-      right = horizontal * 100;
-    }
 
   return (
     <>
@@ -68,17 +95,9 @@ export const SteeringVisualizer: React.FC<any> = ({
             bottom: 0;
           }
 
-          .tilt-alpha {
-            background-color: #ef4444; 
-          }
-
-          .tilt-beta {
-            background-color: #22c55e; 
-          }
-
-          .tilt-gamma {
-            background-color: #3b82f6; 
-          }
+          .tilt-alpha { background-color: #ef4444; }
+          .tilt-beta { background-color: #22c55e; }
+          .tilt-gamma { background-color: #3b82f6; }
 
           .steering-x {
             height: 10px;
@@ -123,33 +142,28 @@ export const SteeringVisualizer: React.FC<any> = ({
 
       {DEBUG && (
         <div className="tilt-container">
-          <div
-            className="tilt-bar tilt-alpha"
-            style={{ height: `${alphaPercent}%`, ...smoothStyle }}
-          />
-          <div
-            className="tilt-bar tilt-beta"
-            style={{ height: `${betaPercent}%`, ...smoothStyle }}
-          />
-          <div
-            className="tilt-bar tilt-gamma"
-            style={{ height: `${gammaPercent}%`, ...smoothStyle }}
-          />
+          <div ref={alphaRef} className="tilt-bar tilt-alpha" style={smoothStyle} />
+          <div ref={betaRef} className="tilt-bar tilt-beta" style={smoothStyle} />
+          <div ref={gammaRef} className="tilt-bar tilt-gamma" style={smoothStyle} />
         </div>
       )}
 
       {DEBUG && (
         <div style={{ position: "fixed", top: 10, left: 10, fontSize: 24, zIndex: 200 }}>
-          <div style={{ color: 'red' }}>α: {a?.toFixed(1)}°</div>
-          <div style={{ color: 'green' }}>β: {b?.toFixed(1)}°</div>
-          <div style={{ color: 'blue' }}>γ: {c?.toFixed(1)}°</div>
+          <div ref={debugAlphaRef} style={{ color: 'red' }} />
+          <div ref={debugBetaRef} style={{ color: 'green' }} />
+          <div ref={debugGammaRef} style={{ color: 'blue' }} />
         </div>
       )}
 
-      <div className='steering-x'>
-        <div className='steering-x-box steering-x-box--left'><div className='steering-x-bar' style={{ width: `${left}%`}} /></div>
-        <div className='steering-x-box'><div className='steering-x-bar' style={{ width: `${right}%`}} /></div>
-        <div className='x-center' />
+      <div className="steering-x">
+        <div className="steering-x-box steering-x-box--left">
+          <div ref={leftRef} className="steering-x-bar" />
+        </div>
+        <div className="steering-x-box">
+          <div ref={rightRef} className="steering-x-bar" />
+        </div>
+        <div className="x-center" />
       </div>
     </>
   );
