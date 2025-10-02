@@ -76,14 +76,14 @@
 
   let ws;
   const WS_URL = "wss://nobrakes.cz/?role=sensor";
-  const RECONNECT_INTERVAL = 200; // Try reconnect every 200 ms
+  const RECONNECT_INTERVAL = 200; 
   let reconnectTimeout;
 
   function connectWebSocket() {
     ws = new WebSocket(WS_URL);
 
     ws.onopen = () => {
-      log("✅ Connected to WSS server");
+      log("🛫 Connected to the control tower");
       if (reconnectTimeout) {
         clearTimeout(reconnectTimeout);
         reconnectTimeout = null;
@@ -91,23 +91,23 @@
     };
 
     ws.onclose = () => {
-      log("❌ Connection closed, retrying...");
+      log("📡 Lost signal to tower, trying to re-establish link...");
       scheduleReconnect();
     };
 
     ws.onerror = (err) => {
-      log("⚠️ WebSocket error, retrying...");
+      log("⚠️ Radio interference detected, switching channel...");
       console.error(err);
-      ws.close(); // ensure close triggers reconnect
+      ws.close(); 
     };
 
-    ws.onmessage = (event) => log("📩 Message: " + event.data);
+    ws.onmessage = (event) => log("🎙 Tower: " + event.data);
   }
 
   function scheduleReconnect() {
     if (!reconnectTimeout) {
       reconnectTimeout = setTimeout(() => {
-        log("🔄 Reconnecting WebSocket...");
+        log("🔄 Re-tuning radio to control tower...");
         connectWebSocket();
       }, RECONNECT_INTERVAL);
     }
@@ -117,15 +117,15 @@
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "visible") {
       if (!ws || ws.readyState === WebSocket.CLOSED) {
-        log("📲 Page visible, reconnecting...");
+        log("📲 Cockpit display active, re-linking to tower...");
         connectWebSocket();
       }
     }
   });
 
-  // Configurable rate limit (messages per second)
-  const SEND_RATE = 30; // Hz
-  const MIN_INTERVAL = 1000 / SEND_RATE; // ms between sends
+  // Limit sending updates to 30 Hz
+  const SEND_RATE = 30;
+  const MIN_INTERVAL = 1000 / SEND_RATE;
   let lastSent = 0;
 
   function sendTilt(alpha, beta, gamma) {
@@ -144,29 +144,29 @@
   startBtn.addEventListener("click", () => {
     const nickname = nicknameInput.value.trim();
     if (!nickname) {
-      log("⚠️ Please enter a nickname first");
+      log("⚠️ Enter your callsign first, pilot!");
       return;
     }
 
-    // Send login message first
+    // Send login (pilot registration)
     if (ws && ws.readyState === WebSocket.OPEN) {
       ws.send(JSON.stringify({ type: "login", pilot: nickname }));
-      log("🚀 Registering pilot as: " + nickname);
+      log("🧑‍✈️ Callsign registered: " + nickname);
     }
 
-    // Then request motion access
+    // Enable tilt control
     if (typeof DeviceOrientationEvent.requestPermission === "function") {
       DeviceOrientationEvent.requestPermission()
         .then(state => {
           if(state === "granted"){
             window.addEventListener("deviceorientation", handleOrientation);
-            log("📱 Joystick mode enabled");
-          } else log("⚠️ Permission denied");
+            log("🎮 Joystick engaged — you're cleared for takeoff!");
+          } else log("⛔ Control access denied");
         })
         .catch(console.error);
     } else {
       window.addEventListener("deviceorientation", handleOrientation);
-      log("📱 Joystick mode enabled");
+      log("🎮 Joystick engaged — you're cleared for takeoff!");
     }
     startBtn.disabled = true;
     nicknameInput.disabled = true;
