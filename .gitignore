@@ -8,3 +8,4 @@ ssl/*
 public/display
 
 .DS_Store
+.idea
