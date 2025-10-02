@@ -1,10 +1,9 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { getSteeringValues } from '../utils/sensor';
 import type { TSteering } from '../types/steering';
 import { WS_URL, WS_RECONNECT_DELAY } from '../config/server';
 
-export function useWebSocket() {
-  const [steering, setSteering] = useState<TSteering>({ horizontal: 0 });
+export function useWebSocket(refSteering: React.RefObject<TSteering>) {
   const wsRef = useRef<WebSocket | null>(null);
   const reconnectTimeoutRef = useRef<number | null>(null);
 
@@ -23,10 +22,12 @@ export function useWebSocket() {
       try {
         const parsed = JSON.parse(message);
         if (parsed.type === 'tilt') {
-          setSteering({
-            ...getSteeringValues(parsed),
-            ...parsed
-          });
+          if (refSteering.current) {
+            refSteering.current = {
+              ...getSteeringValues(parsed),
+              ...parsed,
+            };
+          }
         }
       } catch (err) {
         console.warn('Received non-JSON message:', message);
@@ -56,7 +57,7 @@ export function useWebSocket() {
 
   const scheduleReconnect = (delay = WS_RECONNECT_DELAY) => {
     if (reconnectTimeoutRef.current) return;
-    reconnectTimeoutRef.current = setTimeout(() => {
+    reconnectTimeoutRef.current = window.setTimeout(() => {
       reconnectTimeoutRef.current = null;
       connect();
     }, delay);
@@ -94,5 +95,5 @@ export function useWebSocket() {
     }
   };
 
-  return { steering, sendMessage };
+  return { sendMessage };
 }
