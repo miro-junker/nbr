@@ -3,7 +3,7 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { Suspense } from 'react';
 import { useWebSocket } from './hooks';
-import { SteeringVisualizer } from './components';
+import { LoginScreen, SteeringVisualizer } from './components';
 import { Game } from './components/Game';
 import { initialAppState } from './state/appState';
 
@@ -12,6 +12,7 @@ export default function App() {
   const { steering } = useWebSocket();
   const [appState, setAppState] = useState(initialAppState)
 
+  if (appState.loggedIn === false) return <LoginScreen />
   
   return (
     <div className="container mt-5">
