@@ -76,7 +76,7 @@
 
   let ws;
   const WS_URL = "wss://nobrakes.cz/?role=sensor";
-  const RECONNECT_INTERVAL = 200; 
+  const WS_RECONNECT_INTERVAL = 200; 
   let reconnectTimeout;
 
   function connectWebSocket() {
@@ -109,7 +109,7 @@
       reconnectTimeout = setTimeout(() => {
         log("🔄 Re-tuning radio to control tower...");
         connectWebSocket();
-      }, RECONNECT_INTERVAL);
+      }, WS_RECONNECT_INTERVAL);
     }
   }
 
@@ -124,8 +124,8 @@
   });
 
   // Limit sending updates to 30 Hz
-  const SEND_RATE = 30;
-  const MIN_INTERVAL = 1000 / SEND_RATE;
+  const SEND_RATE_HZ = 60;
+  const MIN_INTERVAL = 1000 / SEND_RATE_HZ;
   let lastSent = 0;
 
   function sendTilt(alpha, beta, gamma) {
