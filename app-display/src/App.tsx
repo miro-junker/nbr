@@ -13,7 +13,7 @@ import type { TSteering } from './types';
 export default function App() {
   const [appState, setAppState] = useState(initialAppState)
   const refSteering = useRef<TSteering>(initialSteering)
-  useWebSocket(refSteering);
+  useWebSocket(refSteering, setAppState);
 
   if (appState.loggedIn === false) return <LoginScreen />
   
