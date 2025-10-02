@@ -4,15 +4,16 @@ import { Environment } from '@react-three/drei';
 import { Plane, Parachute } from '.';
 import * as THREE from 'three';
 import { initGameState, COLLISION_DISTANCE } from '../physics/state';
-import type { TSteering, TGameState, TPos } from '../types';
+import type { TSteering, TGameState, TPos, TAppState } from '../types';
 import { getPlaneRotation, getPlanePositionX } from '../physics/plane';
 
 
 interface IGame {
     refSteering: React.RefObject<TSteering>
+    setAppState: React.Dispatch<React.SetStateAction<TAppState>>
 }
 
-export function Game({ refSteering }: IGame) {
+export function Game({ refSteering, setAppState }: IGame) {
     const refPlane = useRef<THREE.Object3D>(null)
     const refParachute = useRef<THREE.Group>(null)
     const refGameState = useRef<TGameState>(initGameState);
@@ -40,6 +41,7 @@ export function Game({ refSteering }: IGame) {
             const distance = posPlane.distanceTo(posParachute);
             if (distance < COLLISION_DISTANCE) {
                 console.log("Plane picked up parachute");
+                setAppState(prev => ({...prev, score: prev.score + 1}))
                 // Create new parachutist
                 newParachutePos = [ (Math.random() - 0.5) * 20, 0, 40 ];
                 refParachute.current.position.set(...newParachutePos);
