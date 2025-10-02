@@ -3,7 +3,7 @@ import { useFrame } from '@react-three/fiber';
 import { Environment } from '@react-three/drei';
 import { Plane, Parachute } from '.';
 import * as THREE from 'three';
-import { initGameState } from '../physics/state';
+import { initGameState, COLLISION_DISTANCE } from '../physics/state';
 import type { TSteering, TGameState, TPos } from '../types';
 import { getPlaneRotation, getPlanePositionX } from '../physics/plane';
 
@@ -17,17 +17,36 @@ export function Game({ steering }: IGame) {
     const refParachute = useRef<THREE.Group>(null)
     const refGameState = useRef<TGameState>(initGameState);
 
+    const posPlane = new THREE.Vector3();
+    const posParachute = new THREE.Vector3();
+
     useFrame((state, delta) => {
+        // Plane updates
         const newPlaneRotationX = getPlaneRotation(refGameState.current, steering, delta);
         refPlane.current?.rotation.set(0, 0, newPlaneRotationX)
 
         const newPlanePosX = getPlanePositionX(refGameState.current, newPlaneRotationX, delta);
         refPlane.current?.position.set(-newPlanePosX, 0, 0)
 
+        // Parachute updates
         const newParachuteZ = refGameState.current.parachutePos[2] - delta * 2;
-        const newParachutePos: TPos = [20, 0, newParachuteZ]
+        let newParachutePos: TPos = [20, 0, newParachuteZ]
         refParachute.current?.position.set(20, 0, newParachuteZ)
-        
+       
+        // Collision detection
+        if (refPlane.current && refParachute.current) {
+            refPlane.current.getWorldPosition(posPlane);
+            refParachute.current.getWorldPosition(posParachute);
+            const distance = posPlane.distanceTo(posParachute);
+            if (distance < COLLISION_DISTANCE) {
+                console.log("Plane picked up parachute");
+                // Create new parachutist
+                newParachutePos = [ (Math.random() - 0.5) * 20, 0, 40 ];
+                refParachute.current.position.set(...newParachutePos);
+            }
+        }
+
+        // Save game state
         refGameState.current = {
             parachutePos: newParachutePos,
             planeRotationX: newPlaneRotationX,
