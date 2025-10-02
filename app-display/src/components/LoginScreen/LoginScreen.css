@@ -1,0 +1,16 @@
+.login-screen {
+    background: url('./poster.png') center center no-repeat fixed;
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-screen__qr {
+    width: 30vh;
+    height: 30vh;
+    position: absolute;
+    left: 5vh;
+    bottom: 5vh;
+}
