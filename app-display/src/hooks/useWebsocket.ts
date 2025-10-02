@@ -1,9 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { getSteeringValues } from '../utils/sensor';
 import type { TSteering } from '../types/steering';
-
-const URL_WS = 'wss://nobrakes.cz/?role=display';
-const RECONNECT_DELAY = 250; // ms
+import { WS_URL, WS_RECONNECT_DELAY } from '../config/server';
 
 export function useWebSocket() {
   const [steering, setSteering] = useState<TSteering>({ horizontal: 0 });
@@ -14,7 +12,7 @@ export function useWebSocket() {
     // Avoid opening multiple connections
     if (wsRef.current) return;
 
-    const ws = new WebSocket(URL_WS);
+    const ws = new WebSocket(WS_URL);
     wsRef.current = ws;
 
     ws.onopen = () => {
@@ -31,7 +29,7 @@ export function useWebSocket() {
           });
         }
       } catch (err) {
-        console.warn('⚠️ Received non-JSON message:', message);
+        console.warn('Received non-JSON message:', message);
       }
     };
 
@@ -56,7 +54,7 @@ export function useWebSocket() {
     };
   };
 
-  const scheduleReconnect = (delay = RECONNECT_DELAY) => {
+  const scheduleReconnect = (delay = WS_RECONNECT_DELAY) => {
     if (reconnectTimeoutRef.current) return;
     reconnectTimeoutRef.current = setTimeout(() => {
       reconnectTimeoutRef.current = null;
