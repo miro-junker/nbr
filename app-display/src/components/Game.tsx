@@ -68,7 +68,10 @@ export function Game({ refSteering }: IGame) {
                 ref={refParachute}
                 position={initGameState.parachutePos}
             />
-            <Environment files="3d/hdri_1k.hdr" background />
+            <Environment
+                files="3d/hdri_1k.hdr"
+                backgroundRotation={[0, 0.5*Math.PI, 0]} // rotate around Y axis
+                background />
         </>
     )
 }
