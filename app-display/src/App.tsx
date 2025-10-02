@@ -8,6 +8,7 @@ import { Game } from './components/Game';
 import { initialAppState } from './state/appState';
 import { initialSteering } from './physics/steering';
 import type { TSteering } from './types';
+import { DEBUG } from './config/main';
 
 
 export default function App() {
@@ -15,7 +16,7 @@ export default function App() {
   const refSteering = useRef<TSteering>(initialSteering)
   useWebSocket(refSteering, setAppState);
 
-  if (appState.loggedIn === false) return <LoginScreen />
+  if (DEBUG || appState.loggedIn === false) return <LoginScreen />
   
   return (
     <div className="container mt-5">

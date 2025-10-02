@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import type { TSteering } from "../types/steering";
+import { DEBUG } from "../config/main";
 
 function normalize(value: number, min: number, max: number) {
   return ((value - min) / (max - min)) * 100;
@@ -12,7 +13,6 @@ function normalizeGamma(value: number) {
 
 const SMOOTH_ENABLED = true;
 const SMOOTH_MS = 100;
-const DEBUG = false;
 
 export const SteeringVisualizer: React.FC<{
   refSteering: React.RefObject<TSteering>;
