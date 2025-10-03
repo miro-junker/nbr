@@ -31,8 +31,8 @@ export function Game({ refSteering, setAppState }: IGame) {
 
         // Parachute updates
         const newParachuteZ = refGameState.current.parachutePos[2] - delta * 2;
-        let newParachutePos: TPos = [20, 0, newParachuteZ]
-        refParachute.current?.position.set(20, 0, newParachuteZ)
+        let newParachutePos: TPos = [5, 0, newParachuteZ]
+        refParachute.current?.position.set(5, 0, newParachuteZ)
        
         // Collision detection
         if (refPlane.current && refParachute.current) {
@@ -43,7 +43,7 @@ export function Game({ refSteering, setAppState }: IGame) {
                 console.log("Plane picked up parachute");
                 setAppState(prev => ({...prev, score: prev.score + 1}))
                 // Create new parachutist
-                newParachutePos = [ (Math.random() - 0.5) * 20, 0, 40 ];
+                newParachutePos = [ 5, 0, 40 ];
                 refParachute.current.position.set(...newParachutePos);
             }
         }
