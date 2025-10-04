@@ -85,17 +85,15 @@ export const SteeringVisualizer: React.FC<{
         <>
             {DEBUG && (
                 <div className="tilt-container">
-                    <div ref={refAlpha} className="tilt-bar tilt-alpha" style={smoothStyle} />
-                    <div ref={refBeta}    className="tilt-bar tilt-beta"    style={smoothStyle} />
-                    <div ref={refGamma} className="tilt-bar tilt-gamma" style={smoothStyle} />
-                </div>
-            )}
-
-            {DEBUG && (
-                <div style={{ position: "fixed", top: 10, left: 10, fontSize: 24, zIndex: 200 }}>
-                    <div ref={refAlphaText} style={{ color: 'red' }} />
-                    <div ref={refBetaText}    style={{ color: 'green' }} />
-                    <div ref={refGammaText} style={{ color: 'blue' }} />
+                    <div ref={refGamma} className="tilt-bar tilt-gamma" style={smoothStyle}>
+                        <div ref={refGammaText} />
+                    </div>
+                    <div ref={refBeta}    className="tilt-bar tilt-beta"    style={smoothStyle}>
+                        <div ref={refBetaText} />
+                    </div>
+                    <div ref={refAlpha} className="tilt-bar tilt-alpha" style={smoothStyle}>
+                        <div ref={refAlphaText} />
+                    </div>
                 </div>
             )}
 

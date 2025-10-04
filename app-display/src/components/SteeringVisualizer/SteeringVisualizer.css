@@ -16,11 +16,20 @@
     border-radius: 4px;
     background: gray;
     bottom: 0;
+    overflow: hidden;
 }
 
-.tilt-alpha { background-color: #ef4444; }
+.tilt-bar div {
+    transform: rotate(+90deg);
+    font-weight: bold;
+    color: white;
+    z-index: 300;
+    white-space: nowrap;
+}
+
+.tilt-alpha { background-color: #3b82f6; }
 .tilt-beta { background-color: #22c55e; }
-.tilt-gamma { background-color: #3b82f6; }
+.tilt-gamma { background-color: #ef4444; }
 
 .steering-x {
     height: 10px;
