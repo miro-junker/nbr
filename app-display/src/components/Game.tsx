@@ -25,7 +25,7 @@ export function Game({ refSteering, setAppState }: IGame) {
 
     const setPlaneMesh = (rotX: number, rotY: number, posX: number, posY: number) => {
         refPlane.current?.rotation.set((-rotY * PLANE_MODEL_TILT_Y_COEF) + PLANE_MODEL_TILT_Y_OFFSET, 0, rotX)
-        refPlane.current?.position.set(-posX, 0, 0)
+        refPlane.current?.position.set(-posX, posY, 0)
     }
 
     useFrame((state, delta) => {
@@ -33,7 +33,7 @@ export function Game({ refSteering, setAppState }: IGame) {
         const newPlaneRotX = getPlaneRotX(refGameState.current, refSteering.current, delta);
         const newPlaneRotY = getPlaneRotY(refGameState.current, refSteering.current, delta);
         const newPlanePosX = getPlanePosX(refGameState.current, newPlaneRotX, delta);
-        const newPlanePosY = 0
+        const newPlanePosY = getPlanePosY(refGameState.current, newPlaneRotY, delta)
         setPlaneMesh(newPlaneRotX, newPlaneRotY, newPlanePosX, newPlanePosY)
 
         // Parachute updates
@@ -61,6 +61,7 @@ export function Game({ refSteering, setAppState }: IGame) {
             planeRotationX: newPlaneRotX,
             planeRotationY: newPlaneRotY,
             planePosX: newPlanePosX,
+            planePosY: newPlanePosY,
         }
         
     })
