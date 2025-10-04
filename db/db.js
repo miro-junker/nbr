@@ -1,6 +1,7 @@
 const Database = require('better-sqlite3');
 const db = new Database('scores.db');
 
+
 // Create table if not exists
 db.prepare(`
     CREATE TABLE IF NOT EXISTS scores (
@@ -10,5 +11,6 @@ db.prepare(`
         score INTEGER
     )
 `).run();
+
 
 module.exports = db;
