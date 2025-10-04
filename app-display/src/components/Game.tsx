@@ -6,6 +6,7 @@ import * as THREE from 'three';
 import { initGameState, COLLISION_DISTANCE } from '../physics/state';
 import type { TSteering, TGameState, TPos, TAppState } from '../types';
 import { getPlaneRotX, getPlaneRotY, getPlanePosX, getPlanePosY } from '../physics/plane';
+import { PLANE_MODEL_TILT_Y_COEF, PLANE_MODEL_TILT_Y_OFFSET, SKY_ROTATION, SKY_HDRI } from '../config/render'
 
 
 interface IGame {
@@ -13,7 +14,6 @@ interface IGame {
     setAppState: React.Dispatch<React.SetStateAction<TAppState>>
 }
 
-const PLANE_MODEL_TILT_Y = 0.3;
 
 export function Game({ refSteering, setAppState }: IGame) {
     const refPlane = useRef<THREE.Object3D>(null)
@@ -24,7 +24,7 @@ export function Game({ refSteering, setAppState }: IGame) {
     const posParachute = new THREE.Vector3();
 
     const setPlaneMesh = (rotX: number, rotY: number, posX: number, posY: number) => {
-        refPlane.current?.rotation.set((-rotY * PLANE_MODEL_TILT_Y) + 0.1, 0, rotX)
+        refPlane.current?.rotation.set((-rotY * PLANE_MODEL_TILT_Y_COEF) + PLANE_MODEL_TILT_Y_OFFSET, 0, rotX)
         refPlane.current?.position.set(-posX, 0, 0)
     }
 
@@ -79,8 +79,8 @@ export function Game({ refSteering, setAppState }: IGame) {
                 position={initGameState.parachutePos}
             />
             <Environment
-                files="3d/hdri_1k.hdr"
-                backgroundRotation={[0, 0.5*Math.PI, 0]} // rotate around Y axis
+                files={SKY_HDRI}
+                backgroundRotation={[0, SKY_ROTATION*Math.PI, 0]}
                 background
             />
         </>

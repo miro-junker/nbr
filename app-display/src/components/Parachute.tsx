@@ -1,6 +1,7 @@
 import { useGLTF } from '@react-three/drei';
 import { forwardRef, useEffect } from 'react';
 import * as THREE from 'three';
+import { COLOR_PARACHUTE } from '../config/render'
 
 interface Props {
     position: [number, number, number]
@@ -16,11 +17,11 @@ export const Parachute = forwardRef<THREE.Group, Props>((props: Props, ref) => {
                 if (Array.isArray(mesh.material)) {
                     mesh.material.forEach((mat) => {
                         if (mat instanceof THREE.MeshStandardMaterial) {
-                            mat.color.set('#555555'); // dark gray
+                            mat.color.set(COLOR_PARACHUTE);
                         }
                     });
                 } else if (mesh.material instanceof THREE.MeshStandardMaterial) {
-                    mesh.material.color.set('#555555'); // dark gray
+                    mesh.material.color.set(COLOR_PARACHUTE);
                 }
             }
         });
