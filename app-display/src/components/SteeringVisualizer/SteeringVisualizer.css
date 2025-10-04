@@ -17,6 +17,7 @@
     background: gray;
     bottom: 0;
     overflow: hidden;
+    transition: height 100ms ease-in-out;
 }
 
 .tilt-bar div {
