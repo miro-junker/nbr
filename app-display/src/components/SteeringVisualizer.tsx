@@ -23,6 +23,8 @@ export const SteeringVisualizer: React.FC<{
   const gammaRef = useRef<HTMLDivElement>(null);
   const leftRef = useRef<HTMLDivElement>(null);
   const rightRef = useRef<HTMLDivElement>(null);
+  const upRef = useRef<HTMLDivElement>(null);
+  const downRef = useRef<HTMLDivElement>(null);
 
   const debugAlphaRef = useRef<HTMLDivElement>(null);
   const debugBetaRef = useRef<HTMLDivElement>(null);
@@ -32,9 +34,9 @@ export const SteeringVisualizer: React.FC<{
     let frameId: number;
 
     const update = () => {
-      const s = refSteering.current;
-      if (s) {
-        const { a = 0, b = 0, c = 0, horizontal = 0 } = s;
+      const data = refSteering.current;
+      if (data) {
+        const { a = 0, b = 0, c = 0, horizontal = 0, vertical = 0 } = data;
 
         // update debug values
         if (DEBUG) {
@@ -59,6 +61,14 @@ export const SteeringVisualizer: React.FC<{
           if (leftRef.current) leftRef.current.style.width = "0%";
           if (rightRef.current) rightRef.current.style.width = `${horizontal * 100}%`;
         }
+
+        if (vertical < 0) {
+          if (upRef.current) upRef.current.style.height = "0%";
+          if (downRef.current) downRef.current.style.height = `${-vertical * 100}%`;
+        } else {
+          if (upRef.current) upRef.current.style.height = `${vertical * 100}%`;
+          if (downRef.current) downRef.current.style.height = "0%";
+        }
       }
       frameId = requestAnimationFrame(update);
     };
@@ -68,7 +78,7 @@ export const SteeringVisualizer: React.FC<{
   }, [refSteering]);
 
   const smoothStyle = SMOOTH_ENABLED
-    ? { transition: `height ${SMOOTH_MS}ms ease-in-out` }
+    ? { transition: `width height ${SMOOTH_MS}ms ease-in-out` }
     : { transition: "none" };
 
   return (
@@ -106,7 +116,7 @@ export const SteeringVisualizer: React.FC<{
             bottom: 2rem;
             left: 25vw;
             z-index: 200;
-            width: calc(50vw);
+            width: 50vw;
           }
 
           .steering-x-box {
@@ -115,7 +125,6 @@ export const SteeringVisualizer: React.FC<{
             position: relative;
             background: gray;
             border-radius: 4px;
-            overflow: hidden;
           }
 
           .steering-x-bar {
@@ -124,11 +133,11 @@ export const SteeringVisualizer: React.FC<{
           }
 
           .steering-x-box--left .steering-x-bar {
-            right: 0;
             position: absolute;
+            right: 0;
           }
 
-          .x-center {
+          .x-center, .y-center {
             background: yellow;
             width: 20px;
             height: 20px;
@@ -136,6 +145,40 @@ export const SteeringVisualizer: React.FC<{
             left: calc(50% - 10px);
             border-radius: 10px;
             top: -5px;
+          }
+
+          .steering-y {
+            width: 10px;
+            display: flex;
+            flex-direction: column;
+            left: 2rem;
+            position: fixed;
+            top: 25vh;
+            z-index: 200;
+            height: 50vh;
+          }
+
+          .steering-y-box {
+            flex: 1;
+            width: 100%;
+            position: relative;
+            background: gray;
+            border-radius: 4px;
+            overflow: hidden;
+          }
+
+          .steering-y-bar {
+            width: 100%;
+            background: #ef4444;
+          }
+
+          .steering-y-box--up .steering-y-bar {
+            position: absolute;
+            bottom: 0;
+          }
+
+          .y-center {
+            top: calc(50% - 10px)
           }
         `}
       </style>
@@ -164,6 +207,16 @@ export const SteeringVisualizer: React.FC<{
           <div ref={rightRef} className="steering-x-bar" />
         </div>
         <div className="x-center" />
+      </div>
+
+      <div className="steering-y">
+        <div className="steering-y-box steering-y-box--up">
+          <div ref={upRef} className="steering-y-bar" />
+        </div>
+        <div className="steering-y-box">
+          <div ref={downRef} className="steering-y-bar" />
+        </div>
+        <div className="y-center" />
       </div>
     </>
   );
