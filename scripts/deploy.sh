@@ -47,8 +47,11 @@ END_COMMIT=$(git rev-parse --short HEAD)
 END_COMMIT_MSG=$(git show -s --format=%s "$END_COMMIT")
 DATE=$(date +"%Y-%m-%d %H:%M:%S")
 
+# Install dependencies
+npm ci
+
 # Build frontend
-echo "***** Building the frontend *****"
+echo "***** Building the app-display frontend *****"
 ./scripts/build.sh
 
 # Write final log line
