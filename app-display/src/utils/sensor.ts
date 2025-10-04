@@ -8,8 +8,8 @@ function getSteeringHorizontal(angle: number): number {
 }
 
 function getSteeringVertical(angle: number): number {
-    if (angle >= 45) return 1       // max up
-    if (angle <= -45) return -1    // max down
+    if (angle >= 45) return 1    // max up
+    if (angle <= -45) return -1  // max down
     return angle / 45
 }
 
