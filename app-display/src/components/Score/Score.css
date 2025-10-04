@@ -2,7 +2,7 @@
     font-size: 2rem;
     position: absolute;
     top: 1rem;
-    right: 6rem;
+    right: 7rem;
     z-index: 10;
     color: black;
     text-align: center;
@@ -12,5 +12,5 @@
 
 .score h2 {
     margin: 0;
-    font-size: inherit;
+    font-size: 3vh;
 }
