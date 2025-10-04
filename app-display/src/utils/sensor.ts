@@ -18,5 +18,6 @@ export const getSteeringValues = (packet: TPacketTilt): TSteering => {
     return {
         horizontal: getSteeringHorizontal(packet.c),
         vertical: getSteeringVertical(packet.b),
+        ...packet,
     }
 }

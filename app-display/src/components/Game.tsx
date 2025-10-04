@@ -28,7 +28,7 @@ export function Game({ refSteering, setAppState }: IGame) {
         refPlane.current?.position.set(-posX, posY, 0)
     }
 
-    useFrame((state, delta) => {
+    useFrame((_, delta) => {
         // Plane updates
         const newPlaneRotX = getPlaneRotX(refGameState.current, refSteering.current, delta);
         const newPlaneRotY = getPlaneRotY(refGameState.current, refSteering.current, delta);

@@ -28,7 +28,7 @@ export function useWebSocket(
                 const parsed = JSON.parse(message);
                 if (parsed.type === 'tilt') {
                     if (refSteering.current) {
-                        refSteering.current = {...getSteeringValues(parsed), ...parsed};
+                        refSteering.current = {...getSteeringValues(parsed)};
                     }
                 }
                 else if (parsed.type === 'login') {
