@@ -10,7 +10,7 @@ interface Props {
 export const Score = ({state}: Props) => {
   return (
     <div className='score'>
-        <h2>Score</h2>
+        <h2>Passengers</h2>
         <div>{state.score}</div>
     </div>
   )
