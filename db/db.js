@@ -1,5 +1,6 @@
-const Database = require('better-sqlite3');
-const db = new Database('scores.db');
+import Database from "better-sqlite3";
+
+const db = new Database("scores.db");
 
 
 // Create table if not exists
@@ -13,4 +14,4 @@ db.prepare(`
 `).run();
 
 
-module.exports = db;
+export default db;
