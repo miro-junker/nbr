@@ -8,8 +8,9 @@ interface Props {
 
 export const Username = ({ name }: Props) => {
   if (!name) return null
-  
+
   return (
-    <div className='username'>Pilot: { name }</div>
+    <div className='username'>
+      <span className='username__label'>Pilot</span> { name }</div>
   )
 }
