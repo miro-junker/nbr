@@ -6,15 +6,20 @@ import fs from "fs";
 import { fileURLToPath } from "url";
 import createWsServer from "./server/server-ws.js";
 import createDeployRouter from "./server/server-deploy.js";
+import createDbRouter from "./server/server-db.js";
 import "dotenv/config";
 
 // --- Environment ---
 const DEPLOY_TOKEN_ENABLED = process.env.DEPLOY_TOKEN_ENABLED === "true";
 const DEPLOY_TOKEN_SECRET = process.env.DEPLOY_TOKEN_SECRET;
+
+const DB_TOKEN_ENABLED = process.env.DB_TOKEN_ENABLED !== "false"; // default true
+const DB_TOKEN_SECRET = process.env.DB_TOKEN_SECRET;
+
 const SSL_KEY_PATH = process.env.SSL_KEY_PATH || "ssl/letsencrypt/privkey.pem";
 const SSL_CERT_PATH = process.env.SSL_CERT_PATH || "ssl/letsencrypt/fullchain.pem";
-const HTTP_PORT = parseInt(process.env.HTTP_PORT, 10) || 80;
-const HTTPS_PORT = parseInt(process.env.HTTPS_PORT, 10) || 443;
+const PORT_HTTP = parseInt(process.env.PORT_HTTP, 10) || 80;
+const PORT_HTTPS = parseInt(process.env.PORT_HTTPS, 10) || 443;
 
 // --- Resolve __dirname ---
 const __filename = fileURLToPath(import.meta.url);
@@ -26,16 +31,24 @@ const sslOptions = {
     cert: fs.readFileSync(SSL_CERT_PATH),
 };
 
-// --- Create Express app ---
+// --- Create main app ---
 const app = express();
 app.use(express.static(path.join(__dirname, "public")));
 
-// --- /deploy endpoint ---
+// --- Routers ---
 app.use(
     "/deploy",
     createDeployRouter({
         tokenCheckEnabled: DEPLOY_TOKEN_ENABLED,
         secret: DEPLOY_TOKEN_SECRET,
+    })
+);
+
+app.use(
+    "/db",
+    createDbRouter({
+        tokenCheckEnabled: DB_TOKEN_ENABLED,
+        secret: DB_TOKEN_SECRET,
     })
 );
 
@@ -55,13 +68,13 @@ redirectApp.use((req, res) => {
 
 // --- Start servers ---
 const httpServer = http.createServer(redirectApp);
-httpServer.listen(HTTP_PORT, () => {
-    console.log(`HTTP server running on port ${HTTP_PORT} (redirects to HTTPS)`);
+httpServer.listen(PORT_HTTP, () => {
+    console.log(`HTTP server running on port ${PORT_HTTP} (redirects to HTTPS)`);
 });
 
 const httpsServer = https.createServer(sslOptions, app);
-httpsServer.listen(HTTPS_PORT, () => {
-    console.log(`HTTPS server running on port ${HTTPS_PORT}`);
+httpsServer.listen(PORT_HTTPS, () => {
+    console.log(`HTTPS server running on port ${PORT_HTTPS}`);
 });
 
 // --- WebSocket server ---
