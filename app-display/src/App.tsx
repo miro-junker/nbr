@@ -1,7 +1,6 @@
-import { useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
-import { Suspense, useRef } from 'react';
+import { Suspense, useState, useRef } from 'react';
 import { useWebSocket } from './hooks';
 import { LoginScreen, SteeringVisualizer, Game, Score } from './components';
 import { initialAppState } from './state/appState';
@@ -13,6 +12,7 @@ import { DEBUG } from './config/main';
 export default function App() {
   const [appState, setAppState] = useState(initialAppState)
   const refSteering = useRef<TSteering>(initialSteering)
+  const refCamera = useRef(null)
   useWebSocket(refSteering, setAppState);
 
   if (!DEBUG && appState.loggedIn === false) return <LoginScreen />
@@ -21,7 +21,11 @@ export default function App() {
     <div className="container mt-5">
       <Score state={appState} />
       <SteeringVisualizer refSteering={refSteering} />
-      <Canvas style={{ height: '100vh' }} camera={{ position: [0, 4, -20], fov: 50 }}>
+      <Canvas
+        ref={refCamera}
+        style={{ height: '100vh' }}
+        camera={{ position: [0, 4, -20], fov: 50 }}
+      >
         <ambientLight intensity={0.5} />
         <directionalLight position={[5, 10, 5]} intensity={1} />
         <Suspense fallback={null}>

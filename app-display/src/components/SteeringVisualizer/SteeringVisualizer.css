@@ -1,0 +1,95 @@
+.tilt-container {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
+    width: 60px;     
+    height: calc(100vh - 6rem);
+    z-index: 200;
+    align-items: flex-end;
+}
+
+.tilt-bar {
+    width: 33%;
+    border-radius: 4px;
+    background: gray;
+    bottom: 0;
+}
+
+.tilt-alpha { background-color: #ef4444; }
+.tilt-beta { background-color: #22c55e; }
+.tilt-gamma { background-color: #3b82f6; }
+
+.steering-x {
+    height: 10px;
+    display: flex;
+    position: fixed;
+    bottom: 2rem;
+    left: 25vw;
+    z-index: 200;
+    width: 50vw;
+}
+
+.steering-x-box {
+    flex: 1;
+    height: 100%;
+    position: relative;
+    background: gray;
+    border-radius: 4px;
+}
+
+.steering-x-bar {
+    height: 100%;
+    background: #ef4444; 
+}
+
+.steering-x-box--left .steering-x-bar {
+    position: absolute;
+    right: 0;
+}
+
+.x-center, .y-center {
+    background: yellow;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    left: calc(50% - 10px);
+    border-radius: 10px;
+    top: -5px;
+}
+
+.steering-y {
+    width: 10px;
+    display: flex;
+    flex-direction: column;
+    left: 2rem;
+    position: fixed;
+    top: 25vh;
+    z-index: 200;
+    height: 50vh;
+}
+
+.steering-y-box {
+    flex: 1;
+    width: 100%;
+    position: relative;
+    background: gray;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.steering-y-bar {
+    width: 100%;
+    background: #ef4444;
+}
+
+.steering-y-box--up .steering-y-bar {
+    position: absolute;
+    bottom: 0;
+}
+
+.y-center {
+    top: calc(50% - 10px)
+}
