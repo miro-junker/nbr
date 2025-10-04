@@ -1,10 +1,15 @@
-export type TiltPacket = {
+export type TPacketTilt = {
   type: "tilt";
   a: number;
   b: number;
   c: number;
 };
 
+export type TPacketLogin = {
+  username: string;
+}
+
 export type WebSocketPacket =
-  | TiltPacket
+  | TPacketTilt
+  | TPacketLogin
 ;
