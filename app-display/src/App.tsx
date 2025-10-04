@@ -2,7 +2,7 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { Suspense, useState, useRef } from 'react';
 import { useWebSocket } from './hooks';
-import { LoginScreen, SteeringVisualizer, Game, Score } from './components';
+import { LoginScreen, SteeringVisualizer, Game, Score, Username } from './components';
 import { initialAppState } from './state/appState';
 import { initialSteering } from './physics/steering';
 import type { TSteering } from './types';
@@ -33,6 +33,7 @@ export default function App() {
         </Suspense>
         <OrbitControls />
       </Canvas>
+      <Username name={appState.username} />
     </div>
   );
 }

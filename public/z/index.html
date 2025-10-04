@@ -56,7 +56,7 @@
 <body>
   
   <h1>Update Flight controller</h1>
-  <input id="nickname" type="text" placeholder="Pilot's nickname" />
+  <input id="username" type="text" placeholder="Pilot's nickname" />
   <br>
   <button id="startBtn">Start the game!</button>
   <pre id="log"></pre>
@@ -66,7 +66,7 @@
 
   const logEl = document.getElementById("log");
   const startBtn = document.getElementById("startBtn");
-  const nicknameInput = document.getElementById("nickname");
+  const usernameInput = document.getElementById("username");
 
   function log(message) {
     logEl.textContent += message + "\n";
@@ -140,16 +140,16 @@
   }
 
   startBtn.addEventListener("click", () => {
-    const nickname = nicknameInput.value.trim();
-    if (!DEBUG && !nickname) {
+    const username = usernameInput.value.trim();
+    if (!DEBUG && !username) {
       log("⚠️ Enter your callsign first, pilot!");
       return;
     }
 
     // Send login (pilot registration)
     if (ws && ws.readyState === WebSocket.OPEN) {
-      ws.send(JSON.stringify({ type: "login", pilot: nickname }));
-      log("🧑‍✈️ Callsign registered: " + nickname);
+      ws.send(JSON.stringify({ type: "login", username }));
+      log("🧑‍✈️ Callsign registered: " + username);
     }
 
     // Enable tilt control
@@ -167,7 +167,7 @@
       log("🎮 Joystick mode — you're cleared for takeoff!");
     }
     startBtn.disabled = true;
-    nicknameInput.disabled = true;
+    usernameInput.disabled = true;
   });
 
   // Initial connection

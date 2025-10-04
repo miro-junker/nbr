@@ -1,0 +1,9 @@
+.username {
+    position: absolute;
+    z-index: 200;
+    bottom: 4rem;
+    width: 100vw;
+    text-align: center;
+    font-weight: bold;
+    color: black;
+}
