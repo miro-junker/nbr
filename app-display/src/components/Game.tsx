@@ -5,13 +5,15 @@ import { Plane, Parachute } from '.';
 import * as THREE from 'three';
 import { initGameState, COLLISION_DISTANCE } from '../physics/state';
 import type { TSteering, TGameState, TPos, TAppState } from '../types';
-import { getPlaneRotation, getPlanePositionX } from '../physics/plane';
+import { getPlaneRotX, getPlaneRotY, getPlanePosX, getPlanePosY } from '../physics/plane';
 
 
 interface IGame {
     refSteering: React.RefObject<TSteering>
     setAppState: React.Dispatch<React.SetStateAction<TAppState>>
 }
+
+const PLANE_MODEL_TILT_Y = 0.3;
 
 export function Game({ refSteering, setAppState }: IGame) {
     const refPlane = useRef<THREE.Object3D>(null)
@@ -21,13 +23,18 @@ export function Game({ refSteering, setAppState }: IGame) {
     const posPlane = new THREE.Vector3();
     const posParachute = new THREE.Vector3();
 
+    const setPlaneMesh = (rotX: number, rotY: number, posX: number, posY: number) => {
+        refPlane.current?.rotation.set((-rotY * PLANE_MODEL_TILT_Y) + 0.1, 0, rotX)
+        refPlane.current?.position.set(-posX, 0, 0)
+    }
+
     useFrame((state, delta) => {
         // Plane updates
-        const newPlaneRotationX = getPlaneRotation(refGameState.current, refSteering.current, delta);
-        refPlane.current?.rotation.set(0, 0, newPlaneRotationX)
-
-        const newPlanePosX = getPlanePositionX(refGameState.current, newPlaneRotationX, delta);
-        refPlane.current?.position.set(-newPlanePosX, 0, 0)
+        const newPlaneRotX = getPlaneRotX(refGameState.current, refSteering.current, delta);
+        const newPlaneRotY = getPlaneRotY(refGameState.current, refSteering.current, delta);
+        const newPlanePosX = getPlanePosX(refGameState.current, newPlaneRotX, delta);
+        const newPlanePosY = 0
+        setPlaneMesh(newPlaneRotX, newPlaneRotY, newPlanePosX, newPlanePosY)
 
         // Parachute updates
         const newParachuteZ = refGameState.current.parachutePos[2] - delta * 2;
@@ -51,7 +58,8 @@ export function Game({ refSteering, setAppState }: IGame) {
         // Save game state
         refGameState.current = {
             parachutePos: newParachutePos,
-            planeRotationX: newPlaneRotationX,
+            planeRotationX: newPlaneRotX,
+            planeRotationY: newPlaneRotY,
             planePosX: newPlanePosX,
         }
         
