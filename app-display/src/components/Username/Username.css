@@ -7,9 +7,9 @@
     align-items: center;
     font-family: 'Orbitron', monospace;
     color: #00ff00;
-    font-size: 2.5vh;
+    font-size: 2em;
     background: #111;
-    padding: .2em .5em;
+    padding: .3em .75em 0.1em;
     border-radius: .25em;
     box-shadow: 0 0 8px #00ff00;
     max-width: fit-content;

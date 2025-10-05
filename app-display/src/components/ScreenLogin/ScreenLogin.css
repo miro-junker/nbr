@@ -8,9 +8,15 @@
 }
 
 .screen-login__qr {
-    width: 30vh;
-    height: 30vh;
+    width: 32vh;
+    height: 32vh;
     position: absolute;
-    left: 5vh;
+    bottom: 5vh;
+}
+
+.screen-login__logo {
+    width: 25vh;
+    position: absolute;
+    right: 7rem;
     bottom: 5vh;
 }
