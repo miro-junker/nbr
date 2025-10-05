@@ -1,4 +1,4 @@
-import type { TPacketTilt, TSteering } from "../types";
+import type { TPacketTilt, TSteering } from "@/types";
 
 
 function getSteeringHorizontal(angle: number): number {

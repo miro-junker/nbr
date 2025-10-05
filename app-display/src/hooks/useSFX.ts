@@ -1,5 +1,5 @@
 import { useRef, useEffect } from 'react';
-import soundHey from '../sounds/hey.mp3'
+import soundHey from '@/sounds/hey.mp3'
 
 
 // Map of sound names to file paths

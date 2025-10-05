@@ -1,4 +1,4 @@
-import type { TGameState, TSteering } from '../types';
+import type { TGameState, TSteering } from '@/types';
 
 
 const PLANE_ROTATION_X_INERTIA = 0.5;

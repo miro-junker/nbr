@@ -1,12 +1,11 @@
+import type { TAppState } from '@/types/appState';
 import './Score.css'
-import type { TAppState } from '../../types/appState';
 
 interface Props {
   state: TAppState
 }
 
 export const Score = ({ state }: Props) => {
-  // Convert score to string and pad with zeros if you want fixed length
   const scoreString = String(state.score).padStart(3, '0');
 
   return (
