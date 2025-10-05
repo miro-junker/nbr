@@ -2,11 +2,12 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { Suspense, useState, useRef } from 'react';
 import { useWebSocket } from './hooks';
-import { LoginScreen, SteeringVisualizer, Game, Score, Username } from './components';
+import { LoginScreen, SteeringVisualizer, Game, Score, Username, Sound } from './components';
 import { initialAppState } from './state/appState';
 import { initialSteering } from './physics/steering';
 import type { TSteering } from './types';
 import { DEBUG } from './config/main';
+import soundAirplane from './components/Sound/airplane.mp3'
 
 
 export default function App() {
@@ -34,6 +35,7 @@ export default function App() {
         <OrbitControls />
       </Canvas>
       <Username name={appState.username} />
+      <Sound src={soundAirplane} />
     </div>
   );
 }
