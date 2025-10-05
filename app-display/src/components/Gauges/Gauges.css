@@ -1,0 +1,19 @@
+.gauge {
+    bottom: 0;
+    height: 17.5vh;
+    left: 10vh;
+    z-index: 100;
+    position: fixed;
+    width: 35vh;
+    font-family: 'Orbitron', monospace;
+    color: #111;
+    font-weight: bold;
+}
+
+.gauge__label {
+    text-align: center;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    font-size: 3vh;
+}
