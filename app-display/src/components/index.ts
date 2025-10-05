@@ -1,8 +1,9 @@
-export { Game } from './Game';
-export { LoginScreen } from './LoginScreen/LoginScreen';
-export { Parachute } from './Parachute';
-export { Plane } from './Plane';
-export { Score } from './Score/Score';
-export { Sound } from './Sound/Sound';
-export { SteeringVisualizer } from './SteeringVisualizer/SteeringVisualizer';
+export { Game } from './Game'
+export { IntroScreen } from './IntroScreen'
+export { LoginScreen } from './LoginScreen/LoginScreen'
+export { Parachute } from './Parachute'
+export { Plane } from './Plane'
+export { Score } from './Score/Score'
+export { Sound } from './Sound/Sound'
+export { SteeringVisualizer } from './SteeringVisualizer/SteeringVisualizer'
 export { Username } from './Username/Username'
