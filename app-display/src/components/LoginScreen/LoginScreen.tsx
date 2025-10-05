@@ -1,7 +1,7 @@
-import { Sound } from '@/components/Sound';
-import music from '@/sounds/music-login.mp3';
-import img_qr from './qr.png';
-import './LoginScreen.css';
+import { Sound } from '@/components/Sound'
+import music from '@/sounds/music-login.mp3'
+import img_qr from './qr.png'
+import './LoginScreen.css'
 
 
 export const LoginScreen = () => {

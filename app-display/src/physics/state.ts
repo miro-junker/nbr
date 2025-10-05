@@ -1,4 +1,4 @@
-import type { TGameState } from '@/types';
+import type { TGameState } from '@/types'
 
 
 export const initGameState: TGameState = {
@@ -9,4 +9,4 @@ export const initGameState: TGameState = {
     parachutePos: [5, 0, 40]
 }
 
-export const COLLISION_DISTANCE = 3;
+export const COLLISION_DISTANCE = 3

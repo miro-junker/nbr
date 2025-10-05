@@ -1,6 +1,6 @@
-import { useGLTF } from '@react-three/drei';
-import { forwardRef } from 'react';
-import * as THREE from 'three';
+import { useGLTF } from '@react-three/drei'
+import { forwardRef } from 'react'
+import * as THREE from 'three'
 
 
 interface Props {
@@ -12,7 +12,7 @@ interface Props {
 
 
 export const Plane = forwardRef<THREE.Object3D, Props>((props: Props, ref) => {
-    const gltf = useGLTF("3d/plane.gltf");
+    const gltf = useGLTF("3d/plane.gltf")
 
     const { posX, posY, turnX, turnY } = props
 

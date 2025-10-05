@@ -1,6 +1,6 @@
-import { useGLTF } from '@react-three/drei';
-import { forwardRef, useEffect } from 'react';
-import * as THREE from 'three';
+import { useGLTF } from '@react-three/drei'
+import { forwardRef, useEffect } from 'react'
+import * as THREE from 'three'
 import { COLOR_PARACHUTE } from '@/config/render'
 
 
@@ -10,24 +10,24 @@ interface Props {
 
 
 export const Parachute = forwardRef<THREE.Group, Props>((props: Props, ref) => {
-    const gltf = useGLTF("3d/parachute.gltf");
+    const gltf = useGLTF("3d/parachute.gltf")
 
     useEffect(() => {
         gltf.scene.traverse((child) => {
             if ((child as THREE.Mesh).isMesh) {
-                const mesh = child as THREE.Mesh;
+                const mesh = child as THREE.Mesh
                 if (Array.isArray(mesh.material)) {
                     mesh.material.forEach((mat) => {
                         if (mat instanceof THREE.MeshStandardMaterial) {
-                            mat.color.set(COLOR_PARACHUTE);
+                            mat.color.set(COLOR_PARACHUTE)
                         }
-                    });
+                    })
                 } else if (mesh.material instanceof THREE.MeshStandardMaterial) {
-                    mesh.material.color.set(COLOR_PARACHUTE);
+                    mesh.material.color.set(COLOR_PARACHUTE)
                 }
             }
-        });
-    }, [gltf]);
+        })
+    }, [gltf])
 
     return (
         <group

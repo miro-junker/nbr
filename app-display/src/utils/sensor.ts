@@ -1,4 +1,4 @@
-import type { TPacketTilt, TSteering } from "@/types";
+import type { TPacketTilt, TSteering } from "@/types"
 
 
 function getSteeringHorizontal(angle: number): number {
@@ -8,9 +8,9 @@ function getSteeringHorizontal(angle: number): number {
 }
 
 function getSteeringVertical(angle: number): number {
-    if (angle >= 45) return 1    // max up
-    if (angle <= -45) return -1  // max down
-    return angle / 45
+    if (angle >= 45) return 1;    // max up
+    if (angle <= -45) return -1;  // max down
+    return angle / 45;
 }
 
 
@@ -19,5 +19,5 @@ export const getSteeringValues = (packet: TPacketTilt): TSteering => {
         horizontal: getSteeringHorizontal(packet.c),
         vertical: getSteeringVertical(packet.b),
         ...packet,
-    }
+    };
 }

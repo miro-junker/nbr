@@ -1,4 +1,4 @@
-import type { TSteering } from "@/types";
+import type { TSteering } from "@/types"
 
 
 export const initialSteering: TSteering = {

@@ -1,5 +1,5 @@
 export type TAppState = {
-    loggedIn: boolean;
-    username: string;
-    score: number;
-};
+    loggedIn: boolean
+    username: string
+    score: number
+}

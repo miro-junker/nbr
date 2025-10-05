@@ -1,12 +1,14 @@
-import type { TAppState } from '@/types/appState';
+import type { TAppState } from '@/types/appState'
 import './Score.css'
+
 
 interface Props {
     state: TAppState
 }
 
+
 export const Score = ({ state }: Props) => {
-    const scoreString = String(state.score).padStart(3, '0');
+    const scoreString = String(state.score).padStart(3, '0')
 
     return (
         <div className="score">
