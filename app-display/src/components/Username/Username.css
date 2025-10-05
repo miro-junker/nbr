@@ -1,14 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+
 .username {
-    position: absolute;
-    z-index: 200;
-    bottom: 4rem;
-    width: 100vw;
-    text-align: center;
-    font-weight: bold;
-    color: white;
+  position: absolute;
+  bottom: 6rem; /* moved higher */
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  font-family: 'Orbitron', monospace;
+  color: #00ff00; /* cockpit green */
+  font-size: 2.5vh;
+  background: #111; /* dark panel background */
+  padding: 0.2em 0.5em;
+  border-radius: 0.25em;
+  box-shadow: 0 0 8px #00ff00;
+  max-width: fit-content;
 }
 
 .username__label {
-    color: black;
-    padding-right: 0.5rem;
+  margin-right: 0.3em;
+  font-weight: bold;
+  text-shadow:
+    0 0 2px #00ff00,
+    0 0 4px #00ff00;
+}
+
+.username__name {
+  font-weight: bold;
+  text-shadow:
+    0 0 2px #00ff00,
+    0 0 4px #00ff00;
 }
