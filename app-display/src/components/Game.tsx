@@ -7,6 +7,7 @@ import { initGameState, COLLISION_DISTANCE } from '../physics/state';
 import type { TSteering, TGameState, TPos, TAppState } from '../types';
 import { getPlaneRotX, getPlaneRotY, getPlanePosX, getPlanePosY } from '../physics/plane';
 import { PLANE_MODEL_TILT_Y_COEF, PLANE_MODEL_TILT_Y_OFFSET, SKY_ROTATION, SKY_HDRI } from '../config/render'
+import { useSFX } from '../hooks'
 
 
 interface IGame {
@@ -19,6 +20,8 @@ export function Game({ refSteering, setAppState }: IGame) {
     const refPlane = useRef<THREE.Object3D>(null)
     const refParachute = useRef<THREE.Group>(null)
     const refGameState = useRef<TGameState>(initGameState);
+
+    const playSFX = useSFX()
 
     const posPlane = new THREE.Vector3();
     const posParachute = new THREE.Vector3();
@@ -48,6 +51,7 @@ export function Game({ refSteering, setAppState }: IGame) {
             const distance = posPlane.distanceTo(posParachute);
             if (distance < COLLISION_DISTANCE) {
                 console.log("Plane picked up parachute");
+                playSFX('hey')
                 setAppState(prev => ({...prev, score: prev.score + 1}))
                 // Create new parachutist
                 newParachutePos = [ 5, 0, 40 ];
