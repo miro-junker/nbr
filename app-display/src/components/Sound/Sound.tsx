@@ -1,36 +1,32 @@
 import { useEffect, useRef } from 'react';
 
-
 interface BackgroundMusicProps {
     src: string;
     loop?: boolean;
+    autoplay?: boolean; // new prop
 }
 
-
-export const Sound = ({ src, loop = true }: BackgroundMusicProps) => {
+export const Sound = ({ src, loop = true, autoplay = false }: BackgroundMusicProps) => {
     const refAudio = useRef<HTMLAudioElement | null>(null);
 
     useEffect(() => {
         const audio = new Audio(src);
         audio.loop = loop;
+        audio.autoplay = autoplay;
+        audio.volume = 1; // set volume to max
         refAudio.current = audio;
 
-        const handleUserInteraction = () => {
-            audio.play().catch((err) => console.warn('Audio play failed:', err));
-            window.removeEventListener('click', handleUserInteraction);
-            window.removeEventListener('touchstart', handleUserInteraction);
-        };
-
-        window.addEventListener('click', handleUserInteraction);
-        window.addEventListener('touchstart', handleUserInteraction);
+        if (autoplay) {
+            audio.play().catch((err) => {
+                console.warn('Audio autoplay failed:', err);
+            });
+        }
 
         return () => {
             audio.pause();
             refAudio.current = null;
-            window.removeEventListener('click', handleUserInteraction);
-            window.removeEventListener('touchstart', handleUserInteraction);
         };
-    }, [src, loop]);
+    }, [src, loop, autoplay]);
 
     return null; // No visible UI
 };

@@ -2,7 +2,7 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { Suspense, useState, useRef } from 'react';
 import { useWebSocket } from './hooks';
-import { LoginScreen, SteeringVisualizer, Game, Score, Username, Sound } from './components';
+import { LoginScreen, SteeringVisualizer, Game, Score, Username, Sound, IntroScreen } from './components';
 import { initialAppState } from './state/appState';
 import { initialSteering } from './physics/steering';
 import type { TSteering } from './types';
@@ -11,11 +11,13 @@ import soundAirplane from './components/Sound/airplane.mp3'
 
 
 export default function App() {
+  const [initialized, setInitialized] = useState(false)
   const [appState, setAppState] = useState(initialAppState)
   const refSteering = useRef<TSteering>(initialSteering)
   const refCamera = useRef(null)
   useWebSocket(refSteering, setAppState);
 
+  if (!initialized) return <IntroScreen onStart={() => setInitialized(true)} />
   if (!DEBUG && appState.loggedIn === false) return <LoginScreen />
   
   return (
@@ -35,7 +37,7 @@ export default function App() {
         <OrbitControls />
       </Canvas>
       <Username name={appState.username} />
-      <Sound src={soundAirplane} />
+      <Sound src={soundAirplane} autoplay />
     </div>
   );
 }
