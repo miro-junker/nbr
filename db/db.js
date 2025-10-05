@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // --- Path to the database file ---
-const dbPath = path.join(__dirname, "db", "scores.db");
+const dbPath = path.join(__dirname, "scores.db");
 
 // --- Initialize the database ---
 const db = new Database(dbPath);
