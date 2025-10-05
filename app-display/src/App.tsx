@@ -7,6 +7,7 @@ import { initialAppState } from '@/state/appState'
 import { initialSteering } from '@/physics/steering'
 import type { TSteering } from '@/types'
 import soundAirplane from '@/sounds/airplane.mp3'
+import './components/ScreenGame.css'
 
 
 export default function App() {
@@ -17,12 +18,14 @@ export default function App() {
     useWebSocket(refSteering, setAppState)
 
     if (!initialized) return <ScreenIntro onStart={() => setInitialized(true)} />
-    if (appState.loggedIn === false) return <ScreenLogin />
     if (false) return <ScreenGameOver state={appState} /> // TBD
+    if (appState.loggedIn === false) return <ScreenLogin />
     
     return (
-        <div className="container mt-5">
-            <Score state={appState} />
+        <div className='screen-game'>
+            <div className='screen-game__score'>
+                <Score state={appState} />
+            </div>
             <SteeringVisualizer refSteering={refSteering} />
             <Canvas
                 ref={refCamera}

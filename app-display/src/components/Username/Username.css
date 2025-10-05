@@ -9,14 +9,14 @@
     color: #00ff00;
     font-size: 2.5vh;
     background: #111;
-    padding: 0.2em 0.5em;
-    border-radius: 0.25em;
+    padding: .2em .5em;
+    border-radius: .25em;
     box-shadow: 0 0 8px #00ff00;
     max-width: fit-content;
 }
 
 .username__label {
-    margin-right: 0.3em;
+    margin-right: .3em;
     font-weight: bold;
     text-shadow:
         0 0 2px #00ff00,

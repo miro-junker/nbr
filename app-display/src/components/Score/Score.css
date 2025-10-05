@@ -1,8 +1,4 @@
 .score {
-    position: absolute;
-    top: 1rem;
-    right: 7rem;
-    z-index: 10;
     text-align: center;
     font-weight: bold;
     color: #00ff00;
@@ -11,28 +7,29 @@
 
 .score h2 {
     margin: 0;
-    font-size: 2.5vh;
+    font-size: 1em;
     color: #00ff00;
-    letter-spacing: 0.05em;
+    letter-spacing: .05em;
+    margin-bottom: .25em;
 }
 
 .score-display {
     display: flex;
     justify-content: center;
-    font-size: 4vh;
-    letter-spacing: 0.15em;
+    font-size: 2em;
+    letter-spacing: .15em;
     background: #111;
-    padding: 0.3em 0.6em;
-    border-radius: 0.2em;
-    box-shadow: 0 0 10px #00ff00;
+    padding: .3em .6em .15em;
+    border-radius: .2em;
+    box-shadow: 0 0 .25em #00ff00;
 }
 
 .digit {
     display: inline-block;
-    width: 0.9em;
+    width: .9em;
     text-align: center;
     text-shadow:
-        0 0 3px #00ff00,
-        0 0 6px #00ff00,
-        0 0 12px #00ff00;
+        0 0 .2em #00ff00,
+        0 0 .4em #00ff00,
+        0 0 .8em #00ff00;
 }

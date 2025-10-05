@@ -14,10 +14,11 @@ export const ScreenGameOver = (props: Props) => {
   return (
     <div className='screen-game-over'>
         <h1 className='screen-game-over__heading'>Game over</h1>
-        {username && <div className='screen-game-over__user'>Nice flight, {username}!</div>}
+        
         <div className='screen-game-over__score'>
             <Score state={props.state} />
         </div>
+        {username && <div className='screen-game-over__user'>Nice flight, {username}!</div>}
         <div className='screen-game-over__logo'>
             <Logo />
         </div>
