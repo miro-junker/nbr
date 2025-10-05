@@ -5,10 +5,10 @@ import './LoginScreen.css';
 
 
 export const LoginScreen = () => {
-  return (
-    <div className='login-screen'>
-      <img className='login-screen__qr' src={img_qr} alt='QR code' />
-      <Sound src={music} autoplay />
-    </div>
-  );
+    return (
+        <div className='login-screen'>
+            <img className='login-screen__qr' src={img_qr} alt='QR code' />
+            <Sound src={music} autoplay />
+        </div>
+    );
 };

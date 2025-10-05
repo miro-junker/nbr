@@ -10,33 +10,33 @@ import soundAirplane from '@/sounds/airplane.mp3'
 
 
 export default function App() {
-  const [initialized, setInitialized] = useState(false)
-  const [appState, setAppState] = useState(initialAppState)
-  const refSteering = useRef<TSteering>(initialSteering)
-  const refCamera = useRef(null)
-  useWebSocket(refSteering, setAppState);
+    const [initialized, setInitialized] = useState(false)
+    const [appState, setAppState] = useState(initialAppState)
+    const refSteering = useRef<TSteering>(initialSteering)
+    const refCamera = useRef(null)
+    useWebSocket(refSteering, setAppState);
 
-  if (!initialized) return <IntroScreen onStart={() => setInitialized(true)} />
-  if (appState.loggedIn === false) return <LoginScreen />
-  
-  return (
-    <div className="container mt-5">
-      <Score state={appState} />
-      <SteeringVisualizer refSteering={refSteering} />
-      <Canvas
-        ref={refCamera}
-        style={{ height: '100vh' }}
-        camera={{ position: [0, 4, -20], fov: 50 }}
-      >
-        <ambientLight intensity={0.5} />
-        <directionalLight position={[5, 10, 5]} intensity={1} />
-        <Suspense fallback={null}>
-          <Game refSteering={refSteering} setAppState={setAppState} />
-        </Suspense>
-        <OrbitControls />
-      </Canvas>
-      <Username name={appState.username} />
-      <Sound src={soundAirplane} autoplay />
-    </div>
-  );
+    if (!initialized) return <IntroScreen onStart={() => setInitialized(true)} />
+    if (appState.loggedIn === false) return <LoginScreen />
+    
+    return (
+        <div className="container mt-5">
+            <Score state={appState} />
+            <SteeringVisualizer refSteering={refSteering} />
+            <Canvas
+                ref={refCamera}
+                style={{ height: '100vh' }}
+                camera={{ position: [0, 4, -20], fov: 50 }}
+            >
+                <ambientLight intensity={0.5} />
+                <directionalLight position={[5, 10, 5]} intensity={1} />
+                <Suspense fallback={null}>
+                    <Game refSteering={refSteering} setAppState={setAppState} />
+                </Suspense>
+                <OrbitControls />
+            </Canvas>
+            <Username name={appState.username} />
+            <Sound src={soundAirplane} autoplay />
+        </div>
+    );
 }
