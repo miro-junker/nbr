@@ -8,4 +8,7 @@ export type TGameState = {
     planeRotX: number,
     planeRotY: number,
     parachutePos: TPos,
+
+    // accumulates delta time to trigger periodic updates
+    appStateLastUpdate: number;
 }
