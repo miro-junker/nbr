@@ -1,10 +1,12 @@
 import { useEffect, useRef } from 'react';
 
+
 interface BackgroundMusicProps {
     src: string;
     loop?: boolean;
-    autoplay?: boolean; // new prop
+    autoplay?: boolean;
 }
+
 
 export const Sound = ({ src, loop = true, autoplay = false }: BackgroundMusicProps) => {
     const refAudio = useRef<HTMLAudioElement | null>(null);

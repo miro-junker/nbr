@@ -7,7 +7,7 @@ import { initialAppState } from './state/appState';
 import { initialSteering } from './physics/steering';
 import type { TSteering } from './types';
 import { DEBUG } from './config/main';
-import soundAirplane from './components/Sound/airplane.mp3'
+import soundAirplane from './sounds/airplane.mp3'
 
 
 export default function App() {
