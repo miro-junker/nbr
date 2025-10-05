@@ -1,6 +1,16 @@
 export const Logo = () => {
   return (
-    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1203 317" enable-background="new 0 0 1203 317" xml:space="preserve">
+    <svg
+      version="1.1"
+      id="Layer_1"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
+      x="0px"
+      y="0px"
+      viewBox="0 0 1203 317"
+      enableBackground="new 0 0 1203 317"
+      xmlSpace="preserve"
+    >
       <g>
         <g>
           <path fill="#FDAD00" d="M470.8,239.4c-10,0-18.8-0.8-26.2-2.4c-7.4-1.6-13.6-4.2-18.5-7.8s-8.6-8.3-10.9-14
