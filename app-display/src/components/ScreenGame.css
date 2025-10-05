@@ -1,8 +1,13 @@
 
 .screen-game__score {
     position: absolute;
-    top: 1rem;
-    right: 7rem;
+    top: 2vh;
+    right: 10vh;
     z-index: 10;
-    width: 9em;
+    width: 22vh;
+    font-size: 2.5vh;
+}
+
+.screen-game__score h2 {
+    color: #111;
 }
