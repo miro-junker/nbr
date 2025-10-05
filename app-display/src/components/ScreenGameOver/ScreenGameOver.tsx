@@ -1,0 +1,25 @@
+import { Logo, Score } from '@/components'
+import type { TAppState } from '@/types'
+import './ScreenGameOver.css'
+
+
+interface Props {
+    state: TAppState;
+}
+
+
+export const ScreenGameOver = (props: Props) => {
+  const { username } = props.state
+  return (
+    <div className='screen-game-over'>
+        <h1 className='screen-game-over__heading'>Game over</h1>
+        {username && <div className='screen-game-over__user'>Nice flight, {username}!</div>}
+        <div className='screen-game-over__score'>
+            <Score state={props.state} />
+        </div>
+        <div className='screen-game-over__logo'>
+            <Logo />
+        </div>
+    </div>
+  )
+}
