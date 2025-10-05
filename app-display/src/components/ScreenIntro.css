@@ -14,20 +14,21 @@
 
 .screen-intro__heading {
     margin-top: 0;
-    font-size: 3rem;
-    margin-bottom: 2rem;
+    font-size: 6vh;
+    margin-bottom: 6vh;
 }
 
 .screen-intro__cta {
-    padding: 1.5rem 3rem;
-    font-size: 3rem;
+    padding: 3vh 7vh;
+    font-size: 5.5vh;
     font-weight: bold;
-    border-radius: 12px;
+    border-radius: 3.5vh;
     border: none;
     background-color: #fdac00;
     color: #fff;
     box-shadow: 0 4px 10px rgba(0, 0, 0, .3);
     cursor: pointer !important;
+    text-shadow: 0 0 2.75vh rgba(0,0,0,.4);
 }
 
 .screen-intro__logo {
