@@ -1,7 +1,8 @@
 {
   "name": "nbr-server",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "type": "module",
+  "author": "Miroslav Junker <miro.junker@gmail.com>",
   "description": "Server for NoBrakes project",
   "main": "server.js",
   "scripts": {
