@@ -12,7 +12,7 @@ export const Score = ({ state }: Props) => {
 
     return (
         <div className="score">
-            <h2>Passengers</h2>
+            <h2>PASSENGERS</h2>
             <div className="score-display">
                 {scoreString.split('').map((digit, idx) => (
                     <span key={idx} className="digit">{digit}</span>
