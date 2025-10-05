@@ -1,10 +1,19 @@
-# NoBrakes game
+# NoBrakes Game
 
-## Install:
-npm ci
+An arcade flight simulator game.
 
-## Run server:
-./run.sh
+## Prerequisites
+- [nvm](https://github.com/nvm-sh/nvm) (Node Version Manager) to manage Node.js versions.
 
-## Clean up unnecessary data:
-./scripts/cleanup.sh
+## Set up environment variables:
+```bash
+cp .env.dist .env
+```
+
+Then edit `.env` to match your configuration
+
+## Run the server:
+`./run.sh`
+
+## Cleaning up temporary data:
+`./scripts/cleanup.sh`
