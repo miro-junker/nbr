@@ -72,11 +72,13 @@ export function Game({ refSteering, setAppState }: IGame) {
 
         // Update game state
         refGameState.current = {
-            parachutePos: newParachutePos,
+            fuel: 1, // todo
+            speed: 1, // todo
             planeRotX: newPlaneRotX,
             planeRotY: newPlaneRotY,
             planePosX: newPlanePosX,
             planePosY: newPlanePosY,
+            parachutePos: newParachutePos,
         }
         
     })
