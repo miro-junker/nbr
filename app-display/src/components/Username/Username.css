@@ -1,16 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
-
 .username {
   position: absolute;
-  bottom: 6rem; /* moved higher */
+  bottom: 6rem;
   left: 50%;
   transform: translateX(-50%);
   display: inline-flex;
   align-items: center;
   font-family: 'Orbitron', monospace;
-  color: #00ff00; /* cockpit green */
+  color: #00ff00;
   font-size: 2.5vh;
-  background: #111; /* dark panel background */
+  background: #111;
   padding: 0.2em 0.5em;
   border-radius: 0.25em;
   box-shadow: 0 0 8px #00ff00;
