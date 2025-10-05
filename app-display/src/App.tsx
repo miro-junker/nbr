@@ -26,7 +26,7 @@ export default function App() {
             <div className='screen-game__score'>
                 <Score state={appState} />
             </div>
-            <Gauges />
+            <Gauges appState={appState} />
             <SteeringVisualizer refSteering={refSteering} />
             <Canvas
                 ref={refCamera}

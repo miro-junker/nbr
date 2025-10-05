@@ -1,8 +1,14 @@
 import GaugeComponent from 'react-gauge-component'
+import type { TAppState } from '@/types'
 import './Gauges.css'
 
 
-export const Gauges = () => {
+interface Props {
+  appState: TAppState
+}
+
+
+export const Gauges = (props: Props) => {
   return (
     <>
         <div className='gauge gauge--fuel'>

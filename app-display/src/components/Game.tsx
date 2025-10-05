@@ -7,7 +7,7 @@ import { initGameState, COLLISION_DISTANCE } from '@/physics/state'
 import type { TSteering, TGameState, TPos, TAppState } from '@/types'
 import { getPlaneRotX, getPlaneRotY, getPlanePosX, getPlanePosY } from '@/physics/plane'
 import { getNewParachutePosition } from '@/physics/parachute'
-import { PLANE_MODEL_TILT_Y_COEF, PLANE_MODEL_TILT_Y_OFFSET, SKY_ROTATION, SKY_HDRI } from '@/config/render'
+import { PLANE_MODEL_TILT_Y_COEF, PLANE_MODEL_TILT_Y_OFFSET, SKY_ROTATION, SKY_HDRI, REFRESH_RATE_APPSTATE } from '@/config/render'
 import { useSFX } from '@/hooks'
 
 
@@ -59,14 +59,14 @@ export function Game({ refSteering, setAppState }: IGame) {
             const distance = posPlane.distanceTo(posParachute)
             if (distance < COLLISION_DISTANCE) {
                 playSFX('hey')
-                setAppState(prev => ({...prev, score: prev.score + 1}))
+                setAppState(prev => ({ ...prev, score: prev.score + 1 }))
                 respawnParachute()
             }
         }
 
         // Missed parachute
         if (newParachuteZ < -16) {
-            playSFX('loss');
+            playSFX('loss')
             respawnParachute()
         }
 
@@ -79,8 +79,18 @@ export function Game({ refSteering, setAppState }: IGame) {
             planePosX: newPlanePosX,
             planePosY: newPlanePosY,
             parachutePos: newParachutePos,
+            appStateLastUpdate: refGameState.current.appStateLastUpdate + delta,
         }
-        
+
+        // Update app state every x seconds
+        if (refGameState.current.appStateLastUpdate >= REFRESH_RATE_APPSTATE) {
+            setAppState(prev => ({
+                ...prev,
+                fuel: refGameState.current.fuel,
+                speed: refGameState.current.speed,
+            }))
+            refGameState.current.appStateLastUpdate = 0
+        }
     })
 
     return (
@@ -98,7 +108,7 @@ export function Game({ refSteering, setAppState }: IGame) {
             />
             <Environment
                 files={SKY_HDRI}
-                backgroundRotation={[0, SKY_ROTATION*Math.PI, 0]}
+                backgroundRotation={[0, SKY_ROTATION, 0]}
                 background
             />
         </>
