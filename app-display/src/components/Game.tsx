@@ -3,11 +3,11 @@ import { useFrame } from '@react-three/fiber'
 import { Environment } from '@react-three/drei'
 import { Plane, Parachute } from '.'
 import * as THREE from 'three'
-import { initGameState, COLLISION_DISTANCE } from '../physics/state'
-import type { TSteering, TGameState, TPos, TAppState } from '../types'
-import { getPlaneRotX, getPlaneRotY, getPlanePosX, getPlanePosY } from '../physics/plane'
-import { PLANE_MODEL_TILT_Y_COEF, PLANE_MODEL_TILT_Y_OFFSET, SKY_ROTATION, SKY_HDRI } from '../config/render'
-import { useSFX } from '../hooks'
+import { initGameState, COLLISION_DISTANCE } from '@/physics/state'
+import type { TSteering, TGameState, TPos, TAppState } from '@/types'
+import { getPlaneRotX, getPlaneRotY, getPlanePosX, getPlanePosY } from '@/physics/plane'
+import { PLANE_MODEL_TILT_Y_COEF, PLANE_MODEL_TILT_Y_OFFSET, SKY_ROTATION, SKY_HDRI } from '@/config/render'
+import { useSFX } from '@/hooks'
 
 
 interface IGame {
@@ -43,7 +43,7 @@ export function Game({ refSteering, setAppState }: IGame) {
         const newParachuteZ = refGameState.current.parachutePos[2] - delta * 2
         let newParachutePos: TPos = [5, 0, newParachuteZ]
         refParachute.current?.position.set(5, 0, newParachuteZ)
-       
+
         // Collision detection
         if (refPlane.current && refParachute.current) {
             refPlane.current.getWorldPosition(posPlane)
@@ -61,8 +61,8 @@ export function Game({ refSteering, setAppState }: IGame) {
         // Update game state
         refGameState.current = {
             parachutePos: newParachutePos,
-            planeRotationX: newPlaneRotX,
-            planeRotationY: newPlaneRotY,
+            planeRotX: newPlaneRotX,
+            planeRotY: newPlaneRotY,
             planePosX: newPlanePosX,
             planePosY: newPlanePosY,
         }

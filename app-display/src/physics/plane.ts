@@ -10,7 +10,7 @@ const MAX_OFFSET_Y = 9.5
 
 
 export const getPlaneRotX = (gameState: TGameState, steering: TSteering, delta: number) => {
-    const calculated = gameState.planeRotationX + steering.horizontal * (delta * PLANE_ROTATION_X_INERTIA)
+    const calculated = gameState.planeRotX + steering.horizontal * (delta * PLANE_ROTATION_X_INERTIA)
     if (calculated >= 1) return 1
     if (calculated <= -1) return -1
     return calculated
@@ -24,7 +24,7 @@ export const getPlanePosX = (gameState: TGameState, newPlaneRotX: number, delta:
 }
 
 export const getPlaneRotY = (gameState: TGameState, steering: TSteering, delta: number) => {
-    const calculated = gameState.planeRotationY + steering.vertical * (delta * PLANE_ROTATION_Y_INERTIA)
+    const calculated = gameState.planeRotY + steering.vertical * (delta * PLANE_ROTATION_Y_INERTIA)
     if (calculated >= 1) return 1
     if (calculated <= -1) return -1
     return calculated
