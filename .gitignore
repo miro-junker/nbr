@@ -1,6 +1,8 @@
 node_modules
 logs
 
+./db/scores.db
+
 .env
 ssl/*
 !ssl/.gitkeep
