@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import type { TSteering } from "../../types/steering";
-import { DEBUG } from "../../config/main";
+import type { TSteering } from "@/types/steering";
 import './SteeringVisualizer.css'
 
 
@@ -22,15 +21,15 @@ export const SteeringVisualizer: React.FC<{
     refSteering: React.RefObject<TSteering>;
 }> = ({ refSteering }) => {
     // refs for DOM elements
-    const refAlpha         = useRef<HTMLDivElement>(null);
-    const refBeta            = useRef<HTMLDivElement>(null);
-    const refGamma         = useRef<HTMLDivElement>(null);
-    const refLeft            = useRef<HTMLDivElement>(null);
-    const refRight         = useRef<HTMLDivElement>(null);
-    const refUp                = useRef<HTMLDivElement>(null);
-    const refDown            = useRef<HTMLDivElement>(null);
+    const refAlpha     = useRef<HTMLDivElement>(null);
+    const refBeta      = useRef<HTMLDivElement>(null);
+    const refGamma     = useRef<HTMLDivElement>(null);
+    const refLeft      = useRef<HTMLDivElement>(null);
+    const refRight     = useRef<HTMLDivElement>(null);
+    const refUp        = useRef<HTMLDivElement>(null);
+    const refDown      = useRef<HTMLDivElement>(null);
     const refAlphaText = useRef<HTMLDivElement>(null);
-    const refBetaText    = useRef<HTMLDivElement>(null);
+    const refBetaText  = useRef<HTMLDivElement>(null);
     const refGammaText = useRef<HTMLDivElement>(null);
 
     useEffect(() => {

@@ -1,11 +1,13 @@
 import { useGLTF } from '@react-three/drei';
 import { forwardRef, useEffect } from 'react';
 import * as THREE from 'three';
-import { COLOR_PARACHUTE } from '../config/render'
+import { COLOR_PARACHUTE } from '@/config/render'
+
 
 interface Props {
     position: [number, number, number]
 }
+
 
 export const Parachute = forwardRef<THREE.Group, Props>((props: Props, ref) => {
     const gltf = useGLTF("3d/parachute.gltf");

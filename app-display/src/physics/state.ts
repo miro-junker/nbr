@@ -1,4 +1,4 @@
-import type { TGameState } from '../types';
+import type { TGameState } from '@/types';
 
 
 export const initGameState: TGameState = {

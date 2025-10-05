@@ -1,4 +1,4 @@
-import type { TAppState } from '../types';
+import type { TAppState } from '@/types';
 
 
 export const initialAppState: TAppState = {
