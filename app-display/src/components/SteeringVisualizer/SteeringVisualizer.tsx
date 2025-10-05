@@ -42,11 +42,9 @@ export const SteeringVisualizer: React.FC<{
                 const { a = 0, b = 0, c = 0, horizontal = 0, vertical = 0 } = data;
 
                 // update text values
-                if (DEBUG) {
-                    if (refAlphaText.current) refAlphaText.current.textContent = `α: ${a.toFixed(1)}°`;
-                    if (refBetaText.current)  refBetaText.current.textContent  = `β: ${b.toFixed(1)}°`;
-                    if (refGammaText.current) refGammaText.current.textContent = `γ: ${c.toFixed(1)}°`;
-                }
+                if (refAlphaText.current) refAlphaText.current.textContent = `α: ${a.toFixed(1)}°`;
+                if (refBetaText.current)  refBetaText.current.textContent  = `β: ${b.toFixed(1)}°`;
+                if (refGammaText.current) refGammaText.current.textContent = `γ: ${c.toFixed(1)}°`;
 
                 // update bars
                 if (refAlpha.current) refAlpha.current.style.height = `${normalize(a, 0, 360)}%`;
@@ -83,19 +81,17 @@ export const SteeringVisualizer: React.FC<{
 
     return (
         <>
-            {DEBUG && (
-                <div className="tilt-container">
-                    <div ref={refGamma} className="tilt-bar tilt-gamma" style={smoothStyle}>
-                        <div ref={refGammaText} />
-                    </div>
-                    <div ref={refBeta}    className="tilt-bar tilt-beta"    style={smoothStyle}>
-                        <div ref={refBetaText} />
-                    </div>
-                    <div ref={refAlpha} className="tilt-bar tilt-alpha" style={smoothStyle}>
-                        <div ref={refAlphaText} />
-                    </div>
+            <div className="tilt-container">
+                <div ref={refGamma} className="tilt-bar tilt-gamma" style={smoothStyle}>
+                    <div ref={refGammaText} />
                 </div>
-            )}
+                <div ref={refBeta}    className="tilt-bar tilt-beta"    style={smoothStyle}>
+                    <div ref={refBetaText} />
+                </div>
+                <div ref={refAlpha} className="tilt-bar tilt-alpha" style={smoothStyle}>
+                    <div ref={refAlphaText} />
+                </div>
+            </div>
 
             <div className="steering-x">
                 <div className="steering-x-box steering-x-box--left">

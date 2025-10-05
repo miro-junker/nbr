@@ -1,16 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+
 .score {
-    font-size: 2rem;
-    position: absolute;
-    top: 1rem;
-    right: 7rem;
-    z-index: 10;
-    color: black;
-    text-align: center;
-    font-weight: bold;
-    font-size: 4vh;
+  position: absolute;
+  top: 1rem;
+  right: 7rem;
+  z-index: 10;
+  text-align: center;
+  font-weight: bold;
+  color: #00ff00;
+  font-family: 'Orbitron', monospace;
 }
 
 .score h2 {
-    margin: 0;
-    font-size: 3vh;
+  margin: 0;
+  font-size: 2.5vh;
+  color: #00ff00;
+  letter-spacing: 0.05em;
+}
+
+.score-display {
+  display: flex;
+  justify-content: center;
+  font-size: 4vh;
+  letter-spacing: 0.15em;
+  background: #111;
+  padding: 0.3em 0.6em;
+  border-radius: 0.2em;
+  box-shadow: 0 0 10px #00ff00;
+}
+
+.digit {
+  display: inline-block;
+  width: 0.9em;
+  text-align: center;
+  text-shadow:
+    0 0 3px #00ff00,
+    0 0 6px #00ff00,
+    0 0 12px #00ff00;
 }
