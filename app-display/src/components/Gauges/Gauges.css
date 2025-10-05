@@ -1,7 +1,6 @@
 .gauge {
     bottom: 0;
     height: 17.5vh;
-    left: 10vh;
     z-index: 100;
     position: fixed;
     width: 35vh;
@@ -16,4 +15,12 @@
     bottom: 0;
     width: 100%;
     font-size: 3vh;
+}
+
+.gauge--fuel {
+    left: 10vh;
+}
+
+.gauge--speed {
+    right: 10vh;
 }
