@@ -1,6 +1,7 @@
-import { Logo, Score } from '@/components'
+import { Logo, Score, Sound } from '@/components'
 import type { TAppState } from '@/types'
 import './ScreenGameOver.css'
+import soundGameOver from '@/sounds/gameover.mp3'
 
 
 interface Props {
@@ -20,6 +21,7 @@ export const ScreenGameOver = (props: Props) => {
         <div className='screen-game-over__logo'>
             <Logo />
         </div>
+        <Sound src={soundGameOver} loop={false} autoplay />
     </div>
   )
 }
