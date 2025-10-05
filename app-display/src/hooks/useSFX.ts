@@ -1,12 +1,14 @@
 import { useRef, useEffect } from 'react'
 import soundHey from '@/sounds/hey.mp3'
 import soundHorn from '@/sounds/horn.mp3'
+import soundLoss from '@/sounds/loss.mp3'
 
 
 // Map of sound names to file paths
 const SFX_MAP: Record<string, string> = {
     hey: soundHey,
     horn: soundHorn,
+    loss: soundLoss,
 };
 
 export const useSFX = () => {

@@ -58,6 +58,10 @@ export function Game({ refSteering, setAppState }: IGame) {
             }
         }
 
+        if (newParachuteZ < -16) {
+            playSFX('loss');
+        }
+
         // Update game state
         refGameState.current = {
             parachutePos: newParachutePos,

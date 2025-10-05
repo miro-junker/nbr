@@ -17,7 +17,7 @@ export const ScreenIntro: React.FC<StartupScreenProps> = ({ onStart }) => {
 
             }}
         >
-            <h1 style={{ fontSize: '3rem', marginBottom: '2rem' }}>
+            <h1 className='screen-intro__heading'>
                 Update Conference Flight
             </h1>
             <button className='screen-intro__cta'>

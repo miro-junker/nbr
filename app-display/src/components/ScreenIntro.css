@@ -12,8 +12,10 @@
     cursor: default;
 }
 
-.screen-intro h1 {
+.screen-intro__heading {
     margin-top: 0;
+    font-size: 3rem;
+    margin-bottom: 2rem;
 }
 
 .screen-intro__cta {

@@ -4,7 +4,6 @@
   "version": "1.0.0",
   "type": "module",
   "author": "Miroslav Junker <miro.junker@gmail.com>",
-  "license": "non-commercial use",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
