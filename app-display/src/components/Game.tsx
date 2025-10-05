@@ -50,7 +50,6 @@ export function Game({ refSteering, setAppState }: IGame) {
             refParachute.current.getWorldPosition(posParachute);
             const distance = posPlane.distanceTo(posParachute);
             if (distance < COLLISION_DISTANCE) {
-                console.log("Plane picked up parachute");
                 playSFX('hey')
                 setAppState(prev => ({...prev, score: prev.score + 1}))
                 // Create new parachutist
@@ -59,7 +58,7 @@ export function Game({ refSteering, setAppState }: IGame) {
             }
         }
 
-        // Save game state
+        // Update game state
         refGameState.current = {
             parachutePos: newParachutePos,
             planeRotationX: newPlaneRotX,
