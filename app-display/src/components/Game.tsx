@@ -41,10 +41,11 @@ export function Game({ refSteering, setAppState }: IGame) {
         setPlaneMesh(newPlaneRotX, newPlaneRotY, newPlanePosX, newPlanePosY)
 
         // Parachute updates
+        const PLANE_SPEED = 2
         const parachutePos = refGameState.current.parachutePos
-        const newParachuteZ = parachutePos[2] - (delta * 2)
+        const newParachuteZ = parachutePos[2] - (delta * PLANE_SPEED)
         let newParachutePos: TPos = [parachutePos[0], parachutePos[1], newParachuteZ]
-        refParachute.current?.position.set(newParachutePos[0], newParachutePos[1], newParachuteZ)
+        refParachute.current?.position.set(parachutePos[0], parachutePos[1], newParachuteZ)
 
         const respawnParachute = () => {
             newParachutePos = getNewParachutePosition()
