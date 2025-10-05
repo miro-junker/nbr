@@ -31,7 +31,14 @@ export function useWebSocket(
                     }
                 }
                 else if (parsed.type === 'login') {
-                    setAppState({ loggedIn: true, username: parsed.username, score: 0 })
+                    setAppState({
+                        loggedIn: true,
+                        username:
+                        parsed.username,
+                        score: 0,
+                        fuel: 1,
+                        speed: 1,
+                    })
                 }
             } catch (err) {
                 console.warn('Received non-JSON message:', message)
