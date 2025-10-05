@@ -7,7 +7,7 @@ interface BackgroundMusicProps {
 }
 
 
-export const MusicPlayer = ({ src, loop = true }: BackgroundMusicProps) => {
+export const Sound = ({ src, loop = true }: BackgroundMusicProps) => {
     const refAudio = useRef<HTMLAudioElement | null>(null);
 
     useEffect(() => {
