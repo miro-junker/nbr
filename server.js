@@ -9,6 +9,7 @@ import createDeployRouter from "./server/server-deploy.js";
 import createDbRouter from "./server/server-db.js";
 import "dotenv/config";
 
+
 // --- Environment ---
 const DEPLOY_TOKEN_ENABLED = process.env.DEPLOY_TOKEN_ENABLED === "true";
 const DEPLOY_TOKEN_SECRET = process.env.DEPLOY_TOKEN_SECRET;
@@ -21,9 +22,11 @@ const SSL_CERT_PATH = process.env.SSL_CERT_PATH || "ssl/letsencrypt/fullchain.pe
 const PORT_HTTP = parseInt(process.env.PORT_HTTP, 10) || 80;
 const PORT_HTTPS = parseInt(process.env.PORT_HTTPS, 10) || 443;
 
+
 // --- Resolve __dirname ---
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
 
 // --- SSL certs ---
 const sslOptions = {
@@ -31,9 +34,11 @@ const sslOptions = {
     cert: fs.readFileSync(SSL_CERT_PATH),
 };
 
+
 // --- Create main app ---
 const app = express();
 app.use(express.static(path.join(__dirname, "public")));
+
 
 // --- Routers ---
 app.use(
@@ -52,8 +57,10 @@ app.use(
     })
 );
 
+
 // --- 404 handler ---
 app.use((req, res) => res.status(404).send("404 Not Found"));
+
 
 // --- HTTP → HTTPS redirect ---
 const redirectApp = express();
@@ -66,6 +73,7 @@ redirectApp.use((req, res) => {
     res.redirect(`https://${host}${req.url}`);
 });
 
+
 // --- Start servers ---
 const httpServer = http.createServer(redirectApp);
 httpServer.listen(PORT_HTTP, () => {
@@ -77,7 +85,6 @@ httpsServer.listen(PORT_HTTPS, () => {
     console.log(`HTTPS server running on port ${PORT_HTTPS}`);
 });
 
+
 // --- WebSocket server ---
 const wss = createWsServer({ server: httpsServer });
-
-export { httpsServer, wss };
