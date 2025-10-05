@@ -1,12 +1,9 @@
-import React from 'react'
-
-
 interface StartupScreenProps {
     onStart: () => void
 }
 
 
-export const IntroScreen: React.FC<StartupScreenProps> = ({ onStart }) => {
+export const ScreenIntro: React.FC<StartupScreenProps> = ({ onStart }) => {
     return (
         <div
             onClick={onStart}

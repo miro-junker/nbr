@@ -1,4 +1,4 @@
-.login-screen {
+.screen-login {
     background: url('./poster.png') center center no-repeat fixed;
     background-size: cover;
     height: 100vh;
@@ -7,7 +7,7 @@
     align-items: center;
 }
 
-.login-screen__qr {
+.screen-login__qr {
     width: 30vh;
     height: 30vh;
     position: absolute;

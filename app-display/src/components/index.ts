@@ -1,6 +1,6 @@
 export { Game } from './Game'
-export { IntroScreen } from './IntroScreen'
-export { LoginScreen } from './LoginScreen/LoginScreen'
+export { ScreenIntro } from './ScreenIntro'
+export { ScreenLogin } from './ScreenLogin/ScreenLogin'
 export { Parachute } from './Parachute'
 export { Plane } from './Plane'
 export { Score } from './Score/Score'

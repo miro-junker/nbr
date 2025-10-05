@@ -2,7 +2,7 @@ import { Canvas } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import { Suspense, useState, useRef } from 'react'
 import { useWebSocket } from '@/hooks'
-import { LoginScreen, SteeringVisualizer, Game, Score, Username, Sound, IntroScreen } from '@/components'
+import { ScreenLogin, SteeringVisualizer, Game, Score, Username, Sound, ScreenIntro } from '@/components'
 import { initialAppState } from '@/state/appState'
 import { initialSteering } from '@/physics/steering'
 import type { TSteering } from '@/types'
@@ -16,8 +16,8 @@ export default function App() {
     const refCamera = useRef(null)
     useWebSocket(refSteering, setAppState)
 
-    if (!initialized) return <IntroScreen onStart={() => setInitialized(true)} />
-    if (appState.loggedIn === false) return <LoginScreen />
+    if (!initialized) return <ScreenIntro onStart={() => setInitialized(true)} />
+    if (appState.loggedIn === false) return <ScreenLogin />
     
     return (
         <div className="container mt-5">
