@@ -66,5 +66,5 @@
 }
 
 .high-score__table {
-    animation: flicker 3s infinite;
+    /* animation: flicker 3s infinite; */
 }

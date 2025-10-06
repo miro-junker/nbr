@@ -28,7 +28,6 @@
 .screen-game-over__logo {
     width: 25vh;
     position: absolute;
-    bottom: 1.5rem;
-    right: 7rem;
+    right: 8vh;
     bottom: 5vh;
 }
