@@ -45,10 +45,9 @@ export function Game({ refSteering, setAppState }: IGame) {
 
         // Parachute updates
         const PLANE_SPEED = 2
-        const parachutePos = gs.parachutePos // remove
-        const newParachuteZ = parachutePos[2] - (delta * PLANE_SPEED)
-        let newParachutePos: TPos = [parachutePos[0], parachutePos[1], newParachuteZ]
-        refParachute.current?.position.set(parachutePos[0], parachutePos[1], newParachuteZ)
+        const newParachuteZ = gs.parachutePos[2] - (delta * PLANE_SPEED)
+        let newParachutePos: TPos = [gs.parachutePos[0], gs.parachutePos[1], newParachuteZ]
+        refParachute.current?.position.set(gs.parachutePos[0], gs.parachutePos[1], newParachuteZ)
 
         const respawnParachute = () => {
             newParachutePos = getNewParachutePosition()
