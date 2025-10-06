@@ -1,6 +1,6 @@
 .screen-login {
-    background: url('./poster-update.png') center top  no-repeat fixed;
-    background-size: cover;
+    background: url('./poster-update.png') right bottom  no-repeat fixed;
+    background-size: 100.5% 106.3%;
     height: 100vh;
     display: flex;
     justify-content: center;
