@@ -8,8 +8,8 @@
 }
 
 .screen-login__qr {
-    width: 32vh;
-    height: 32vh;
+    width: 37.5vh;
+    height: 37.5vh;
     position: absolute;
     bottom: 5vh;
     z-index: 10;
