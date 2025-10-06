@@ -6,5 +6,5 @@ export const initialAppState: TAppState = {
     username: '',
     score: 0,
     fuel: 1,
-    speed: 1,
+    gaugeSpeed: 0,
 };

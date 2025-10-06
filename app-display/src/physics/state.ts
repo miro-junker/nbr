@@ -14,3 +14,5 @@ export const initGameState: TGameState = {
 }
 
 export const COLLISION_DISTANCE = 3
+
+export const TOP_SPEED_COEF = 2.5

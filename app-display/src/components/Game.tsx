@@ -8,6 +8,7 @@ import type { TSteering, TGameState, TPos, TAppState } from '@/types'
 import { getPlaneRotX, getPlaneRotY, getPlanePosX, getPlanePosY } from '@/physics/plane'
 import { getNewParachutePosition } from '@/physics/parachute'
 import { PLANE_MODEL_TILT_Y_COEF, PLANE_MODEL_TILT_Y_OFFSET, SKY_ROTATION, SKY_HDRI, REFRESH_RATE_APPSTATE } from '@/config/render'
+import { getGaugeSpeed } from '@/state/speed'
 import { useSFX } from '@/hooks'
 
 
@@ -87,7 +88,7 @@ export function Game({ refSteering, setAppState }: IGame) {
             setAppState(prev => ({
                 ...prev,
                 fuel: refGameState.current.fuel,
-                speed: refGameState.current.speed,
+                gaugeSpeed: getGaugeSpeed(refGameState.current.speed),
             }))
             refGameState.current.appStateLastUpdate = 0
         }
