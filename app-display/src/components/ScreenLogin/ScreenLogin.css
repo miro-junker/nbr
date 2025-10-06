@@ -12,6 +12,7 @@
     height: 32vh;
     position: absolute;
     bottom: 5vh;
+    z-index: 10;
 }
 
 .screen-login__logo {
