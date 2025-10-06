@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { getSteeringValues } from '@/utils/sensor'
 import type { TSteering, TAppState } from '@/types'
-import { WS_URL, WS_RECONNECT_DELAY } from '@/config/main'
+import { URL_WS, DELAY_WS_RECONNECT } from '@/config/main'
 import { initialAppState } from '@/state/appState'
 
 
@@ -16,7 +16,7 @@ export function useWebSocket(
         // Avoid opening multiple connections
         if (wsRef.current) return
 
-        const ws = new WebSocket(WS_URL)
+        const ws = new WebSocket(URL_WS)
         wsRef.current = ws
 
         ws.onopen = () => {
@@ -65,7 +65,7 @@ export function useWebSocket(
         }
     }
 
-    const scheduleReconnect = (delay = WS_RECONNECT_DELAY) => {
+    const scheduleReconnect = (delay = DELAY_WS_RECONNECT) => {
         if (reconnectTimeoutRef.current) return;
         reconnectTimeoutRef.current = window.setTimeout(() => {
             reconnectTimeoutRef.current = null
