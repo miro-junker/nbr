@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { Logo, Score, Sound } from '@/components'
 import type { TAppState } from '@/types'
+import { URL_API_SUBMIT } from '@/config/main'
 import { DURATION_GAMEOVER_SCREEN } from '@/config/game'
 import { initialAppState } from '@/state/appState'
 import soundGameOver from '@/sounds/gameover.mp3'
@@ -19,11 +20,11 @@ export const ScreenGameOver = ({ appState, setAppState }: Props) => {
     useEffect(() => {
         // Send score to API
         if (username && typeof score === 'number') {
-            fetch('/score', {
+            fetch(URL_API_SUBMIT, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    // 'x-api-token': 'YOUR_SECRET_TOKEN', // todo
+                    // 'x-api-token': 'SECRET_TOKEN', // todo: get from .env
                 },
                 body: JSON.stringify({ username, score })
             })
