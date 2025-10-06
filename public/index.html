@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Update Conference Flight</title>
+  <title>Update Flight</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -14,9 +14,22 @@
       color: white;
     }
 
-    h1 {
-      font-size: 1.5em;
-      margin-bottom: 20px;
+    .logo {
+      display: block;
+      width: 90vw;
+      margin: 0 auto 20px auto;
+    }
+
+    /* Recolor all black fills/strokes inside the SVG to orange */
+    .logo path[fill="black"],
+    .logo rect[fill="black"],
+    .logo circle[fill="black"],
+    .logo ellipse[fill="black"],
+    .logo polygon[fill="black"],
+    .logo line[stroke="black"],
+    .logo path[stroke="black"] {
+      fill: #fdac00 !important;
+      stroke: #fdac00 !important;
     }
 
     input {
@@ -57,8 +70,8 @@
   </style>
 </head>
 <body>
+  <img src="/assets/logo-update-flight.svg" alt="Update Flight" class="logo" />
   
-  <h1>Update Conference Flight</h1>
   <input id="username" type="text" placeholder="Enter pilot's nickname" />
   <br>
   <button id="startBtn">Start the Game</button>
@@ -114,7 +127,7 @@
     }
   }
 
-  // Reconnect when page becomes visible
+  // Reconnect websocket when page becomes visible
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "visible") {
       if (!ws || ws.readyState === WebSocket.CLOSED) {
@@ -124,7 +137,7 @@
     }
   });
 
-  // Limit sending updates to 30 Hz
+  // Limit sending updates to 60 Hz
   const SEND_RATE_HZ = 60;
   const MIN_INTERVAL = 1000 / SEND_RATE_HZ;
   let lastSent = 0;
