@@ -9,7 +9,7 @@ import { getPlaneRotX, getPlaneRotY, getPlanePosX, getPlanePosY } from '@/physic
 import { getNewParachutePosition } from '@/physics/parachute'
 import { PLANE_MODEL_TILT_Y_COEF, PLANE_MODEL_TILT_Y_OFFSET, SKY_ROTATION, SKY_HDRI, REFRESH_RATE_APPSTATE } from '@/config/render'
 import { getGaugeSpeed } from '@/state/speed'
-import { FUEL_DURATION } from '@/config/game'
+import { DURATION_FUEL } from '@/config/game'
 import { useSFX } from '@/hooks'
 
 
@@ -73,7 +73,7 @@ export function Game({ refSteering, setAppState }: IGame) {
         }
 
         // Fuel consumption
-        const fuelDecrementPerSecond = 1 / FUEL_DURATION
+        const fuelDecrementPerSecond = 1 / DURATION_FUEL
         const newFuel = Math.max(gs.fuel - (fuelDecrementPerSecond * delta), 0)
 
         // Update game state
