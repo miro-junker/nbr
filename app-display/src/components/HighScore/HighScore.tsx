@@ -22,7 +22,6 @@ export const HighScore = () => {
                     throw new Error(`HTTP error! Status: ${response.status}`)
                 }
                 const data: ScoreEntry[] = await response.json()
-                console.log('API list:', data)
                 setScores(data)
             } catch (error) {
                 console.error('Error fetching URL_API_LIST:', error)
