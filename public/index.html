@@ -75,6 +75,17 @@
       color: #111;
     }
   </style>
+  <script>
+    // Devices wider than 1050px and without touch are considered as display, not controller
+    (function() {
+      const width = window.innerWidth || screen.width;
+      const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      const isDesktopOrTV = width > 1050 && !hasTouch;
+      if (isDesktopOrTV) {
+        window.location.href = "https://nobrakes.cz/display";
+      }
+    })();
+  </script>
 </head>
 <body>
   <img src="/assets/logo-update-flight.svg" alt="Update Flight" class="logo" />
