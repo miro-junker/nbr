@@ -18,6 +18,12 @@
 .screen-login__logo {
     width: 25vh;
     position: absolute;
+    left: 7rem;
+    bottom: 5vh;
+}
+
+.screen-login__scores {
+    position: absolute;
     right: 7rem;
     bottom: 5vh;
 }

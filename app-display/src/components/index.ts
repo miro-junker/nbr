@@ -1,5 +1,6 @@
 export { Game } from './Game'
 export { Gauges } from './Gauges/Gauges'
+export { HighScore } from './HighScore/HighScore'
 export { Logo } from './Logo'
 export { Parachute } from './Parachute'
 export { Plane } from './Plane'

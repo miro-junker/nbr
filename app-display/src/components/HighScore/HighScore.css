@@ -1,0 +1,70 @@
+.high-score {
+    text-align: center;
+    color: #00ff00;
+    font-family: 'Orbitron', monospace;
+    background: #111;
+    padding: 1em;
+    border-radius: 0.5em;
+    box-shadow: 0 0 0.5em #00ff00;
+    display: inline-block;
+    min-width: 300px;
+}
+
+.high-score h2 {
+    margin: 0 0 0.8em;
+    font-size: 1.2em;
+    letter-spacing: 0.1em;
+    text-shadow: 0 0 0.4em #00ff00;
+    text-transform: uppercase;
+}
+
+.high-score__table {
+    margin: 0 auto;
+    border-collapse: collapse;
+    width: 100%;
+    background: #000;
+    border: 1px solid #00ff00;
+    box-shadow: 0 0 0.3em #00ff00 inset;
+}
+
+.high-score__table th,
+.high-score__table td {
+    padding: 0.5em 1em;
+    border-bottom: 1px solid rgba(0, 255, 0, 0.3);
+    letter-spacing: 0.05em;
+    text-shadow:
+        0 0 0.2em #00ff00,
+        0 0 0.4em #00ff00,
+        0 0 0.8em #00ff00;
+}
+
+.high-score__table th {
+    font-size: 0.9em;
+    text-transform: uppercase;
+    opacity: 0.8;
+}
+
+.high-score__table td {
+    font-size: 1em;
+}
+
+.high-score__table tr:hover {
+    background: rgba(0, 255, 0, 0.1);
+}
+
+.high-score__table tr:last-child td {
+    border-bottom: none;
+}
+
+@keyframes flicker {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        opacity: 1;
+    }
+    20%, 24%, 55% {
+        opacity: 0.4;
+    }
+}
+
+.high-score__table {
+    animation: flicker 3s infinite;
+}
