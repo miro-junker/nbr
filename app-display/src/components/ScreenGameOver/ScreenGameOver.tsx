@@ -14,21 +14,43 @@ interface Props {
 
 
 export const ScreenGameOver = ({ appState, setAppState }: Props) => {
-    const { username } = appState
+    const { username, score } = appState
 
-    // Reset app state after game over
     useEffect(() => {
+        // Send score to API
+        if (username && typeof score === 'number') {
+            fetch('/score', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // 'x-api-token': 'YOUR_SECRET_TOKEN', // todo
+                },
+                body: JSON.stringify({ username, score })
+            })
+            .then(res => {
+                if (!res.ok) throw new Error(`Failed to send score: ${res.status}`)
+                return res.json()
+            })
+            .then(() => {
+                console.log('Score submitted successfully')
+            })
+            .catch(err => {
+                console.error('Error submitting score:', err)
+            })
+        }
+
+        // Reset app state after game over
         const timer = setTimeout(() => {
             setAppState(initialAppState)
         }, DURATION_GAMEOVER_SCREEN * 1000)
 
         return () => clearTimeout(timer)
-    }, [setAppState])
+    }, [username, score, setAppState])
 
     return (
         <div className='screen-game-over'>
             <h1 className='screen-game-over__heading'>Game over</h1>
-            
+
             <div className='screen-game-over__score'>
                 <Score state={appState} />
             </div>
