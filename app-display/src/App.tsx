@@ -18,7 +18,7 @@ export default function App() {
     useWebSocket(refSteering, setAppState)
 
     if (!initialized) return <ScreenIntro onStart={() => setInitialized(true)} />
-    if (appState.done) return <ScreenGameOver state={appState} />
+    if (appState.done) return <ScreenGameOver appState={appState} setAppState={setAppState} />
     if (appState.loggedIn === false) return <ScreenLogin />
     
     return (
