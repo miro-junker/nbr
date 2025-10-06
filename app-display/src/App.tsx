@@ -2,7 +2,7 @@ import { Canvas } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import { Suspense, useState, useRef } from 'react'
 import { useWebSocket } from '@/hooks'
-import { ScreenLogin, SteeringVisualizer, Game, Score, Username, Sound, ScreenIntro, ScreenGameOver, Gauges } from '@/components'
+import { ScreenLogin, SteeringVisualizer, Game, Score, Username, Sound, ScreenIntro, ScreenGameOver, Gauges, Passenger } from '@/components'
 import { initialAppState } from '@/state/appState'
 import { initialSteering } from '@/physics/steering'
 import type { TSteering } from '@/types'
@@ -28,6 +28,7 @@ export default function App() {
             </div>
             <Gauges appState={appState} />
             <SteeringVisualizer refSteering={refSteering} />
+            <Passenger score={appState.score} />
             <Canvas
                 ref={refCamera}
                 style={{ height: '100vh' }}
