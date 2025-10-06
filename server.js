@@ -6,16 +6,16 @@ import fs from "fs";
 import { fileURLToPath } from "url";
 import createWsServer from "./server/server-ws.js";
 import createDeployRouter from "./server/server-deploy.js";
-import createDbRouter from "./server/server-db.js";
+import createApiRouter from "./server/server-api.js";
 import "dotenv/config";
 
 
 // --- Environment ---
-const DEPLOY_TOKEN_ENABLED = process.env.DEPLOY_TOKEN_ENABLED === "true";
-const DEPLOY_TOKEN_SECRET = process.env.DEPLOY_TOKEN_SECRET;
+const DEPLOY_TOKEN_ENABLED = process.env.DEPLOY_TOKEN_ENABLED !== "false"; // default true
+const DEPLOY_TOKEN_SECRET  = process.env.DEPLOY_TOKEN_SECRET;
 
-const DB_TOKEN_ENABLED = process.env.DB_TOKEN_ENABLED !== "false"; // default true
-const DB_TOKEN_SECRET = process.env.DB_TOKEN_SECRET;
+const API_TOKEN_ENABLED = process.env.API_TOKEN_ENABLED !== "false"; // default true
+const API_TOKEN_SECRET  = process.env.API_TOKEN_SECRET;
 
 const SSL_KEY_PATH = process.env.SSL_KEY_PATH || "ssl/letsencrypt/privkey.pem";
 const SSL_CERT_PATH = process.env.SSL_CERT_PATH || "ssl/letsencrypt/fullchain.pem";
@@ -40,7 +40,7 @@ const app = express();
 app.use(express.static(path.join(__dirname, "public")));
 
 
-// --- Routers ---
+// --- Deploy router ---
 app.use(
     "/deploy",
     createDeployRouter({
@@ -49,11 +49,13 @@ app.use(
     })
 );
 
+
+// --- API router ---
 app.use(
-    "/db",
-    createDbRouter({
-        tokenCheckEnabled: DB_TOKEN_ENABLED,
-        secret: DB_TOKEN_SECRET,
+    "/api",
+    createApiRouter({
+        tokenCheckEnabled: API_TOKEN_ENABLED,
+        secret: API_TOKEN_SECRET,
     })
 );
 

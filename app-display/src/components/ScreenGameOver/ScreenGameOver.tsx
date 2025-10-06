@@ -24,20 +24,16 @@ export const ScreenGameOver = ({ appState, setAppState }: Props) => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    // 'x-api-token': 'SECRET_TOKEN', // todo: get from .env
+                    // 'x-api-token': process.env.API_TOKEN_SECRET,
                 },
                 body: JSON.stringify({ username, score })
             })
             .then(res => {
                 if (!res.ok) throw new Error(`Failed to send score: ${res.status}`)
-                return res.json()
+                return res.json();
             })
-            .then(() => {
-                console.log('Score submitted successfully')
-            })
-            .catch(err => {
-                console.error('Error submitting score:', err)
-            })
+            .then(() => console.log('Score submitted successfully'))
+            .catch(err => console.error('Error submitting score:', err))
         }
 
         // Reset app state after game over
