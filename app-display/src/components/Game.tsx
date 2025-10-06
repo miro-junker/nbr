@@ -102,7 +102,7 @@ export function Game({ refSteering, setAppState }: IGame) {
 
     return (
         <>
-            <Plane ref={refPlane} turnX={0} turnY={0} posX={0} posY={0} />
+            <Plane ref={refPlane} />
             <Parachute
                 ref={refParachute}
                 position={initGameState.parachutePos}
