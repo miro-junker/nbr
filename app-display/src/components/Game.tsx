@@ -89,13 +89,14 @@ export function Game({ refSteering, setAppState }: IGame) {
         }
 
         // Update app state every x seconds
-        if (refGameState.current.appStateLastUpdate >= REFRESH_RATE_APPSTATE) {
+        if (gs.appStateLastUpdate >= REFRESH_RATE_APPSTATE) {
             setAppState(prev => ({
                 ...prev,
-                fuel: refGameState.current.fuel,
-                gaugeSpeed: getGaugeSpeed(refGameState.current.speed),
+                fuel: gs.fuel,
+                done: gs.fuel <= 0,
+                gaugeSpeed: getGaugeSpeed(gs.speed),
             }))
-            refGameState.current.appStateLastUpdate = 0
+            gs.appStateLastUpdate = 0
         }
     })
 

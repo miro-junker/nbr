@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { getSteeringValues } from '@/utils/sensor'
 import type { TSteering, TAppState } from '@/types'
 import { WS_URL, WS_RECONNECT_DELAY } from '@/config/main'
+import { initialAppState } from '@/state/appState'
 
 
 export function useWebSocket(
@@ -32,12 +33,10 @@ export function useWebSocket(
                 }
                 else if (parsed.type === 'login') {
                     setAppState({
+                        ...initialAppState,
                         loggedIn: true,
-                        username:
-                        parsed.username,
-                        score: 0,
-                        fuel: 1,
-                        gaugeSpeed: 1,
+                        username: parsed.username,
+                        gaugeSpeed: 1,  // gauges staging
                     })
                 }
             } catch (err) {
