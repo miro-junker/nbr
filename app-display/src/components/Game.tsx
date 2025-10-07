@@ -9,7 +9,7 @@ import { getPlaneRotX, getPlaneRotY, getPlanePosX, getPlanePosY } from '@/physic
 import { getNewParachutePosition } from '@/physics/parachute'
 import { PLANE_MODEL_TILT_Y_COEF, PLANE_MODEL_TILT_Y_OFFSET, SKY_ROTATION, SKY_HDRI, REFRESH_RATE_APPSTATE } from '@/config/render'
 import { getGaugeSpeed } from '@/state/speed'
-import { DURATION_FUEL, SPEED_INCREMENT_COEF } from '@/config/game'
+import { DURATION_FUEL, SPEED_MAX, SPEED_INCREMENT_COEF } from '@/config/game'
 import { useSFX } from '@/hooks'
 
 
@@ -45,7 +45,8 @@ export function Game({ refSteering, setAppState }: IGame) {
         setPlaneMesh(newPlaneRotX, newPlaneRotY, newPlanePosX, newPlanePosY)
 
         // --- Increase speed over time ---
-        const newSpeed = gs.speed + (SPEED_INCREMENT_COEF * delta)
+        let newSpeed = gs.speed + (SPEED_INCREMENT_COEF * delta)
+        newSpeed = Math.min(newSpeed, SPEED_MAX)  // limit the speed
 
         // --- Parachute updates ---
         const newParachuteZ = gs.parachutePos[2] - (delta * newSpeed)
