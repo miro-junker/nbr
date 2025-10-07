@@ -1,0 +1,47 @@
+.passenger {
+    position: absolute;
+    left: 10vh;
+    top: 3vh;
+    background: #EEE;
+    border-radius: 3vh;
+    z-index: 10;
+    width: 35vh;
+    height: 45vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1vh;
+    box-sizing: border-box;
+    overflow: hidden;
+    color: #111;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.passenger:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    transform: translateY(-2px);
+}
+
+.passenger__photo {
+    width: 100%;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.passenger__photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 1vh;
+}
+
+.passenger__name {
+    text-align: center;
+    font-size: 3vh;
+    font-weight: bold;
+    margin-top: 1vh;
+    flex-shrink: 0;
+}

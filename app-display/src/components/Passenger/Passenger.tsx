@@ -3,7 +3,7 @@ import './Passenger.css'
 
 
 interface Passenger {
-    passenger: string
+    name: string
     img: string
 }
 
@@ -31,7 +31,7 @@ export const Passenger = ({ score }: Props) => {
             const nameWithoutExt = fileName.replace(/\.[^/.]+$/, '');
             const nameWithSpaces = nameWithoutExt.replace(/_/g, ' ');
             const passengerName = decodeURIComponent(nameWithSpaces);
-            return { passenger: passengerName, img: path };
+            return { name: passengerName, img: path };
         });
 
         // Preload all images
@@ -65,14 +65,12 @@ export const Passenger = ({ score }: Props) => {
     }, [score]);
 
 
+    if (!currentPassenger) return null;
+
     return (
         <div className="passenger">
-            {currentPassenger && (
-                <>
-                    <img src={currentPassenger.img} alt={currentPassenger.passenger} />
-                    <p>{currentPassenger.passenger}</p>
-                </>
-            )}
+            <div className='passenger__photo'><img src={currentPassenger.img} alt={currentPassenger.name} /></div>
+            <p className='passenger__name'>{currentPassenger.name}</p>
         </div>
     );
 };
