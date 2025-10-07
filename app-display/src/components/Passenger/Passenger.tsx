@@ -64,18 +64,18 @@ export const Passenger = ({ score }: Props) => {
 
         // Trigger animation
         setAnimate(true);
-        const timer = setTimeout(() => setAnimate(false), 1500)  // 1s visible + 0.5s buffer for transition
+        const timer = setTimeout(() => setAnimate(false), 2000)  // 1.5s visible + 0.5s transition
         return () => clearTimeout(timer)
     }, [score]);
-
-    if (!currentPassenger) return null;
 
     return (
         <div className={`passenger ${animate ? 'passenger--visible' : ''}`}>
             <div className='passenger__photo'>
-                <img src={currentPassenger.img} alt={currentPassenger.name} />
+                {currentPassenger && <img src={currentPassenger.img} alt={currentPassenger.name} />}
             </div>
-            <p className='passenger__name'>{currentPassenger.name}</p>
+            <p className='passenger__name'>
+                {currentPassenger ? currentPassenger.name : ''}
+            </p>
         </div>
     );
 };
