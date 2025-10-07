@@ -14,7 +14,7 @@ function createWsServer({ port, server }) {
         ? new WebSocketServer({ server })
         : new WebSocketServer({ port });
 
-    let sensorSocket = null;
+    let sensorSocket = null; // todo: unused?
     let displaySocket = null;
 
     wss.on("connection", (ws, req) => {

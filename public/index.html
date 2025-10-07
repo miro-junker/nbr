@@ -1,211 +1,211 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Update Flight</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Update Flight</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    body {
-      font-family: sans-serif;
-      padding: 20px;
-      text-align: center;
-      background: #EEE;
-      color: white;
-    }
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+            text-align: center;
+            background: #EEE;
+            color: white;
+        }
 
-    .logo {
-      display: block;
-      width: 100%;
-      margin: 0 auto 20px auto;
-    }
+        .logo {
+            display: block;
+            width: 100%;
+            margin: 0 auto 20px auto;
+        }
 
-    .logo {
-      margin-top: 15px;
-      margin-bottom: 30px;
-    }
-    /* Recolor all black fills/strokes inside the SVG to orange */
-    .logo path[fill="black"],
-    .logo rect[fill="black"],
-    .logo circle[fill="black"],
-    .logo ellipse[fill="black"],
-    .logo polygon[fill="black"],
-    .logo line[stroke="black"],
-    .logo path[stroke="black"] {
-      fill: #fdac00 !important;
-      stroke: #fdac00 !important;
-    }
+        .logo {
+            margin-top: 15px;
+            margin-bottom: 30px;
+        }
+        /* Recolor all black fills/strokes inside the SVG to orange */
+        .logo path[fill="black"],
+        .logo rect[fill="black"],
+        .logo circle[fill="black"],
+        .logo ellipse[fill="black"],
+        .logo polygon[fill="black"],
+        .logo line[stroke="black"],
+        .logo path[stroke="black"] {
+            fill: #fdac00 !important;
+            stroke: #fdac00 !important;
+        }
 
-    input {
-      font-size: 1.1em;
-      padding: 10px;
-      margin-bottom: 30px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      width: 100%;
-      box-sizing: border-box;
-    }
+        input {
+            font-size: 1.1em;
+            padding: 10px;
+            margin-bottom: 30px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            width: 100%;
+            box-sizing: border-box;
+        }
 
-    button {
-      font-size: 1.2em;
-      padding: 15px 25px;
-      border: none;
-      border-radius: 8px;
-      background: #fdac00;
-      cursor: pointer;
-      color: #111;
-      font-weight: bold;
-      width: 100%;
-    }
+        button {
+            font-size: 1.2em;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 8px;
+            background: #fdac00;
+            cursor: pointer;
+            color: #111;
+            font-weight: bold;
+            width: 100%;
+        }
 
-    button:disabled {
-      background: #999;
-      cursor: not-allowed;
-    }
+        button:disabled {
+            background: #999;
+            cursor: not-allowed;
+        }
 
-    pre {
-      text-align: left;
-      font-size: 0.85em;
-      margin-top: 30px;
-      background: #f4f4f4;
-      padding: 10px;
-      border-radius: 6px;
-      max-height: 40vh;
-      overflow-y: auto;
-      color: #111;
-    }
-  </style>
-  <script>
-    // Devices wider than 1050px and without touch are considered as display, not controller
-    (function() {
-      const width = window.innerWidth || screen.width;
-      const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-      const isDesktopOrTV = width > 1050 && !hasTouch;
-      if (isDesktopOrTV) {
-        window.location.href = "https://nobrakes.cz/display";
-      }
-    })();
-  </script>
+        pre {
+            text-align: left;
+            font-size: 0.85em;
+            margin-top: 30px;
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 6px;
+            max-height: 40vh;
+            overflow-y: auto;
+            color: #111;
+        }
+    </style>
+    <script>
+        // Devices wider than 1050px and without touch are considered as display, not controller
+        (function() {
+            const width = window.innerWidth || screen.width;
+            const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+            const isDesktopOrTV = width > 1050 && !hasTouch;
+            if (isDesktopOrTV) {
+                window.location.href = "https://nobrakes.cz/display";
+            }
+        })();
+    </script>
 </head>
 <body>
-  <img src="/assets/logo-update-flight.svg" alt="Update Flight" class="logo" />
-  
-  <input id="username" type="text" placeholder="Enter pilot's nickname" />
-  <br>
-  <button id="startBtn">Start the Game</button>
-  <pre id="log"></pre>
+    <img src="/assets/logo-update-flight.svg" alt="Update Flight" class="logo" />
+    
+    <input id="username" type="text" placeholder="Enter pilot's nickname" />
+    <br>
+    <button id="startBtn">Start the Game</button>
+    <pre id="log"></pre>
 
 <script>
-  const DEBUG = true;
+    const DEBUG = true;
 
-  const logEl = document.getElementById("log");
-  const startBtn = document.getElementById("startBtn");
-  const usernameInput = document.getElementById("username");
+    const logEl = document.getElementById("log");
+    const startBtn = document.getElementById("startBtn");
+    const usernameInput = document.getElementById("username");
 
-  function log(message) {
-    logEl.textContent += message + "\n";
-  }
-
-  let ws;
-  const WS_URL = "wss://nobrakes.cz/?role=sensor";
-  const WS_RECONNECT_INTERVAL = 200; 
-  let reconnectTimeout;
-
-  function connectWebSocket() {
-    ws = new WebSocket(WS_URL);
-
-    ws.onopen = () => {
-      log("🛫 Connected to the control tower");
-      if (reconnectTimeout) {
-        clearTimeout(reconnectTimeout);
-        reconnectTimeout = null;
-      }
-    };
-
-    ws.onclose = () => {
-      log("📡 Lost signal to tower, trying to re-establish link...");
-      scheduleReconnect();
-    };
-
-    ws.onerror = (err) => {
-      log("⚠️ Radio interference detected, switching channel...");
-      console.error(err);
-      ws.close(); 
-    };
-
-    ws.onmessage = (event) => log("🎙 Tower: " + event.data);
-  }
-
-  function scheduleReconnect() {
-    if (!reconnectTimeout) {
-      reconnectTimeout = setTimeout(() => {
-        log("🔄 Re-tuning radio to control tower...");
-        connectWebSocket();
-      }, WS_RECONNECT_INTERVAL);
-    }
-  }
-
-  // Reconnect websocket when page becomes visible
-  document.addEventListener("visibilitychange", () => {
-    if (document.visibilityState === "visible") {
-      if (!ws || ws.readyState === WebSocket.CLOSED) {
-        log("📲 Cockpit display active, re-linking to tower...");
-        connectWebSocket();
-      }
-    }
-  });
-
-  // Limit sending updates to 60 Hz
-  const SEND_RATE_HZ = 60;
-  const MIN_INTERVAL = 1000 / SEND_RATE_HZ;
-  let lastSent = 0;
-
-  function sendTilt(alpha, beta, gamma) {
-    const now = Date.now();
-    if (ws && ws.readyState === WebSocket.OPEN && now - lastSent >= MIN_INTERVAL) {
-      const data = { type: 'tilt', a: alpha, b: beta, c: gamma };
-      ws.send(JSON.stringify(data));
-      lastSent = now;
-    }
-  }
-
-  function handleOrientation(event) {
-    sendTilt(event.alpha, event.beta, event.gamma);
-  }
-
-  startBtn.addEventListener("click", () => {
-    const username = usernameInput.value.trim();
-    if (!DEBUG && !username) {
-      log("⚠️ Enter your callsign first, pilot!");
-      return;
+    function log(message) {
+        logEl.textContent += message + "\n";
     }
 
-    // Send login (pilot registration)
-    if (ws && ws.readyState === WebSocket.OPEN) {
-      ws.send(JSON.stringify({ type: "login", username }));
-      log("🧑‍✈️ Callsign registered: " + username);
+    let ws;
+    const WS_URL = "wss://nobrakes.cz/?role=sensor";
+    const WS_RECONNECT_INTERVAL = 200; 
+    let reconnectTimeout;
+
+    function connectWebSocket() {
+        ws = new WebSocket(WS_URL);
+
+        ws.onopen = () => {
+            log("🛫 Connected to the control tower");
+            if (reconnectTimeout) {
+                clearTimeout(reconnectTimeout);
+                reconnectTimeout = null;
+            }
+        };
+
+        ws.onclose = () => {
+            log("📡 Lost signal to tower, trying to re-establish link...");
+            scheduleReconnect();
+        };
+
+        ws.onerror = (err) => {
+            log("⚠️ Radio interference detected, switching channel...");
+            console.error(err);
+            ws.close(); 
+        };
+
+        ws.onmessage = (event) => log("🎙 Tower: " + event.data);
     }
 
-    // Enable tilt control
-    if (typeof DeviceOrientationEvent.requestPermission === "function") {
-      DeviceOrientationEvent.requestPermission()
-        .then(state => {
-          if(state === "granted"){
+    function scheduleReconnect() {
+        if (!reconnectTimeout) {
+            reconnectTimeout = setTimeout(() => {
+                log("🔄 Re-tuning radio to control tower...");
+                connectWebSocket();
+            }, WS_RECONNECT_INTERVAL);
+        }
+    }
+
+    // Reconnect websocket when page becomes visible
+    document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible") {
+            if (!ws || ws.readyState === WebSocket.CLOSED) {
+                log("📲 Cockpit display active, re-linking to tower...");
+                connectWebSocket();
+            }
+        }
+    });
+
+    // Limit sending updates to 60 Hz
+    const SEND_RATE_HZ = 60;
+    const MIN_INTERVAL = 1000 / SEND_RATE_HZ;
+    let lastSent = 0;
+
+    function sendTilt(alpha, beta, gamma) {
+        const now = Date.now();
+        if (ws && ws.readyState === WebSocket.OPEN && now - lastSent >= MIN_INTERVAL) {
+            const data = { type: 'tilt', a: alpha, b: beta, c: gamma };
+            ws.send(JSON.stringify(data));
+            lastSent = now;
+        }
+    }
+
+    function handleOrientation(event) {
+        sendTilt(event.alpha, event.beta, event.gamma);
+    }
+
+    startBtn.addEventListener("click", () => {
+        const username = usernameInput.value.trim();
+        if (!DEBUG && !username) {
+            log("⚠️ Enter your callsign first, pilot!");
+            return;
+        }
+
+        // Send login (pilot registration)
+        if (ws && ws.readyState === WebSocket.OPEN) {
+            ws.send(JSON.stringify({ type: "login", username }));
+            log("🧑‍✈️ Callsign registered: " + username);
+        }
+
+        // Enable tilt control
+        if (typeof DeviceOrientationEvent.requestPermission === "function") {
+            DeviceOrientationEvent.requestPermission()
+                .then(state => {
+                    if(state === "granted"){
+                        window.addEventListener("deviceorientation", handleOrientation);
+                        log("🎮 Joystick mode — you're cleared for takeoff!");
+                    } else log("⛔ Control access denied");
+                })
+                .catch(console.error);
+        } else {
             window.addEventListener("deviceorientation", handleOrientation);
             log("🎮 Joystick mode — you're cleared for takeoff!");
-          } else log("⛔ Control access denied");
-        })
-        .catch(console.error);
-    } else {
-      window.addEventListener("deviceorientation", handleOrientation);
-      log("🎮 Joystick mode — you're cleared for takeoff!");
-    }
-    startBtn.disabled = true;
-    usernameInput.disabled = true;
-  });
+        }
+        startBtn.disabled = true;
+        usernameInput.disabled = true;
+    });
 
-  // Initial connection
-  connectWebSocket();
+    // Initial connection
+    connectWebSocket();
 </script>
 
 </body>

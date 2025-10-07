@@ -19,7 +19,7 @@ chmod 777 "$LOGDIR"
 touch "$LOGFILE"
 chmod 666 "$LOGFILE"
 
-# Move to project directory
+# Switch to project directory
 cd "$PROJECT_DIR" || exit
 
 # Get current commit info BEFORE pulling new code
