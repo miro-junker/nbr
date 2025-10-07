@@ -16,6 +16,7 @@ export const Passenger = ({ score }: Props) => {
     const [passengersData, setPassengersData] = useState<Passenger[]>([])
     const [remainingIndexes, setRemainingIndexes] = useState<number[]>([])
     const [currentPassenger, setCurrentPassenger] = useState<Passenger | null>(null)
+    const [animate, setAnimate] = useState(false)
 
     const renewRemainingIndexes = () => {
         setRemainingIndexes(passengersData.map((_, idx) => idx))
@@ -27,22 +28,21 @@ export const Passenger = ({ score }: Props) => {
         const imagePaths = Object.values(images).map((mod: any) => mod.default)
 
         const processedImages: Passenger[] = imagePaths.map((path) => {
-            const fileName = path.split('/').pop()!;
-            const nameWithoutExt = fileName.replace(/\.[^/.]+$/, '');
-            const nameWithSpaces = nameWithoutExt.replace(/_/g, ' ');
-            const passengerName = decodeURIComponent(nameWithSpaces);
+            const fileName = path.split('/').pop()!
+            const nameWithoutExt = fileName.replace(/\.[^/.]+$/, '')
+            const nameWithSpaces = nameWithoutExt.replace(/_/g, ' ')
+            const passengerName = decodeURIComponent(nameWithSpaces)
             return { name: passengerName, img: path };
         });
 
         // Preload all images
         processedImages.forEach(p => {
-            const img = new Image();
+            const img = new Image()
             img.src = p.img;
         });
 
-        setPassengersData(processedImages);
-    }, []);
-
+        setPassengersData(processedImages)
+    }, [])
 
     // Set remainingIndexes when images prepared (on init)
     useEffect(() => {
@@ -56,20 +56,25 @@ export const Passenger = ({ score }: Props) => {
 
     // Change currentPassenger whenever score changes
     useEffect(() => {
-        if (score === 0) return;
+        if (score === 0 || passengersData.length === 0) return;
 
-        // Pick random from remaining
-        const nextIndex = remainingIndexes[Math.floor(Math.random() * remainingIndexes.length)];
-        setRemainingIndexes(prev => prev.filter(idx => idx !== nextIndex));
-        setCurrentPassenger(passengersData[nextIndex]);
+        const nextIndex = remainingIndexes[Math.floor(Math.random() * remainingIndexes.length)]
+        setRemainingIndexes(prev => prev.filter(idx => idx !== nextIndex))
+        setCurrentPassenger(passengersData[nextIndex])
+
+        // Trigger animation
+        setAnimate(true);
+        const timer = setTimeout(() => setAnimate(false), 1500)  // 1s visible + 0.5s buffer for transition
+        return () => clearTimeout(timer)
     }, [score]);
-
 
     if (!currentPassenger) return null;
 
     return (
-        <div className="passenger">
-            <div className='passenger__photo'><img src={currentPassenger.img} alt={currentPassenger.name} /></div>
+        <div className={`passenger ${animate ? 'passenger--visible' : ''}`}>
+            <div className='passenger__photo'>
+                <img src={currentPassenger.img} alt={currentPassenger.name} />
+            </div>
             <p className='passenger__name'>{currentPassenger.name}</p>
         </div>
     );
