@@ -1,6 +1,6 @@
 import { HighScore, Logo, Sound } from '@/components'
 import music from '@/sounds/music-login.mp3'
-import img_qr from './qr-update.png'
+import img_qr from './qr.png'
 import './ScreenLogin.css'
 
 
