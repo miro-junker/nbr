@@ -18,6 +18,7 @@ interface IGame {
     setAppState: React.Dispatch<React.SetStateAction<TAppState>>
 }
 
+
 export function Game({ refSteering, setAppState }: IGame) {
     const refPlane = useRef<THREE.Object3D>(null)
     const refParachute = useRef<THREE.Group>(null)
@@ -36,16 +37,19 @@ export function Game({ refSteering, setAppState }: IGame) {
     useFrame((_, delta) => {
         const gs = refGameState.current
 
-        // Plane updates
+        // --- Plane updates ---
         const newPlaneRotX = getPlaneRotX(gs, refSteering.current, delta)
         const newPlaneRotY = getPlaneRotY(gs, refSteering.current, delta)
         const newPlanePosX = getPlanePosX(gs, newPlaneRotX, delta)
         const newPlanePosY = getPlanePosY(gs, newPlaneRotY, delta)
         setPlaneMesh(newPlaneRotX, newPlaneRotY, newPlanePosX, newPlanePosY)
 
-        // Parachute updates
-        const PLANE_SPEED = 2
-        const newParachuteZ = gs.parachutePos[2] - (delta * PLANE_SPEED)
+        // --- Increase speed over time ---
+        const SPEED_INCREMENT_PER_SECOND = 0.5 // adjust as needed
+        const newSpeed = gs.speed + (SPEED_INCREMENT_PER_SECOND * delta)
+
+        // --- Parachute updates ---
+        const newParachuteZ = gs.parachutePos[2] - (delta * newSpeed)
         let newParachutePos: TPos = [gs.parachutePos[0], gs.parachutePos[1], newParachuteZ]
         refParachute.current?.position.set(...newParachutePos)
 
@@ -54,7 +58,7 @@ export function Game({ refSteering, setAppState }: IGame) {
             refParachute.current?.position.set(...newParachutePos)
         }
 
-        // Collision detection
+        // --- Collision detection ---
         if (refPlane.current && refParachute.current) {
             refPlane.current.getWorldPosition(posPlane)
             refParachute.current.getWorldPosition(posParachute)
@@ -66,20 +70,20 @@ export function Game({ refSteering, setAppState }: IGame) {
             }
         }
 
-        // Missed parachute
+        // --- Missed parachute ---
         if (newParachuteZ < -16) {
             playSFX('loss')
             respawnParachute()
         }
 
-        // Fuel consumption
+        // --- Fuel consumption ---
         const fuelDecrementPerSecond = 1 / DURATION_FUEL
         const newFuel = Math.max(gs.fuel - (fuelDecrementPerSecond * delta), 0)
 
-        // Update game state
+        // --- Update game state ---
         refGameState.current = {
             fuel: newFuel,
-            speed: 1, // todo: replace with real logic
+            speed: newSpeed,
             planeRotX: newPlaneRotX,
             planeRotY: newPlaneRotY,
             planePosX: newPlanePosX,
@@ -88,7 +92,7 @@ export function Game({ refSteering, setAppState }: IGame) {
             appStateLastUpdate: gs.appStateLastUpdate + delta,
         }
 
-        // Update app state every x seconds
+        // --- Update app state every x seconds ---
         if (gs.appStateLastUpdate >= REFRESH_RATE_APPSTATE) {
             setAppState(prev => ({
                 ...prev,
