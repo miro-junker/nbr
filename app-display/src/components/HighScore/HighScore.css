@@ -29,7 +29,7 @@
 
 .high-score__table th,
 .high-score__table td {
-    padding: 1vh 2vh;
+    padding: 1vh 1.5vh;
     border-bottom: 0.1vh solid rgba(0, 255, 0, 0.3);
     letter-spacing: 0.1vh;
     text-shadow:
