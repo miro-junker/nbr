@@ -32,7 +32,8 @@ export const Passenger = ({ score }: Props) => {
             const nameWithoutExt = fileName.replace(/\.[^/.]+$/, '')
             const nameWithSpaces = nameWithoutExt.replace(/_/g, ' ')
             const passengerName = decodeURIComponent(nameWithSpaces)
-            return { name: passengerName, img: path };
+            const nameWithoutHashTrash = passengerName.split('-')[0]
+            return { name: nameWithoutHashTrash, img: path };
         });
 
         // Preload all images
