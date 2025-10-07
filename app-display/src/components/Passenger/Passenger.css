@@ -1,7 +1,7 @@
 .passenger {
     position: absolute;
     left: 10vh;
-    top: 3vh;
+    top: -50vh; /* start above viewport */
     background: #EEE;
     border-radius: 3vh;
     z-index: 10;
@@ -15,11 +15,13 @@
     overflow: hidden;
     color: #111;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: top 0.5s ease-in-out, opacity 0.5s ease-in-out;
+    opacity: 0;
 }
 
-.passenger:hover {
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-    transform: translateY(-2px);
+.passenger.passenger--visible {
+    top: 3vh; /* visible position */
+    opacity: 1;
 }
 
 .passenger__photo {
