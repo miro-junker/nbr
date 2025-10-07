@@ -8,11 +8,16 @@ interface StartupScreenProps {
 
 
 export const ScreenIntro: React.FC<StartupScreenProps> = ({ onStart }) => {
+    const handleClick = () => {
+        document.documentElement.requestFullscreen()
+        onStart()
+    }
+
     return (
         <div
             className='screen-intro__container'
-            onClick={onStart}
-            onTouchStart={onStart} // ensures touch devices also trigger start
+            onClick={handleClick}
+            onTouchStart={handleClick} // ensures touch devices also trigger start
             style={{
 
             }}
