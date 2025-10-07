@@ -9,3 +9,6 @@ export const REFRESH_RATE_APPSTATE = 1  // [sec]
 export const COLOR_PARACHUTE = '#555555'
 
 export const DURATION_GAMEOVER_SCREEN = 15  // [sec]
+
+export const GAUGE_HIGH_SPEED = 0.75
+export const GAUGE_LOW_FUEL   = 0.1

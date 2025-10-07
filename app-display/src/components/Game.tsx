@@ -8,7 +8,6 @@ import type { TSteering, TGameState, TPos, TAppState } from '@/types'
 import { getPlaneRotX, getPlaneRotY, getPlanePosX, getPlanePosY } from '@/physics/plane'
 import { getNewParachutePosition } from '@/physics/parachute'
 import { PLANE_MODEL_TILT_Y_COEF, PLANE_MODEL_TILT_Y_OFFSET, SKY_ROTATION, SKY_HDRI, REFRESH_RATE_APPSTATE } from '@/config/render'
-import { getGaugeSpeed } from '@/state/speed'
 import { DURATION_FUEL, SPEED_MAX, SPEED_INCREMENT_COEF } from '@/config/game'
 import { useSFX } from '@/hooks'
 
@@ -80,6 +79,7 @@ export function Game({ refSteering, setAppState }: IGame) {
         const fuelDecrementPerSecond = 1 / DURATION_FUEL
         const newFuel = Math.max(gs.fuel - (fuelDecrementPerSecond * delta), 0)
 
+
         // --- Update game state ---
         refGameState.current = {
             fuel: newFuel,
@@ -98,7 +98,7 @@ export function Game({ refSteering, setAppState }: IGame) {
                 ...prev,
                 fuel: gs.fuel,
                 done: gs.fuel <= 0,
-                gaugeSpeed: getGaugeSpeed(gs.speed),
+                speed: gs.speed,
             }))
             gs.appStateLastUpdate = 0
         }
