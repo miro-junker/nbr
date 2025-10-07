@@ -1,3 +1,6 @@
+.screen-game {
+    cursor: none;
+}
 
 .screen-game__score {
     position: absolute;
