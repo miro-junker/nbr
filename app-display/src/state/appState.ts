@@ -1,4 +1,5 @@
 import type { TAppState } from '@/types'
+import { SPEED_MIN } from '@/config/game'
 
 
 export const initialAppState: TAppState = {
@@ -7,5 +8,5 @@ export const initialAppState: TAppState = {
     username: '',
     score: 0,
     fuel: 1,
-    gaugeSpeed: 0,
+    speed: SPEED_MIN,
 };

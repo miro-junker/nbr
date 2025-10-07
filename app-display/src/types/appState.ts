@@ -4,5 +4,5 @@ export type TAppState = {
     username: string
     score: number
     fuel: number
-    gaugeSpeed: number
+    speed: number
 }

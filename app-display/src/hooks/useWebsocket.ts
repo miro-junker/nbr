@@ -36,7 +36,6 @@ export function useWebSocket(
                         ...initialAppState,
                         loggedIn: true,
                         username: parsed.username,
-                        gaugeSpeed: 1,  // gauges staging
                     })
                 }
             } catch (err) {
