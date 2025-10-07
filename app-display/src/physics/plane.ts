@@ -6,7 +6,8 @@ const PLANE_ROTATION_Y_INERTIA = 0.5
 const PLANE_HORIZONTAL_SPEED = 10
 const PLANE_VERTICAL_SPEED = 10
 const MAX_OFFSET_X = 17.5
-const MAX_OFFSET_Y = 9.5
+const MAX_OFFSET_UP = 9.5
+const MAX_OFFSET_DOWN = 12.5
 
 
 export const getPlaneRotX = (gameState: TGameState, steering: TSteering, delta: number) => {
@@ -32,7 +33,7 @@ export const getPlaneRotY = (gameState: TGameState, steering: TSteering, delta: 
 
 export const getPlanePosY = (gameState: TGameState, newPlaneRotY: number, delta: number) => {
     const calculated = gameState.planePosY + newPlaneRotY * delta * PLANE_VERTICAL_SPEED
-    if (calculated >= MAX_OFFSET_Y) return MAX_OFFSET_Y
-    if (calculated <= -MAX_OFFSET_Y) return -MAX_OFFSET_Y
+    if (calculated >= MAX_OFFSET_UP) return MAX_OFFSET_UP
+    if (calculated <= -MAX_OFFSET_DOWN) return -MAX_OFFSET_DOWN
     return calculated
 }
