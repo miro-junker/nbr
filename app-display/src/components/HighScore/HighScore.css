@@ -48,8 +48,9 @@
     font-size: 2vh;
 }
 
-.high-score__table tr:hover {
+.high-score__table tr:first-child {
     background: rgba(0, 255, 0, 0.1);
+    color: white;
 }
 
 .high-score__table tr:last-child td {
@@ -64,8 +65,3 @@
         opacity: 0.4;
     }
 }
-
-/* Optional flicker effect */
-/* .high-score__table {
-    animation: flicker 3s infinite;
-} */
